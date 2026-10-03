@@ -1,6 +1,6 @@
 # Atlas — Agent Guide
 
-This is **shipwithatlas-bootstrap**, an Atlas application generated from Atlas 1.2.2.
+This is **shipwithatlas**, an Atlas application generated from Atlas 1.2.2.
 
 Product code lives in this repository. Atlas does not host the application. Discover project state
 from the published CLI — do not assume Atlas monorepo workspaces such as the evaluation harness or
@@ -109,7 +109,7 @@ Public Atlas docs: https://github.com/blitzcraftlabs/atlas/blob/main/docs/public
 ## Workspace map
 
 ```
-shipwithatlas-bootstrap/
+shipwithatlas/
 ├── apps/web/           # Product application
 ├── packages/ui/        # @atlas/ui source
 ├── packages/consent/   # @atlas/consent source

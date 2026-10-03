@@ -1,10 +1,11 @@
 import "@atlas/ui/globals.css";
 
-import { Inter } from "next/font/google";
+import { Geist_Mono, Inter } from "next/font/google";
 
 import { getThemeBootScriptContent } from "@atlas/ui/theme-boot";
 
 import { GlobalErrorHandler } from "@/components/GlobalErrorHandler";
+import { SITE_NAME, SITE_SUPPORTING, SITE_TAGLINE } from "@/lib/marketing/constants";
 import { getNonce } from "@/lib/security/nonce";
 import { MainProvider } from "@/providers";
 
@@ -17,9 +18,19 @@ const inter = Inter({
   preload: true,
 });
 
+const fontMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Frontend Platform",
-  description: "Enterprise frontend platform built with Next.js",
+  title: {
+    default: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    template: `%s — ${SITE_NAME}`,
+  },
+  description: SITE_SUPPORTING,
+  metadataBase: new URL("https://shipwithatlas.com"),
 };
 
 export default async function RootLayout({
@@ -30,7 +41,11 @@ export default async function RootLayout({
   const nonce = await getNonce();
 
   return (
-    <html lang="en" suppressHydrationWarning className={`font-sans ${inter.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`font-sans antialiased ${inter.variable} ${fontMono.variable}`}
+    >
       <head>
         <script
           nonce={nonce}
