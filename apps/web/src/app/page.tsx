@@ -1,28 +1,50 @@
-import { Button, Kbd } from "@atlas/ui";
+import "./atlas-marketing.css";
 
-import { LandingSelect } from "@/components/LandingSelect";
-import { ThemeHotkey } from "@/components/ThemeHotkey";
+import { AgentsSection } from "@/components/landing/agents-section";
+import { BuiltWithSection } from "@/components/landing/built-with-section";
+import { CapabilitiesSection } from "@/components/landing/capabilities-section";
+import { ClosingSection } from "@/components/landing/closing-section";
+import { ConsultingBridgeSection } from "@/components/landing/consulting-bridge-section";
+import { ContractDiagramSection } from "@/components/landing/contract-diagram-section";
+import { FaqSection } from "@/components/landing/faq-section";
+import { HeroSection } from "@/components/landing/hero-section";
+import { InspectOwnershipSection } from "@/components/landing/inspect-ownership-section";
+import { PropertiesSection } from "@/components/landing/properties-section";
+import { MarketingFooter } from "@/components/marketing/marketing-footer";
+import { MarketingHeader } from "@/components/marketing/marketing-header";
+import { MarketingTheme } from "@/components/marketing/marketing-theme";
+import {
+  SITE_NAME,
+  SITE_SUPPORTING,
+  SITE_TAGLINE,
+} from "@/lib/marketing/constants";
+
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+  description: SITE_SUPPORTING,
+};
 
 export default function HomePage() {
   return (
-    <>
-      <ThemeHotkey />
-      <div className="flex min-h-svh p-6">
-        <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-          <div>
-            <h1 className="font-medium">Project ready!</h1>
-            <p>You may now add components and start building.</p>
-            <p>We&apos;ve already added the button component for you.</p>
-            <div className="mt-4 flex flex-col gap-4">
-              <LandingSelect />
-              <Button>Button</Button>
-            </div>
-          </div>
-          <div className="text-muted-foreground font-mono text-xs">
-            (Press <Kbd>d</Kbd> to toggle dark mode)
-          </div>
-        </div>
+    <MarketingTheme>
+      <div className="atlas-marketing min-h-svh overflow-x-clip">
+        <MarketingHeader />
+        <main>
+          <HeroSection />
+          <PropertiesSection />
+          <CapabilitiesSection />
+          <BuiltWithSection />
+          <ContractDiagramSection />
+          <AgentsSection />
+          <InspectOwnershipSection />
+          <ConsultingBridgeSection />
+          <FaqSection />
+          <ClosingSection />
+        </main>
+        <MarketingFooter />
       </div>
-    </>
+    </MarketingTheme>
   );
 }
