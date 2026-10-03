@@ -1,0 +1,17 @@
+export const INFRASTRUCTURE_DECISIONS = [
+  "Auth",
+  "API client",
+  "Data fetching",
+  "Forms",
+  "Errors",
+  "Feature flags",
+  "Testing",
+  "CI",
+  "Observability",
+  "Design system",
+  "Accessibility",
+  "Environment config",
+  "Analytics",
+  "Consent",
+  "Agent instructions",
+] as const
