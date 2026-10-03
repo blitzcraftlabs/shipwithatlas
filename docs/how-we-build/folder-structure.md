@@ -2,14 +2,14 @@
 
 > Where code lives in this generated consumer workspace.
 
-This document describes **shipwithatlas**, not the Atlas platform monorepo. The Atlas
+This document describes **shipwithatlas-bootstrap**, not the Atlas platform monorepo. The Atlas
 evaluation harness (`apps/reference`) and CLI source (`packages/cli`) are not part of this
 repository.
 
 ## Workspace layout
 
 ```
-shipwithatlas/
+shipwithatlas-bootstrap/
 ├── apps/
 │   └── web/                    # Product application (@atlas/web)
 │       ├── src/

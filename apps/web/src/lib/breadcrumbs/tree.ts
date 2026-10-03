@@ -12,7 +12,17 @@ import type { BreadcrumbNode } from "./types";
 
 export const breadcrumbTree: BreadcrumbNode[] = [
   {
-    segment: "consulting",
-    resolver: staticResolver("Consulting"),
+    segment: "examples",
+    resolver: staticResolver("Examples"),
+    children: [
+      {
+        segment: "data",
+        resolver: staticResolver("Data"),
+      },
+      {
+        segment: "form",
+        resolver: staticResolver("Form"),
+      },
+    ],
   },
 ];

@@ -1,86 +1,52 @@
-# shipwithatlas
+# shipwithatlas-bootstrap
 
-Public source for [shipwithatlas.com](https://shipwithatlas.com) — the marketing site for
-[Atlas](https://github.com/blitzcraftlabs/atlas), built as a genuine Atlas consumer workspace.
+This project was generated from Atlas 1.2.2.
 
-- **[blitzcraftlabs/atlas](https://github.com/blitzcraftlabs/atlas)** — the open-source frontend platform (CLI, contracts, generators, upgrades).
-- **blitzcraftlabs/shipwithatlas** (this repository) — the production website that dogfoods Atlas.
+The generated application stays in this repository. Atlas does not host your application.
 
-Generated from Atlas **1.2.2** via the published npm CLI (`@blitzcraftlabs/atlas`). Your application
-code lives here; Atlas does not host this deployment.
-
-## Requirements
-
-- Node.js **22+**
-- pnpm **10+**
-
-## Installation
+## Getting started
 
 ```bash
 pnpm install
-```
-
-Copy environment variables when you need analytics, auth, or other integrations:
-
-```bash
-cp apps/web/.env.example apps/web/.env.local
-```
-
-## Development
-
-```bash
 pnpm dev
 ```
 
-The marketing site is served from `apps/web` (default Next.js app on port 3000).
+## Atlas CLI
 
-## Production build
-
-```bash
-pnpm build
-pnpm start
-```
-
-## Quality checks
-
-```bash
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm build
-```
-
-## Atlas Doctor
-
-Pin the same Atlas version as `atlas.config.json`:
+Generated projects do not include an `atlas` package script. Pin the published CLI:
 
 ```bash
 pnpm dlx @blitzcraftlabs/atlas@1.2.2 doctor
 pnpm dlx @blitzcraftlabs/atlas@1.2.2 context --json
+pnpm dlx @blitzcraftlabs/atlas@1.2.2 generate list --json
+pnpm dlx @blitzcraftlabs/atlas@1.2.2 upgrade --to <version> --dry-run --json
+pnpm dlx @blitzcraftlabs/atlas@1.2.2 enable list --json
 ```
 
-Doctor validates architecture contracts, boundaries, and upgrade evidence for this consumer.
+Optional Storybook, visual tests, performance CI, security auditing, Dependabot, coverage floors,
+Git hooks, Cursor adapters, and Docker Compose are **opt-in**. See
+`docs/how-we-build/consumer-tooling.md`. Enablement does not overwrite customized files.
 
-## Repository structure
+Published Atlas 1.1.0 does **not** include `atlas enable`. Invoke a CLI release that contains the
+command; that CLI version may differ from `platform.baseline.atlasVersion`. `atlas upgrade`
+does not install optional tooling.
 
-| Path | Purpose |
-|------|---------|
-| `apps/web/` | Next.js App Router application (`shipwithatlas.com`) |
-| `apps/web/src/components/landing/` | Homepage sections |
-| `apps/web/src/components/marketing/` | Shared marketing chrome, diagrams, and interactions |
-| `apps/web/src/lib/marketing/` | Marketing copy, fixtures, and Shiki highlighting |
-| `packages/ui/` | Atlas source-owned design system (`@atlas/ui`) |
-| `packages/consent/` | Consent primitives used by the web app |
-| `docs/how-we-build/` | Consumer documentation shipped with Atlas |
+Existing apps generated from an older CLI should run `enable docs` only against a known unmodified
+shipped `AGENTS.md` copy. Customized agent docs are left untouched.
 
-Marketing-specific styling lives in `apps/web/src/app/atlas-marketing.css` and is scoped under
-`.atlas-marketing` so it does not override shared Atlas UI tokens globally.
+## Continuous integration
 
-## Contributing
+`.github/workflows/ci.yml` is generated with this project and is source-owned afterward. It runs
+on GitHub-hosted Ubuntu, needs no repository secrets, and does not use BlitzCraft infrastructure.
+Replace it with your own GitHub, GitLab, Buildkite, or self-hosted pipeline if you prefer.
 
-Issues and pull requests are welcome. Keep marketing changes in `apps/web` unless you are extending
-shared Atlas packages intentionally. Run the quality checks above before opening a PR.
+The default workflow is the supported quality baseline (Doctor, lint, typecheck, tests, production
+build). It is not Atlas maintainer CI. Playwright E2E is omitted until you add browsers and a
+running app. Commit `pnpm-lock.yaml` after `pnpm install` so `--frozen-lockfile` succeeds.
 
-## License
+## Documentation
 
-Apache-2.0 — see [LICENSE](LICENSE).
+- Atlas public docs: https://github.com/blitzcraftlabs/atlas/blob/main/docs/public/README.md
+- Atlas Doctor: https://github.com/blitzcraftlabs/atlas/blob/main/docs/how-we-build/doctor.md
+- Consumer tooling: docs/how-we-build/consumer-tooling.md
+- Reference patterns: docs/how-we-build/reference-patterns.md

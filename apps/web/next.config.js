@@ -9,15 +9,6 @@ const nextConfig = {
   // Externalize pino to avoid bundling test dependencies
   serverExternalPackages: ["pino", "pino-pretty"],
   turbopack: {},
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "media.thedanielmark.com",
-        pathname: "/authors/**",
-      },
-    ],
-  },
   // Performance optimizations
   experimental: {
     optimizePackageImports: ["@atlas/ui", "lucide-react"],
