@@ -1,6 +1,6 @@
 {
   "name": "shipwithatlas",
-  "version": "0.1.0",
+  "version": "1.3.2",
   "private": true,
   "license": "Apache-2.0",
   "description": "The source for shipwithatlas.com, built with Atlas.",
@@ -27,14 +27,16 @@
     "validate:env": "pnpm --filter @atlas/web validate:env",
     "start": "pnpm --filter @atlas/web start",
     "perf:lhci": "pnpm --filter @atlas/web perf:lhci",
-    "perf:analyze": "pnpm --filter @atlas/web perf:analyze"
+    "perf:analyze": "pnpm --filter @atlas/web perf:analyze",
+    "atlas": "atlas"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "globals": "^16.5.0",
     "prettier": "3.4.2",
     "prettier-plugin-tailwindcss": "0.6.10",
-    "turbo": "2.3.3"
+    "turbo": "2.3.3",
+    "@blitzcraftlabs/atlas": "1.3.2"
   },
   "pnpm": {
     "overrides": {
