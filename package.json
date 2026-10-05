@@ -1,6 +1,6 @@
 {
   "name": "shipwithatlas",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "private": true,
   "license": "Apache-2.0",
   "description": "The source for shipwithatlas.com, built with Atlas.",
@@ -36,7 +36,7 @@
     "prettier": "3.4.2",
     "prettier-plugin-tailwindcss": "0.6.10",
     "turbo": "2.3.3",
-    "@blitzcraftlabs/atlas": "1.3.1"
+    "@blitzcraftlabs/atlas": "1.3.2"
   },
   "pnpm": {
     "overrides": {
