@@ -1,42 +1,52 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import * as React from "react"
+import * as React from "react";
 
-import { Button } from "@atlas/ui"
+import { Button, cn } from "@atlas/ui";
 
-import { QUICK_START_COMMAND } from "@/lib/marketing/constants"
+import { CopyStatusIcon } from "@/components/marketing/copy-status-icon";
+import {
+  getCopyAnnouncement,
+  useCopyToClipboard,
+} from "@/components/marketing/use-copy-to-clipboard";
 
-export function CommandStrip() {
-  const [copied, setCopied] = React.useState(false)
+interface CommandStripProps {
+  command: string;
+  /** Accessible name for the copy button, e.g. "Copy install command". */
+  copyLabel: string;
+  className?: string;
+}
 
-  async function handleCopy() {
-    try {
-      await navigator.clipboard.writeText(QUICK_START_COMMAND)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 2000)
-    } catch {
-      setCopied(false)
-    }
-  }
+export function CommandStrip({ command, copyLabel, className }: CommandStripProps) {
+  const { status, copy } = useCopyToClipboard();
 
   return (
-    <div className="atlas-command-strip">
-      <code className="atlas-command-strip__code">{QUICK_START_COMMAND}</code>
+    <div className={cn("atlas-command-strip", className)}>
+      <span className="atlas-command-strip__prompt" aria-hidden="true">
+        $
+      </span>
+      <code className="atlas-command-strip__code">
+        {command.split(" ").map((token, index) => (
+          <React.Fragment key={`${token}-${index}`}>
+            {index > 0 ? " " : null}
+            <span className="atlas-command-strip__token">{token}</span>
+          </React.Fragment>
+        ))}
+      </code>
       <Button
         type="button"
         variant="ghost"
         size="icon-sm"
         className="atlas-command-strip__copy"
-        onClick={handleCopy}
-        aria-label={copied ? "Copied command" : "Copy quick-start command"}
+        onClick={() => copy(command)}
+        aria-label={copyLabel}
+        data-copy-status={status}
       >
-        {copied ? (
-          <Check className="size-3.5" aria-hidden="true" />
-        ) : (
-          <Copy className="size-3.5" aria-hidden="true" />
-        )}
+        <CopyStatusIcon status={status} />
       </Button>
+      <span className="sr-only" role="status" aria-live="polite">
+        {getCopyAnnouncement(status)}
+      </span>
     </div>
-  )
+  );
 }

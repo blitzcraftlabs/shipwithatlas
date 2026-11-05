@@ -1,9 +1,12 @@
 "use client"
 
-import { Check, Copy } from "lucide-react"
-import * as React from "react"
-
 import { cn } from "@atlas/ui"
+
+import { CopyStatusIcon } from "@/components/marketing/copy-status-icon"
+import {
+  getCopyAnnouncement,
+  useCopyToClipboard,
+} from "@/components/marketing/use-copy-to-clipboard"
 
 interface CodeCopyButtonProps {
   code: string
@@ -16,30 +19,22 @@ export function CodeCopyButton({
   className,
   label = "Copy code",
 }: CodeCopyButtonProps) {
-  const [copied, setCopied] = React.useState(false)
-
-  async function handleCopy() {
-    try {
-      await navigator.clipboard.writeText(code)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 2000)
-    } catch {
-      setCopied(false)
-    }
-  }
+  const { status, copy } = useCopyToClipboard()
 
   return (
-    <button
-      type="button"
-      className={cn("atlas-code-window__copy", className)}
-      onClick={handleCopy}
-      aria-label={copied ? "Copied" : label}
-    >
-      {copied ? (
-        <Check className="size-3.5" aria-hidden="true" />
-      ) : (
-        <Copy className="size-3.5" aria-hidden="true" />
-      )}
-    </button>
+    <>
+      <button
+        type="button"
+        className={cn("atlas-code-window__copy", className)}
+        onClick={() => copy(code)}
+        aria-label={label}
+        data-copy-status={status}
+      >
+        <CopyStatusIcon status={status} />
+      </button>
+      <span className="sr-only" role="status" aria-live="polite">
+        {getCopyAnnouncement(status)}
+      </span>
+    </>
   )
 }

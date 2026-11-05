@@ -1,10 +1,17 @@
+import { ArrowUpRight } from "lucide-react"
+
 import { Button } from "@atlas/ui"
 
 import { CommandStrip } from "@/components/marketing/command-strip"
 import { HeroCodeTabs } from "@/components/marketing/hero-code-tabs"
 import { SectionEyebrow } from "@/components/marketing/section-eyebrow"
 import {
+  GET_STARTED_HASH,
+  INSTALL_COMMAND,
+  NPM_PACKAGE_NAME,
+  NPM_PACKAGE_URL,
   PLATFORM_REPO_URL,
+  PREREQUISITES,
   PRIMARY_CTA_LABEL,
   REFERENCE_APP_URL,
   SECONDARY_CTA_LABEL,
@@ -56,7 +63,50 @@ export function HeroSection() {
               className="atlas-btn-secondary"
             />
           </div>
-          <CommandStrip />
+          <div
+            className="atlas-hero__install"
+            role="group"
+            aria-labelledby="hero-install-label"
+          >
+            <p id="hero-install-label" className="atlas-hero__install-label">
+              Create a new Atlas app
+            </p>
+            <CommandStrip
+              command={INSTALL_COMMAND}
+              copyLabel="Copy install command"
+              className="atlas-hero__install-strip"
+            />
+            <p className="atlas-hero__install-meta">
+              <span>
+                Requires{" "}
+                {PREREQUISITES.map((item, index) => (
+                  <span key={item.name}>
+                    {index > 0 ? " and " : null}
+                    {item.name} <code>{item.version}</code>
+                  </span>
+                ))}
+              </span>
+              <span className="atlas-hero__install-sep" aria-hidden="true">
+                ·
+              </span>
+              <a
+                href={NPM_PACKAGE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="atlas-hero__install-link"
+              >
+                {NPM_PACKAGE_NAME} on npm
+                <ArrowUpRight className="size-3" aria-hidden="true" />
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
+              <span className="atlas-hero__install-sep" aria-hidden="true">
+                ·
+              </span>
+              <a href={GET_STARTED_HASH} className="atlas-hero__install-link">
+                Quick start guide
+              </a>
+            </p>
+          </div>
         </div>
 
         <HeroCodeTabs />

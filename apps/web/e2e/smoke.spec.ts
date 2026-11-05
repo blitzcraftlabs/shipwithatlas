@@ -13,6 +13,26 @@ test.describe("Smoke Tests", () => {
     ).toBeVisible();
   });
 
+  test("shows the Atlas install command and quick start", async ({ page }) => {
+    await page.goto("/");
+    const hero = page.getByRole("group", { name: "Create a new Atlas app" });
+    await expect(
+      hero.getByText("pnpm dlx @blitzcraftlabs/atlas init my-app")
+    ).toBeVisible();
+    await expect(
+      hero.getByRole("button", { name: "Copy install command" })
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Install Atlas/i })
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: /@blitzcraftlabs\/atlas on npm/i }).first()
+    ).toHaveAttribute(
+      "href",
+      "https://www.npmjs.com/package/@blitzcraftlabs/atlas"
+    );
+  });
+
   test("navigates to consulting page", async ({ page }) => {
     await page.goto("/consulting");
     await expect(
