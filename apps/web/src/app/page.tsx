@@ -10,6 +10,7 @@ import { FaqSection } from "@/components/landing/faq-section";
 import { HeroSection } from "@/components/landing/hero-section";
 import { InspectOwnershipSection } from "@/components/landing/inspect-ownership-section";
 import { PropertiesSection } from "@/components/landing/properties-section";
+import { QuickStartSection } from "@/components/landing/quick-start-section";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingTheme } from "@/components/marketing/marketing-theme";
@@ -34,6 +35,7 @@ export default function HomePage() {
         <main>
           <HeroSection />
           <PropertiesSection />
+          <QuickStartSection />
           <CapabilitiesSection />
           <BuiltWithSection />
           <ContractDiagramSection />

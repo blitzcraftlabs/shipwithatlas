@@ -62,8 +62,63 @@ export const SEE_ATLAS_LABEL = "See Atlas"
 
 export const ATLAS_OVERVIEW_HASH = "#capabilities"
 
-export const QUICK_START_COMMAND =
-  "corepack enable && pnpm install && pnpm validate:env && pnpm dev"
+/** Public CLI package — source of truth: the Atlas repository README "Quick start". */
+export const NPM_PACKAGE_NAME = "@blitzcraftlabs/atlas"
+
+export const NPM_PACKAGE_URL = `https://www.npmjs.com/package/${NPM_PACKAGE_NAME}`
+
+export const QUICKSTART_DOCS_URL = `${PLATFORM_REPO_URL}/blob/main/docs/public/quickstart.md`
+
+export const GET_STARTED_HASH = "#get-started"
+
+export const INSTALL_COMMAND = `pnpm dlx ${NPM_PACKAGE_NAME} init my-app`
+
+export const PREREQUISITES = [
+  { name: "Node.js", version: ">=22" },
+  { name: "pnpm", version: ">=10" },
+] as const
+
+export interface QuickStartStep {
+  index: string
+  title: string
+  description: string
+  commands: string[]
+}
+
+export const QUICK_START_STEPS: QuickStartStep[] = [
+  {
+    index: "01",
+    title: "Create",
+    description: "Generate a source-owned Atlas workspace in my-app.",
+    commands: [INSTALL_COMMAND],
+  },
+  {
+    index: "02",
+    title: "Install",
+    description: "Move into the project and install dependencies.",
+    commands: ["cd my-app", "pnpm install"],
+  },
+  {
+    index: "03",
+    title: "Run",
+    description: "Start the dev server, then open http://localhost:3000.",
+    commands: ["pnpm dev"],
+  },
+]
+
+export const QUICK_START_SCRIPT = QUICK_START_STEPS.flatMap(
+  (step) => step.commands
+).join("\n")
+
+/** Contributing to Atlas itself — not required to use Atlas. */
+export const REPOSITORY_DEV_SCRIPT = [
+  "git clone https://github.com/blitzcraftlabs/atlas.git",
+  "cd atlas",
+  "corepack enable",
+  "pnpm install",
+  "cp apps/web/.env.example apps/web/.env.local",
+  "pnpm --filter @atlas/web dev",
+].join("\n")
 
 export interface NavLink {
   href: string
@@ -74,6 +129,7 @@ export interface NavLink {
 
 export const NAV_LINKS: NavLink[] = [
   { href: "#product", label: "Overview" },
+  { href: "#get-started", label: "Get started" },
   { href: "#capabilities", label: "Architecture" },
   { href: "#agents", label: "Agents" },
   { href: PLATFORM_DOCS_URL, label: "Docs", external: true },
