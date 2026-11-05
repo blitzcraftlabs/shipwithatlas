@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react"
 
-import { Button } from "@atlas/ui"
+import { buttonVariants, cn } from "@atlas/ui"
 
 import { CommandStrip } from "@/components/marketing/command-strip"
 import { HeroCodeTabs } from "@/components/marketing/hero-code-tabs"
@@ -32,37 +32,6 @@ export function HeroSection() {
             </span>
           </h1>
           <p className="atlas-hero__lead">{SITE_SUPPORTING}</p>
-          <div className="atlas-hero__actions">
-            <Button
-              nativeButton={false}
-              render={
-                <a
-                  href={REFERENCE_APP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {PRIMARY_CTA_LABEL}
-                </a>
-              }
-              size="lg"
-              className="atlas-btn-primary"
-            />
-            <Button
-              nativeButton={false}
-              render={
-                <a
-                  href={PLATFORM_REPO_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {SECONDARY_CTA_LABEL}
-                </a>
-              }
-              variant="outline"
-              size="lg"
-              className="atlas-btn-secondary"
-            />
-          </div>
           <div
             className="atlas-hero__install"
             role="group"
@@ -106,6 +75,31 @@ export function HeroSection() {
                 Quick start guide
               </a>
             </p>
+          </div>
+          <div
+            className="atlas-hero__actions"
+            role="group"
+            aria-label="More ways to explore Atlas"
+          >
+            {[
+              { href: REFERENCE_APP_URL, label: PRIMARY_CTA_LABEL },
+              { href: PLATFORM_REPO_URL, label: SECONDARY_CTA_LABEL },
+            ].map((action) => (
+              <a
+                key={action.href}
+                href={action.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  buttonVariants({ variant: "outline" }),
+                  "atlas-btn-secondary atlas-hero__secondary-action"
+                )}
+              >
+                {action.label}
+                <ArrowUpRight data-icon="inline-end" aria-hidden="true" />
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            ))}
           </div>
         </div>
 
