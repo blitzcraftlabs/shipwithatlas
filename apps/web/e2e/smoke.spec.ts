@@ -33,6 +33,42 @@ test.describe("Smoke Tests", () => {
     );
   });
 
+  test("leads the hero with the install command before secondary links", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const install = page.getByRole("group", { name: "Create a new Atlas app" });
+    const secondary = page.getByRole("group", { name: "More ways to explore Atlas" });
+    await expect(
+      secondary.getByRole("link", { name: /Explore the reference app/i })
+    ).toBeVisible();
+    await expect(
+      secondary.getByRole("link", { name: /View the repository/i })
+    ).toBeVisible();
+    const installBox = await install.boundingBox();
+    const secondaryBox = await secondary.boundingBox();
+    expect(installBox && secondaryBox && installBox.y < secondaryBox.y).toBe(true);
+  });
+
+  test("keeps copy button states light when the OS switches to dark", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.goto("/");
+    const button = page.getByRole("button", { name: "Copy install command" });
+    const hoverBackground = async () => {
+      await page.mouse.move(0, 0);
+      await button.hover();
+      await page.waitForTimeout(250);
+      return button.evaluate((el) => getComputedStyle(el).backgroundColor);
+    };
+
+    const light = await hoverBackground();
+    await page.emulateMedia({ colorScheme: "dark" });
+    await expect(page.locator("html")).toHaveClass(/\bdark\b/);
+    expect(await hoverBackground()).toBe(light);
+  });
+
   test("navigates to consulting page", async ({ page }) => {
     await page.goto("/consulting");
     await expect(
