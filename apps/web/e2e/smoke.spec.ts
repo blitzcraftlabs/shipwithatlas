@@ -40,7 +40,7 @@ test.describe("Smoke Tests", () => {
     const install = page.getByRole("group", { name: "Create a new Atlas app" });
     const secondary = page.getByRole("group", { name: "More ways to explore Atlas" });
     await expect(
-      secondary.getByRole("link", { name: /Explore the reference app/i })
+      secondary.getByRole("link", { name: /Quick start guide/i })
     ).toBeVisible();
     await expect(
       secondary.getByRole("link", { name: /View the repository/i })

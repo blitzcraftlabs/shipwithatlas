@@ -333,8 +333,7 @@
 .bp-hero {
   position: relative;
   isolation: isolate;
-  padding-block: clamp(2.5rem, 5vw, 4.5rem) clamp(3rem, 6vw, 5.5rem);
-  border-bottom: var(--bp-stroke) solid var(--bp-line-strong);
+  padding-block: clamp(2.5rem, 5vw, 4.5rem) 0;
   background-color: var(--bp-bg);
   /* Blueprint paper: minor 24px grid with major lines every 120px */
   background-image:
@@ -427,6 +426,59 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+}
+
+/* Sheet edge: the hero closes like a drawing sheet. A 2px ink rule with a
+   measured tick scale aligned to the 24px grid, and a section index that
+   leads into the next section, so the page continues instead of breaking. */
+.bp-hero__edge {
+  position: relative;
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  height: 3.5rem;
+  border-top: var(--bp-stroke) solid var(--bp-line-strong);
+  background-color: var(--bp-bg);
+  background-image:
+    linear-gradient(90deg, var(--bp-line-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bp-text-subtle) 1px, transparent 1px);
+  background-size:
+    120px 14px,
+    24px 7px;
+  background-position: center top;
+  background-repeat: repeat-x;
+}
+
+.bp-hero__edge > .atlas-marketing__gutter {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  padding-bottom: 0.625rem;
+}
+
+.bp-hero__edge-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625em;
+  padding: 0.25rem 0.625rem;
+  border: var(--bp-stroke) solid var(--bp-line-strong);
+  background: var(--bp-surface);
+  color: var(--bp-text);
+  font-family: var(--bp-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.bp-hero__edge-label::before {
+  content: "//";
+  color: var(--bp-text-accent);
+}
+
+/* The first legacy section sits on the same paper so the handoff reads as
+   one continuous sheet. Only its top edge changes; its content is untouched. */
+.bp-hero + .atlas-section--surface {
+  border-top: var(--bp-stroke-fine) solid var(--bp-line);
+  background: var(--bp-bg);
 }
 
 /* ------------------------------------------------------------------ */
@@ -619,7 +671,7 @@
   gap: 1rem;
   padding: 0.5rem 0.875rem;
   border-bottom: var(--bp-stroke) solid var(--bp-art-stroke);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -660,7 +712,7 @@
   border: var(--bp-stroke) solid var(--bp-art-stroke);
   background: var(--bp-surface-inverse);
   color: var(--bp-text-inverse);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 700;
 }
 
@@ -698,7 +750,7 @@
   border: var(--bp-stroke-fine) solid var(--bp-art-accent);
   background: var(--bp-surface);
   color: var(--bp-text-accent);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -731,7 +783,7 @@
   left: -2px;
   transform: translateY(-100%);
   padding: 0.25rem 0.5rem;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -786,7 +838,7 @@
   position: relative;
   border: var(--bp-stroke-fine) solid var(--bp-art-stroke-fine);
   padding: 0.5rem 0.625rem;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
 }
 
 .bp-layer code,
@@ -809,14 +861,14 @@
 .bp-module span,
 .bp-block--pkg span {
   color: var(--bp-text-subtle);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
 }
 
 .bp-layer__label {
   display: block;
   margin-bottom: 0.4375rem;
   color: var(--bp-text-accent);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -884,7 +936,7 @@
   padding-left: 1rem;
   position: relative;
   color: var(--bp-text-accent);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.02em;
 }
@@ -936,7 +988,7 @@
   display: grid;
   gap: 0.125rem;
   padding: 0.5rem 0.625rem;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
 }
 
 .bp-block--agents {
@@ -952,11 +1004,11 @@
 
 .bp-block--agents .bp-agents__file {
   color: var(--bp-text-on-accent);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
 }
 
 .bp-agents__note {
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -967,7 +1019,7 @@
   margin-top: auto;
   padding-top: 0.5rem;
   border-top: 1px dashed rgb(255 255 255 / 55%);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
 }
 
 .bp-agents__readers li {
@@ -1000,7 +1052,7 @@
   padding: 0.3125rem 0.5rem;
   border: var(--bp-stroke) solid var(--bp-art-stroke);
   background: var(--bp-art-fill);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
 }
 
@@ -1053,16 +1105,14 @@
 
 .bp-sheet__cell dt {
   color: var(--bp-text-subtle);
-  font-size: 0.5625rem;
+  font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .bp-sheet__cell dd {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
   font-size: 0.75rem;
   font-weight: 700;
 }
@@ -1080,7 +1130,27 @@
     display: none;
   }
 
-  .bp-sheet__cell:nth-child(2n) {
+  /* Two module paths share a narrow row; keep the longest one inside its box */
+  .bp-modules {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  }
+
+  .bp-module code {
+    font-size: 0.6875rem;
+  }
+
+  /* Short values share a row; the package name gets the full width */
+  .bp-sheet__titleblock {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .bp-sheet__cell--wide {
+    order: 1;
+    grid-column: 1 / -1;
+    border-right: 0;
+  }
+
+  .bp-sheet__cell:last-child {
     border-right: 0;
   }
 

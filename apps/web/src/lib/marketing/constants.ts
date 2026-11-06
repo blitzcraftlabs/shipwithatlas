@@ -46,7 +46,7 @@ export const CI_WORKFLOWS_URL = `${PLATFORM_REPO_URL}/tree/main/.github/workflow
 
 export const AGENTS_MD_URL = `${PLATFORM_REPO_URL}/blob/main/AGENTS.md`
 
-export const PRIMARY_CTA_LABEL = "Explore the reference app"
+export const QUICK_START_CTA_LABEL = "Quick start guide"
 
 export const SECONDARY_CTA_LABEL = "View the repository"
 

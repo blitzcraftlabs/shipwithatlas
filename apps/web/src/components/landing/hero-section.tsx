@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react"
+import { ArrowDown, ArrowUpRight } from "lucide-react"
 
 import { AtlasWorkspaceBlueprint } from "@/components/marketing/atlas-workspace-blueprint"
 import { CommandStrip } from "@/components/marketing/command-strip"
@@ -12,15 +12,24 @@ import {
   PLATFORM_DOCS_URL,
   PLATFORM_REPO_URL,
   PREREQUISITES,
-  PRIMARY_CTA_LABEL,
-  REFERENCE_APP_URL,
+  QUICK_START_CTA_LABEL,
   SECONDARY_CTA_LABEL,
   SITE_EYEBROW,
 } from "@/lib/marketing/constants"
 
 const SECONDARY_ACTIONS = [
-  { href: PLATFORM_REPO_URL, label: SECONDARY_CTA_LABEL, tone: "ink" },
-  { href: REFERENCE_APP_URL, label: PRIMARY_CTA_LABEL, tone: "outline" },
+  {
+    href: PLATFORM_REPO_URL,
+    label: SECONDARY_CTA_LABEL,
+    tone: "ink",
+    external: true,
+  },
+  {
+    href: GET_STARTED_HASH,
+    label: QUICK_START_CTA_LABEL,
+    tone: "outline",
+    external: false,
+  },
 ] as const
 
 export function HeroSection() {
@@ -83,9 +92,6 @@ export function HeroSection() {
                 <ArrowUpRight className="size-3.5" aria-hidden="true" />
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>
-              <a href={GET_STARTED_HASH} className="bp-link">
-                Quick start guide
-              </a>
               <a
                 href={PLATFORM_DOCS_URL}
                 target="_blank"
@@ -104,23 +110,41 @@ export function HeroSection() {
             role="group"
             aria-label="More ways to explore Atlas"
           >
-            {SECONDARY_ACTIONS.map((action) => (
-              <a
-                key={action.href}
-                href={action.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`bp-button bp-button--${action.tone}`}
-              >
-                {action.label}
-                <ArrowUpRight className="size-4" aria-hidden="true" />
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
-            ))}
+            {SECONDARY_ACTIONS.map((action) =>
+              action.external ? (
+                <a
+                  key={action.href}
+                  href={action.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`bp-button bp-button--${action.tone}`}
+                >
+                  {action.label}
+                  <ArrowUpRight className="size-4" aria-hidden="true" />
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              ) : (
+                <a
+                  key={action.href}
+                  href={action.href}
+                  className={`bp-button bp-button--${action.tone}`}
+                >
+                  {action.label}
+                  <ArrowDown className="size-4" aria-hidden="true" />
+                </a>
+              )
+            )}
           </div>
         </div>
 
         <AtlasWorkspaceBlueprint className="bp-hero__art" />
+      </div>
+
+      {/* Sheet edge: a measured rule that hands the page to the next section */}
+      <div className="bp-hero__edge" aria-hidden="true">
+        <div className="atlas-marketing__gutter">
+          <span className="bp-hero__edge-label">01 · properties</span>
+        </div>
       </div>
     </section>
   )

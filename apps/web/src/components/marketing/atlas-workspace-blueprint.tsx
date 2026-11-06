@@ -22,7 +22,7 @@ const GATES = ["doctor", "lint", "typecheck", "test", "build"] as const
 
 const TITLE_BLOCK = [
   { key: "Project", value: "my-app" },
-  { key: "Generator", value: "@blitzcraftlabs/atlas" },
+  { key: "Generator", value: "@blitzcraftlabs/atlas", wide: true },
   { key: "Owner", value: "your team" },
   { key: "Sheet", value: "01 / 01" },
 ] as const
@@ -161,7 +161,13 @@ export function AtlasWorkspaceBlueprint({ className }: AtlasWorkspaceBlueprintPr
 
         <dl className="bp-sheet__titleblock">
           {TITLE_BLOCK.map((cell) => (
-            <div key={cell.key} className="bp-sheet__cell">
+            <div
+              key={cell.key}
+              className={cn(
+                "bp-sheet__cell",
+                "wide" in cell && "bp-sheet__cell--wide"
+              )}
+            >
               <dt>{cell.key}</dt>
               <dd>{cell.value}</dd>
             </div>
