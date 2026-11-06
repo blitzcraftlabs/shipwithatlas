@@ -226,3 +226,16 @@ export const AGENT_BENEFITS = [
   "Reference implementations to copy from",
   "Verification gates that catch drift before merge",
 ] as const
+
+/** Hero copy for the blueprint design direction. No em dashes in marketing copy. */
+export const HERO_LEAD =
+  "Atlas generates a Next.js workspace you own outright. Architecture, data access, auth, testing, and CI are already wired together and documented, so your team starts on the product instead of the setup."
+
+export const HERO_STACK_NOTE = [
+  "Next.js",
+  "TypeScript",
+  "React Query",
+  "OpenAPI",
+  "Playwright",
+] as const
+

@@ -29,9 +29,15 @@ export function MarketingHeader() {
         <div className="flex min-w-0 items-center gap-8 lg:gap-10">
           <Link
             href="/"
-            className="atlas-marketing__logo rounded-sm focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+            className="atlas-marketing__logo"
           >
-            {SITE_NAME}
+            <span className="atlas-marketing__logo-mark" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none">
+                <path d="M10 3v14M3 10h14" />
+                <rect x="7" y="7" width="6" height="6" />
+              </svg>
+            </span>
+            <span className="atlas-marketing__logo-word">{SITE_NAME}</span>
           </Link>
 
           <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main">
@@ -42,7 +48,7 @@ export function MarketingHeader() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="atlas-marketing__nav-link rounded-md px-3 py-2"
+                  className="atlas-marketing__nav-link px-3 py-2"
                 >
                   {link.label}
                 </a>
@@ -50,7 +56,7 @@ export function MarketingHeader() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="atlas-marketing__nav-link rounded-md px-3 py-2"
+                  className="atlas-marketing__nav-link px-3 py-2"
                 >
                   {link.label}
                 </Link>
@@ -72,17 +78,21 @@ export function MarketingHeader() {
               </a>
             }
             variant="outline"
-            className="atlas-btn-secondary hidden sm:inline-flex"
+            className="atlas-header-btn atlas-header-btn--outline hidden sm:inline-flex"
           />
           <Button
             nativeButton={false}
             render={<Link href={CONSULTING_PATH}>{HEADER_PRIMARY_CTA_LABEL}</Link>}
-            className="atlas-btn-primary hidden md:inline-flex"
+            className="atlas-header-btn atlas-header-btn--primary hidden md:inline-flex"
           />
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger
               render={
-                <Button variant="ghost" size="icon" className="size-9 lg:hidden" />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="atlas-header-menu size-9 lg:hidden"
+                />
               }
             >
               <Menu className="size-4" />

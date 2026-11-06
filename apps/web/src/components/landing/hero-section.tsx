@@ -1,109 +1,126 @@
 import { ArrowUpRight } from "lucide-react"
 
-import { buttonVariants, cn } from "@atlas/ui"
-
+import { AtlasWorkspaceBlueprint } from "@/components/marketing/atlas-workspace-blueprint"
 import { CommandStrip } from "@/components/marketing/command-strip"
-import { HeroCodeTabs } from "@/components/marketing/hero-code-tabs"
-import { SectionEyebrow } from "@/components/marketing/section-eyebrow"
 import {
   GET_STARTED_HASH,
+  HERO_LEAD,
+  HERO_STACK_NOTE,
   INSTALL_COMMAND,
   NPM_PACKAGE_NAME,
   NPM_PACKAGE_URL,
+  PLATFORM_DOCS_URL,
   PLATFORM_REPO_URL,
   PREREQUISITES,
   PRIMARY_CTA_LABEL,
   REFERENCE_APP_URL,
   SECONDARY_CTA_LABEL,
   SITE_EYEBROW,
-  SITE_SUPPORTING,
 } from "@/lib/marketing/constants"
+
+const SECONDARY_ACTIONS = [
+  { href: PLATFORM_REPO_URL, label: SECONDARY_CTA_LABEL, tone: "ink" },
+  { href: REFERENCE_APP_URL, label: PRIMARY_CTA_LABEL, tone: "outline" },
+] as const
 
 export function HeroSection() {
   return (
-    <section className="atlas-hero" aria-labelledby="hero-heading">
-      <div className="atlas-marketing__gutter atlas-hero__grid">
-        <div className="atlas-hero__copy">
-          <SectionEyebrow>{SITE_EYEBROW}</SectionEyebrow>
-          <h1 id="hero-heading" className="atlas-hero__title">
-            <span className="atlas-hero__title-line">The frontend decisions</span>
-            <span className="atlas-hero__title-line">
-              <span className="atlas-emphasis">are already made</span>.
+    <section className="bp-hero" aria-labelledby="hero-heading">
+      <div className="atlas-marketing__gutter bp-hero__grid">
+        <div className="bp-hero__copy">
+          <p className="bp-tag">
+            {SITE_EYEBROW}
+          </p>
+
+          <h1 id="hero-heading" className="bp-hero__title">
+            <span className="bp-hero__title-line">The frontend</span>{" "}
+            <span className="bp-hero__title-line">decisions are</span>{" "}
+            <span className="bp-hero__title-line">
+              <mark className="bp-highlight">already made</mark>.
             </span>
           </h1>
-          <p className="atlas-hero__lead">{SITE_SUPPORTING}</p>
+
+          <p className="bp-hero__lead">{HERO_LEAD}</p>
+
+          <ul className="bp-hero__stack" aria-label="Built on">
+            {HERO_STACK_NOTE.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+
           <div
-            className="atlas-hero__install"
+            className="bp-install"
             role="group"
             aria-labelledby="hero-install-label"
           >
-            <p id="hero-install-label" className="atlas-hero__install-label">
-              Create a new Atlas app
-            </p>
-            <CommandStrip
-              command={INSTALL_COMMAND}
-              copyLabel="Copy install command"
-              className="atlas-hero__install-strip"
-            />
-            <p className="atlas-hero__install-meta">
-              <span>
-                Requires{" "}
+            <div className="bp-install__head">
+              <p id="hero-install-label" className="bp-install__label">
+                Create a new Atlas app
+              </p>
+              <p className="bp-install__requires">
                 {PREREQUISITES.map((item, index) => (
                   <span key={item.name}>
-                    {index > 0 ? " and " : null}
+                    {index > 0 ? <span aria-hidden="true"> · </span> : null}
+                    {index > 0 ? <span className="sr-only">and </span> : null}
                     {item.name} <code>{item.version}</code>
                   </span>
                 ))}
-              </span>
-              <span className="atlas-hero__install-sep" aria-hidden="true">
-                ·
-              </span>
+              </p>
+            </div>
+            <CommandStrip
+              command={INSTALL_COMMAND}
+              copyLabel="Copy install command"
+              className="bp-install__strip"
+            />
+            <p className="bp-install__links">
               <a
                 href={NPM_PACKAGE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="atlas-hero__install-link"
+                className="bp-link"
               >
                 {NPM_PACKAGE_NAME} on npm
-                <ArrowUpRight className="size-3" aria-hidden="true" />
+                <ArrowUpRight className="size-3.5" aria-hidden="true" />
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>
-              <span className="atlas-hero__install-sep" aria-hidden="true">
-                ·
-              </span>
-              <a href={GET_STARTED_HASH} className="atlas-hero__install-link">
+              <a href={GET_STARTED_HASH} className="bp-link">
                 Quick start guide
+              </a>
+              <a
+                href={PLATFORM_DOCS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bp-link"
+              >
+                Documentation
+                <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                <span className="sr-only"> (opens in a new tab)</span>
               </a>
             </p>
           </div>
+
           <div
-            className="atlas-hero__actions"
+            className="bp-hero__actions"
             role="group"
             aria-label="More ways to explore Atlas"
           >
-            {[
-              { href: REFERENCE_APP_URL, label: PRIMARY_CTA_LABEL },
-              { href: PLATFORM_REPO_URL, label: SECONDARY_CTA_LABEL },
-            ].map((action) => (
+            {SECONDARY_ACTIONS.map((action) => (
               <a
                 key={action.href}
                 href={action.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={cn(
-                  buttonVariants({ variant: "outline" }),
-                  "atlas-btn-secondary atlas-hero__secondary-action"
-                )}
+                className={`bp-button bp-button--${action.tone}`}
               >
                 {action.label}
-                <ArrowUpRight data-icon="inline-end" aria-hidden="true" />
+                <ArrowUpRight className="size-4" aria-hidden="true" />
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>
             ))}
           </div>
         </div>
 
-        <HeroCodeTabs />
+        <AtlasWorkspaceBlueprint className="bp-hero__art" />
       </div>
     </section>
   )

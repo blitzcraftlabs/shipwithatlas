@@ -22,7 +22,7 @@ test.describe("Critical web journeys", () => {
   test("primary hero CTA is reachable", async ({ page }) => {
     await page.goto("/");
     await expect(
-      page.getByRole("button", { name: "Explore the reference app" })
+      page.getByRole("link", { name: /Explore the reference app/ })
     ).toBeVisible();
   });
 });
