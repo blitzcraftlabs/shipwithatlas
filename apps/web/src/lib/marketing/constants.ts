@@ -32,8 +32,6 @@ export const PLATFORM_REPO_URL = "https://github.com/blitzcraftlabs/atlas"
 
 export const SHOWCASE_REPO_URL = "https://github.com/blitzcraftlabs/atlas-showcase"
 
-export const REFERENCE_APP_URL = "https://shipwithatlas.com/demo"
-
 export const SHOWCASE_SITE_URL = "https://shipwithatlas.com"
 
 export const PLATFORM_DOCS_URL = `${PLATFORM_REPO_URL}/tree/main/docs/public`
@@ -151,7 +149,7 @@ export const FOOTER_NAV_GROUPS: FooterNavGroup[] = [
   {
     title: "Product",
     links: [
-      { href: REFERENCE_APP_URL, label: "Reference application", external: true },
+      { href: QUICKSTART_DOCS_URL, label: "Quick start", external: true },
       { href: ARCHITECTURE_DOCS_URL, label: "Architecture", external: true },
       { href: UI_PACKAGE_URL, label: "UI", external: true },
     ],
@@ -178,11 +176,6 @@ export const PROOF_LINKS = [
     label: "Repository",
     description: "Source, contracts, examples, and quality gates",
     href: PLATFORM_REPO_URL,
-  },
-  {
-    label: "Reference application",
-    description: "Live demo exercising Atlas patterns",
-    href: REFERENCE_APP_URL,
   },
   {
     label: "Architecture documentation",
