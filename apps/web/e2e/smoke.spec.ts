@@ -8,51 +8,32 @@ test.describe("Smoke Tests", () => {
     await expect(
       page.getByRole("banner").getByRole("link", { name: "Atlas", exact: true })
     ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: /The frontend decisions/i })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: /The frontend decisions/i })).toBeVisible();
   });
 
   test("shows the Atlas install command and quick start", async ({ page }) => {
     await page.goto("/");
     const hero = page.getByRole("group", { name: "Create a new Atlas app" });
-    await expect(
-      hero.getByText("pnpm dlx @blitzcraftlabs/atlas init my-app")
-    ).toBeVisible();
-    await expect(
-      hero.getByRole("button", { name: "Copy install command" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: /Install Atlas/i })
-    ).toBeVisible();
+    await expect(hero.getByText("pnpm dlx @blitzcraftlabs/atlas init my-app")).toBeVisible();
+    await expect(hero.getByRole("button", { name: "Copy install command" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Install Atlas/i })).toBeVisible();
     await expect(
       page.getByRole("link", { name: /@blitzcraftlabs\/atlas on npm/i }).first()
-    ).toHaveAttribute(
-      "href",
-      "https://www.npmjs.com/package/@blitzcraftlabs/atlas"
-    );
+    ).toHaveAttribute("href", "https://www.npmjs.com/package/@blitzcraftlabs/atlas");
   });
 
-  test("leads the hero with the install command before secondary links", async ({
-    page,
-  }) => {
+  test("leads the hero with the install command before secondary links", async ({ page }) => {
     await page.goto("/");
     const install = page.getByRole("group", { name: "Create a new Atlas app" });
     const secondary = page.getByRole("group", { name: "More ways to explore Atlas" });
-    await expect(
-      secondary.getByRole("link", { name: /Explore the reference app/i })
-    ).toBeVisible();
-    await expect(
-      secondary.getByRole("link", { name: /View the repository/i })
-    ).toBeVisible();
+    await expect(secondary.getByRole("link", { name: /Read the docs/i })).toBeVisible();
+    await expect(secondary.getByRole("link", { name: /View the repository/i })).toBeVisible();
     const installBox = await install.boundingBox();
     const secondaryBox = await secondary.boundingBox();
     expect(installBox && secondaryBox && installBox.y < secondaryBox.y).toBe(true);
   });
 
-  test("keeps copy button states light when the OS switches to dark", async ({
-    page,
-  }) => {
+  test("keeps copy button states light when the OS switches to dark", async ({ page }) => {
     await page.emulateMedia({ colorScheme: "light" });
     await page.goto("/");
     const button = page.getByRole("button", { name: "Copy install command" });
@@ -71,9 +52,7 @@ test.describe("Smoke Tests", () => {
 
   test("navigates to consulting page", async ({ page }) => {
     await page.goto("/consulting");
-    await expect(
-      page.getByRole("heading", { name: /Bring the Atlas approach/i })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Bring the Atlas approach/i })).toBeVisible();
   });
 
   test("consulting page includes contact section", async ({ page }) => {

@@ -93,7 +93,7 @@ export function MarketingFooter() {
           <p className="atlas-footer__legal-copy">
             &copy; {currentYear} {SITE_NAME}
           </p>
-          <p className="atlas-footer__legal-meta">Open source · MIT licensed</p>
+          <p className="atlas-footer__legal-meta">Open source · Apache 2.0</p>
         </div>
       </div>
     </footer>

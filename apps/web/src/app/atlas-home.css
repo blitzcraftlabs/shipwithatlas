@@ -1,0 +1,939 @@
+/*
+ * Homepage.
+ *
+ * Builds on the tokens in atlas-marketing.css. The page is light-only (see
+ * MarketingTheme); terminals are the one dark surface, used only for real CLI
+ * output. Sections are separated by hairlines rather than background bands,
+ * and content sits on a single 12-column grid.
+ */
+
+.atlas-home {
+  --home-width: 74rem;
+  --home-section-pad: clamp(4rem, 8vw, 6.5rem);
+  --home-radius: 0.625rem;
+  --home-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --home-rule: var(--atlas-border);
+
+  /* Terminal palette. Fixed values: the page never switches to dark. */
+  --home-term-bg: oklch(0.17 0.012 264);
+  --home-term-bar: oklch(0.205 0.012 264);
+  --home-term-border: oklch(0.3 0.012 264);
+  --home-term-ink: oklch(0.9 0.006 264);
+  --home-term-muted: oklch(0.66 0.012 264);
+  --home-term-accent: oklch(0.76 0.12 264);
+  --home-term-success: oklch(0.78 0.13 155);
+  --home-term-error: oklch(0.74 0.14 25);
+
+  background: var(--atlas-surface);
+}
+
+/* Header, footer, and sections share one column edge. */
+.atlas-home .atlas-marketing__gutter,
+.home-container {
+  width: min(100% - var(--atlas-gutter) * 2, var(--home-width));
+  margin-inline: auto;
+}
+
+/* Shared type */
+
+.home-label {
+  font-family: var(--home-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--atlas-ink-subtle);
+}
+
+.atlas-home code {
+  font-family: var(--home-mono);
+  font-size: 0.875em;
+}
+
+.home-section__intro code,
+.home-hero__lead code,
+.home-faq__answer code {
+  padding: 0.0625rem 0.3125rem;
+  border-radius: 0.25rem;
+  background: var(--atlas-surface-subtle);
+  color: var(--atlas-ink);
+}
+
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+  border-radius: 0.125rem;
+  color: var(--atlas-ink);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--atlas-border-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition:
+    text-decoration-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.home-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.home-link:active {
+  color: var(--atlas-accent-bright);
+}
+
+.home-link__arrow {
+  width: 0.875em;
+  height: 0.875em;
+  color: var(--atlas-ink-subtle);
+}
+
+.atlas-home a:focus-visible,
+.atlas-home summary:focus-visible,
+.atlas-home pre:focus-visible {
+  outline: 2px solid var(--atlas-accent-bright);
+  outline-offset: 2px;
+}
+
+/* Hero */
+
+.home-hero {
+  padding-block: clamp(3.5rem, 8vw, 6.5rem) clamp(1rem, 3vw, 2rem);
+}
+
+.home-hero__grid {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4rem);
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .home-hero__grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  }
+}
+
+.home-hero__title {
+  margin-top: 1rem;
+  max-width: 13ch;
+  font-size: clamp(2.5rem, 5.4vw, 4.25rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  color: var(--atlas-ink);
+}
+
+.home-hero__lead {
+  margin-top: 1.5rem;
+  max-width: 34rem;
+  font-size: clamp(1rem, 0.4vw + 0.92rem, 1.125rem);
+  line-height: 1.6;
+  color: var(--atlas-ink-muted);
+  text-wrap: pretty;
+}
+
+.home-hero__install {
+  margin-top: 2rem;
+  max-width: 32rem;
+}
+
+.home-hero__install-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--atlas-ink);
+}
+
+.home-hero__install-meta {
+  margin-top: 0.625rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--atlas-ink-muted);
+}
+
+.home-hero__install-meta code {
+  color: var(--atlas-ink);
+}
+
+.home-hero__actions {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem 0.75rem;
+}
+
+.home-btn {
+  gap: 0.5rem;
+}
+
+.home-hero__npm {
+  font-size: 0.875rem;
+}
+
+/* Install strip: the one place the accent color carries weight */
+
+.atlas-home .home-install-strip {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.875rem;
+  border-color: var(--atlas-border-strong);
+  border-radius: var(--home-radius);
+  background: var(--atlas-surface-raised);
+}
+
+.atlas-home .home-install-strip .atlas-command-strip__code {
+  font-size: 0.875rem;
+  color: var(--atlas-ink);
+  overflow-x: visible;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.atlas-home .home-install-strip .atlas-command-strip__prompt {
+  font-size: 0.875rem;
+}
+
+.atlas-home .home-install-strip .atlas-command-strip__copy {
+  border: 1px solid var(--atlas-border-strong);
+  background: var(--atlas-surface);
+  color: var(--atlas-ink);
+}
+
+.atlas-home .home-install-strip .atlas-command-strip__copy:hover {
+  border-color: var(--atlas-accent);
+  background: var(--atlas-surface);
+  color: var(--atlas-accent-bright);
+}
+
+.atlas-home .home-install-strip .atlas-command-strip__copy:active {
+  background: var(--atlas-accent-soft);
+}
+
+.atlas-home .home-install-strip .atlas-command-strip__copy[data-copy-status="copied"] {
+  border-color: var(--atlas-accent);
+  color: var(--atlas-accent-bright);
+}
+
+.atlas-home .home-install-strip .atlas-command-strip__copy[data-copy-status="error"] {
+  color: oklch(0.52 0.2 27);
+}
+
+/* Terminal */
+
+.home-terminal {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--home-term-border);
+  border-radius: var(--home-radius);
+  background: var(--home-term-bg);
+  color-scheme: dark;
+}
+
+.home-terminal__bar {
+  display: flex;
+  align-items: center;
+  height: 2.25rem;
+  padding-inline: 0.875rem;
+  border-bottom: 1px solid var(--home-term-border);
+  background: var(--home-term-bar);
+}
+
+.home-terminal__cwd {
+  font-family: var(--home-mono);
+  font-size: 0.75rem;
+  color: var(--home-term-muted);
+}
+
+.home-terminal__body {
+  margin: 0;
+  padding: 1rem 1.125rem 1.25rem;
+  font-family: var(--home-mono);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--home-term-ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.home-terminal__line {
+  display: block;
+  padding-left: 1.25ch;
+  text-indent: -1.25ch;
+}
+
+.home-terminal__line--command {
+  color: var(--home-term-ink);
+  font-weight: 500;
+}
+
+.home-terminal__line--command + .home-terminal__line {
+  margin-top: 0.375rem;
+}
+
+.home-terminal__prompt {
+  color: var(--home-term-muted);
+  user-select: none;
+}
+
+.home-terminal__line--heading {
+  color: var(--home-term-ink);
+}
+
+.home-terminal__line--output {
+  color: var(--home-term-ink);
+}
+
+.home-terminal__line--muted {
+  color: var(--home-term-muted);
+}
+
+.home-terminal__line--action {
+  color: var(--home-term-accent);
+}
+
+.home-terminal__line--success {
+  color: var(--home-term-ink);
+}
+
+.home-terminal__check {
+  color: var(--home-term-success);
+}
+
+.home-terminal__line--error {
+  color: var(--home-term-error);
+}
+
+.home-terminal__line--gap {
+  height: 0.75rem;
+}
+
+@media (max-width: 639px) {
+  .home-terminal__body {
+    overflow-x: auto;
+    white-space: pre;
+    overflow-wrap: normal;
+    font-size: 0.75rem;
+  }
+
+  .home-terminal__line {
+    width: max-content;
+    padding-left: 0;
+    text-indent: 0;
+  }
+}
+
+/* Section frame */
+
+.home-section {
+  padding-top: var(--home-section-pad);
+}
+
+.home-section:last-child {
+  padding-bottom: var(--home-section-pad);
+}
+
+.home-section > .home-container {
+  border-top: 1px solid var(--home-rule);
+  padding-top: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.home-section__header {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+@media (min-width: 900px) {
+  .home-section__header {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+    gap: 2rem;
+  }
+}
+
+.home-section__title {
+  max-width: 24ch;
+  font-size: clamp(1.625rem, 2.6vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  color: var(--atlas-ink);
+}
+
+.home-section__intro {
+  margin-top: 1.25rem;
+  max-width: 40rem;
+  display: grid;
+  gap: 0.875rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--atlas-ink-muted);
+  text-wrap: pretty;
+}
+
+/* Light file panel (tree, AGENTS.md) */
+
+.home-file {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--atlas-border-strong);
+  border-radius: var(--home-radius);
+  background: var(--atlas-surface);
+}
+
+.home-file__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 2.25rem;
+  padding-inline: 0.875rem;
+  border-bottom: 1px solid var(--atlas-border);
+  background: var(--atlas-surface-raised);
+  font-family: var(--home-mono);
+  font-size: 0.75rem;
+  color: var(--atlas-ink-muted);
+}
+
+.home-file__meta {
+  color: var(--atlas-ink-subtle);
+}
+
+.home-file__body {
+  margin: 0;
+  padding: 1rem 1.125rem 1.25rem;
+  font-family: var(--home-mono);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--atlas-ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Workspace */
+
+.home-workspace {
+  display: grid;
+  gap: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .home-workspace > .home-file {
+    position: sticky;
+    top: calc(var(--atlas-header-height) + 1.5rem);
+  }
+
+  .home-workspace {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+}
+
+.home-tree {
+  padding: 0.875rem 1.125rem 1rem;
+  font-family: var(--home-mono);
+  font-size: 0.8125rem;
+  line-height: 1.75;
+}
+
+.home-tree__row {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+  justify-content: space-between;
+}
+
+.home-tree__path {
+  white-space: pre;
+  color: var(--atlas-ink);
+}
+
+.home-tree__note {
+  color: var(--atlas-ink-subtle);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 479px) {
+  .home-tree__note {
+    display: none;
+  }
+}
+
+.home-included {
+  display: grid;
+  border-top: 1px solid var(--home-rule);
+}
+
+.home-included__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.25rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--home-rule);
+}
+
+@media (min-width: 640px) {
+  .home-included__row {
+    grid-template-columns: 10rem minmax(0, 1fr);
+    column-gap: 1.5rem;
+  }
+
+  .home-included__path {
+    grid-column: 2;
+  }
+}
+
+.home-included__name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--atlas-ink);
+}
+
+.home-included__detail {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--atlas-ink-muted);
+}
+
+.home-included__path {
+  font-size: 0.8125rem;
+  color: var(--atlas-ink-subtle);
+}
+
+/* CLI */
+
+.home-cli {
+  display: grid;
+  gap: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .home-cli {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+}
+
+.home-commands {
+  border-top: 1px solid var(--home-rule);
+}
+
+.home-commands__row {
+  padding-block: 0.875rem;
+  border-bottom: 1px solid var(--home-rule);
+}
+
+.home-commands__row dt code {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--atlas-ink);
+}
+
+.home-commands__row dd {
+  margin-top: 0.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--atlas-ink-muted);
+}
+
+.home-cli__terminals {
+  display: grid;
+  gap: 1rem;
+}
+
+/* Guardrails */
+
+.home-guardrails {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .home-guardrails {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+  }
+}
+
+/* Get started */
+
+.home-start {
+  display: grid;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .home-start {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+}
+
+.home-start__steps-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--home-rule);
+}
+
+.home-steps {
+  counter-reset: step;
+}
+
+.home-steps__item {
+  counter-increment: step;
+  position: relative;
+  padding: 1.25rem 0 1.25rem 2.5rem;
+  border-bottom: 1px solid var(--home-rule);
+}
+
+.home-steps__item::before {
+  content: counter(step);
+  position: absolute;
+  top: 1.25rem;
+  left: 0;
+  font-family: var(--home-mono);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--atlas-ink-subtle);
+}
+
+.home-steps__text {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--atlas-ink-muted);
+}
+
+.home-steps__title {
+  font-weight: 600;
+  color: var(--atlas-ink);
+}
+
+.atlas-home .home-step-strip {
+  margin-top: 0.625rem;
+  border-color: var(--atlas-border-strong);
+  border-radius: 0.5rem;
+}
+
+.atlas-home .home-step-strip .atlas-command-strip__code {
+  color: var(--atlas-ink);
+  overflow-x: visible;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.home-start__subtitle {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--atlas-ink);
+}
+
+.home-start__subtitle:not(:first-child) {
+  margin-top: 2rem;
+}
+
+.home-next {
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.875rem;
+}
+
+.home-next li {
+  display: grid;
+  gap: 0.125rem;
+}
+
+.home-next__command {
+  font-size: 0.8125rem;
+  color: var(--atlas-ink);
+  overflow-wrap: anywhere;
+}
+
+.home-next__note {
+  font-size: 0.875rem;
+  color: var(--atlas-ink-subtle);
+}
+
+.home-start__links {
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+}
+
+/* Copy buttons outside command strips */
+
+.atlas-home .home-copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  min-width: 2rem;
+  height: 2rem;
+  padding-inline: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  background: transparent;
+  color: var(--atlas-ink-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.atlas-home .home-copy-button--labeled {
+  border-color: var(--atlas-border-strong);
+  background: var(--atlas-surface);
+  color: var(--atlas-ink);
+}
+
+.atlas-home .home-copy-button:hover {
+  background: var(--atlas-surface-subtle);
+  color: var(--atlas-ink);
+}
+
+.atlas-home .home-copy-button:active {
+  background: var(--atlas-accent-soft);
+}
+
+.atlas-home .home-copy-button:focus-visible {
+  outline: 2px solid var(--atlas-accent-bright);
+  outline-offset: 2px;
+}
+
+.atlas-home .home-copy-button[data-copy-status="copied"] {
+  color: var(--atlas-accent-bright);
+}
+
+.atlas-home .home-copy-button[data-copy-status="error"] {
+  color: oklch(0.52 0.2 27);
+}
+
+.home-contrib {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--home-rule);
+  font-size: 0.875rem;
+  color: var(--atlas-ink-muted);
+}
+
+.home-contrib summary {
+  width: fit-content;
+  border-radius: 0.125rem;
+  font-weight: 500;
+  color: var(--atlas-ink);
+  cursor: pointer;
+}
+
+.home-contrib p {
+  margin-top: 0.625rem;
+  line-height: 1.55;
+}
+
+.home-contrib__code {
+  position: relative;
+  margin-top: 0.75rem;
+  border: 1px solid var(--atlas-border-strong);
+  border-radius: 0.5rem;
+  background: var(--atlas-surface-raised);
+}
+
+.home-contrib__code pre {
+  margin: 0;
+  padding: 0.75rem 3rem 0.75rem 0.875rem;
+  font-family: var(--home-mono);
+  font-size: 0.75rem;
+  line-height: 1.7;
+  color: var(--atlas-ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.atlas-home .home-contrib__copy {
+  position: absolute;
+  top: 0.375rem;
+  right: 0.375rem;
+}
+
+/* Questions */
+
+.home-faq {
+  display: grid;
+  border-top: 1px solid var(--home-rule);
+}
+
+@media (min-width: 768px) {
+  .home-faq {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(2rem, 5vw, 4.5rem);
+  }
+}
+
+.home-faq__item {
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--home-rule);
+}
+
+.home-faq__question {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--atlas-ink);
+}
+
+.home-faq__answer {
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--atlas-ink-muted);
+  text-wrap: pretty;
+}
+
+/* Maker */
+
+.home-maker {
+  display: grid;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .home-maker {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+}
+
+.home-maker__note {
+  display: grid;
+  gap: 1rem;
+  max-width: 40rem;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--atlas-ink-muted);
+}
+
+.home-maker__byline {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.home-maker__avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.home-maker__name {
+  border-radius: 0.125rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--atlas-ink);
+  text-decoration: none;
+}
+
+.home-maker__name:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.home-maker__role {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--atlas-ink-subtle);
+}
+
+.home-maker__consulting {
+  margin-left: auto;
+  font-size: 0.9375rem;
+}
+
+@media (max-width: 639px) {
+  .home-maker__consulting {
+    margin-left: 0;
+    flex-basis: 100%;
+  }
+}
+
+.home-products {
+  margin-top: 0.75rem;
+  border-top: 1px solid var(--home-rule);
+}
+
+.home-products__link {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 1rem;
+  align-items: center;
+  gap: 0.875rem;
+  min-height: 3.25rem;
+  padding: 0.75rem 0.25rem;
+  border-bottom: 1px solid var(--home-rule);
+  color: var(--atlas-ink);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.home-products__link:hover {
+  background: var(--atlas-surface-raised);
+}
+
+.home-products__link:hover .home-products__arrow {
+  color: var(--atlas-ink);
+}
+
+.home-products__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.home-products__logo {
+  height: 1.375rem;
+  width: auto;
+  max-width: 7rem;
+  object-fit: contain;
+}
+
+.home-products__logo--wordmark,
+.home-products__logo--badge {
+  height: 1.125rem;
+}
+
+.home-products__name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.home-products__status {
+  font-size: 0.8125rem;
+  color: var(--atlas-ink-subtle);
+}
+
+.home-products__arrow {
+  width: 1rem;
+  height: 1rem;
+  color: var(--atlas-ink-subtle);
+  transition: color 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-link,
+  .home-products__link,
+  .home-products__arrow,
+  .atlas-home .home-copy-button {
+    transition: none;
+  }
+}
