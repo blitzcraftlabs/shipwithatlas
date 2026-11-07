@@ -13,7 +13,6 @@ const TREE = [
   { prefix: "│  ├─ ", name: "src/config/", note: "validated config" },
   { prefix: "│  └─ ", name: "e2e/", note: "Playwright" },
   { prefix: "├─ ", name: "packages/ui/", note: "@atlas/ui source" },
-  { prefix: "├─ ", name: "packages/config/", note: "lint, ts, jest" },
   { prefix: "├─ ", name: "openapi/", note: "API contract" },
   { prefix: "├─ ", name: "AGENTS.md", note: "conventions", active: true },
   { prefix: "└─ ", name: "atlas.config.json", note: "project contract" },
@@ -68,7 +67,7 @@ export function AtlasWorkspacePreview({ className }: AtlasWorkspacePreviewProps)
         Preview of the workspace Atlas generates: a my-app repository with a CI
         workflow, a Next.js app in apps/web with routes, feature modules, a typed
         API client, authentication, validated config, and Playwright tests,
-        shared ui and config packages, an OpenAPI contract, atlas.config.json,
+        a shared ui package, an OpenAPI contract, atlas.config.json,
         and an AGENTS.md file that records the project conventions.
       </figcaption>
 
