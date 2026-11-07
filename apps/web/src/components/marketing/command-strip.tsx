@@ -15,9 +15,18 @@ interface CommandStripProps {
   /** Accessible name for the copy button, e.g. "Copy install command". */
   copyLabel: string;
   className?: string;
+  /** Render a visible status word ("Copy", "Copied") beside the icon. */
+  showLabel?: boolean;
 }
 
-export function CommandStrip({ command, copyLabel, className }: CommandStripProps) {
+const STATUS_LABELS = { idle: "Copy", copied: "Copied", error: "Failed" } as const;
+
+export function CommandStrip({
+  command,
+  copyLabel,
+  className,
+  showLabel = false,
+}: CommandStripProps) {
   const { status, copy } = useCopyToClipboard();
 
   return (
@@ -43,6 +52,11 @@ export function CommandStrip({ command, copyLabel, className }: CommandStripProp
         data-copy-status={status}
       >
         <CopyStatusIcon status={status} />
+        {showLabel ? (
+          <span className="atlas-command-strip__copy-text" aria-hidden="true">
+            {STATUS_LABELS[status]}
+          </span>
+        ) : null}
       </Button>
       <span className="sr-only" role="status" aria-live="polite">
         {getCopyAnnouncement(status)}

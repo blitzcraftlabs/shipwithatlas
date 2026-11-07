@@ -1,4 +1,7 @@
 import "./atlas-marketing.css";
+import "./atlas-blueprint.css";
+
+import { cn } from "@atlas/ui";
 
 import { AgentsSection } from "@/components/landing/agents-section";
 import { BuiltWithSection } from "@/components/landing/built-with-section";
@@ -19,6 +22,7 @@ import {
   SITE_SUPPORTING,
   SITE_TAGLINE,
 } from "@/lib/marketing/constants";
+import { BLUEPRINT_FONT_CLASS_NAME } from "@/lib/marketing/fonts";
 
 import type { Metadata } from "next";
 
@@ -30,7 +34,12 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <MarketingTheme>
-      <div className="atlas-marketing min-h-svh overflow-x-clip">
+      <div
+        className={cn(
+          "atlas-marketing min-h-svh overflow-x-clip",
+          BLUEPRINT_FONT_CLASS_NAME
+        )}
+      >
         <MarketingHeader />
         <main>
           <HeroSection />

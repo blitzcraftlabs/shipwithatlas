@@ -38,13 +38,19 @@ test.describe("Smoke Tests", () => {
   }) => {
     await page.goto("/");
     const install = page.getByRole("group", { name: "Create a new Atlas app" });
-    const secondary = page.getByRole("group", { name: "More ways to explore Atlas" });
+    const secondary = page.getByRole("navigation", { name: "More ways to explore Atlas" });
     await expect(
-      secondary.getByRole("link", { name: /Explore the reference app/i })
-    ).toBeVisible();
+      secondary.getByRole("link", { name: /Atlas on GitHub/i })
+    ).toHaveAttribute("href", "https://github.com/blitzcraftlabs/atlas");
     await expect(
-      secondary.getByRole("link", { name: /View the repository/i })
-    ).toBeVisible();
+      secondary.getByRole("link", { name: /@blitzcraftlabs\/atlas on npm/i })
+    ).toHaveAttribute("href", "https://www.npmjs.com/package/@blitzcraftlabs/atlas");
+    await expect(
+      secondary.getByRole("link", { name: /Atlas documentation/i })
+    ).toHaveAttribute(
+      "href",
+      "https://github.com/blitzcraftlabs/atlas/tree/main/docs/public"
+    );
     const installBox = await install.boundingBox();
     const secondaryBox = await secondary.boundingBox();
     expect(installBox && secondaryBox && installBox.y < secondaryBox.y).toBe(true);

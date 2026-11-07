@@ -1,0 +1,1041 @@
+/*
+ * Atlas blueprint design system
+ *
+ * Foundation for the marketing redesign. Engineering-drawing language:
+ * blueprint paper, ink, one Atlas blue, sharp 90° geometry, 2px structural
+ * strokes, monospace display type, and annotated schematics.
+ *
+ * Scope: tokens live on `.atlas-marketing` with a `--bp-` prefix so legacy
+ * sections keep their existing `--atlas-*` tokens until they migrate.
+ * Components in this file: header, hero, install command, buttons, and the
+ * workspace preview.
+ */
+
+.atlas-marketing {
+  /* Palette (raw) */
+  --bp-blue-600: #2563eb;
+  --bp-blue-700: #1d4ed8;
+  --bp-blue-800: #1e40af;
+  --bp-blue-300: #93b4fd;
+  --bp-blue-200: #c3d5fd;
+  --bp-blue-100: #e8f0ff;
+  --bp-ink-900: #111827;
+  --bp-ink-700: #374151;
+  --bp-ink-600: #4b5563;
+  --bp-ink-500: #5b6472;
+  --bp-paper-50: #f7f8fa;
+  --bp-white: #ffffff;
+
+  /* Semantic: surfaces */
+  --bp-bg: var(--bp-paper-50);
+  --bp-surface: var(--bp-white);
+  --bp-surface-sunken: #eef2f8;
+  --bp-surface-accent: var(--bp-blue-100);
+  --bp-surface-inverse: var(--bp-ink-900);
+
+  /* Semantic: text */
+  --bp-text: var(--bp-ink-900);
+  --bp-text-muted: var(--bp-ink-600);
+  --bp-text-subtle: var(--bp-ink-500);
+  --bp-text-accent: var(--bp-blue-700);
+  --bp-text-on-accent: var(--bp-white);
+  --bp-text-inverse: #f3f4f6;
+
+  /* Semantic: lines */
+  --bp-line: rgb(17 24 39 / 14%);
+  --bp-line-strong: var(--bp-ink-900);
+  --bp-line-accent: var(--bp-blue-600);
+  --bp-grid-minor: rgb(37 99 235 / 6%);
+  --bp-grid-major: rgb(37 99 235 / 11%);
+  --bp-hatch: rgb(37 99 235 / 9%);
+
+  /* Semantic: actions */
+  --bp-action: var(--bp-blue-600);
+  --bp-action-hover: var(--bp-blue-700);
+  --bp-action-active: var(--bp-blue-800);
+  --bp-action-text: var(--bp-white);
+  --bp-focus: var(--bp-blue-600);
+  --bp-disabled-bg: #e5e7eb;
+  --bp-disabled-text: #6b7280;
+
+  /* Semantic: terminal */
+  --bp-terminal-bg: var(--bp-ink-900);
+  --bp-terminal-text: #f3f4f6;
+  --bp-terminal-muted: #9ca3af;
+  --bp-terminal-accent: var(--bp-blue-300);
+
+  /* Semantic: illustration */
+  --bp-art-stroke: var(--bp-ink-900);
+  --bp-art-stroke-fine: rgb(17 24 39 / 35%);
+  --bp-art-accent: var(--bp-blue-600);
+  --bp-art-fill: var(--bp-white);
+  --bp-art-fill-accent: var(--bp-blue-100);
+
+  /* Geometry */
+  --bp-stroke: 2px;
+  --bp-stroke-fine: 1px;
+  --bp-radius: 0;
+  --bp-shadow-hard: 4px 4px 0 var(--bp-ink-900);
+  --bp-shadow-sheet: 10px 10px 0 var(--bp-blue-200);
+  --bp-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* Type */
+  --bp-font-mono: var(--font-blueprint-mono), ui-monospace, "SFMono-Regular", monospace;
+  --bp-font-sans: var(--font-blueprint-sans), ui-sans-serif, system-ui, sans-serif;
+  --bp-display: clamp(2.375rem, 1.1rem + 3.4vw, 3.875rem);
+}
+
+/* ------------------------------------------------------------------ */
+/* Shared primitives                                                   */
+/* ------------------------------------------------------------------ */
+
+.bp-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625em;
+  padding: 0.375rem 0.75rem;
+  background: var(--bp-action);
+  color: var(--bp-text-on-accent);
+  font-family: var(--bp-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.bp-tag::before {
+  content: "//" / "";
+}
+
+.bp-highlight {
+  padding: 0 0.14em;
+  margin: 0 -0.04em;
+  background: var(--bp-action);
+  color: var(--bp-text-on-accent);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.bp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--bp-text-accent);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgb(29 78 216 / 40%);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s ease;
+}
+
+.bp-link:hover {
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 2px;
+}
+
+.bp-link:focus-visible,
+.bp-button:focus-visible {
+  outline: 2px solid var(--bp-focus);
+  outline-offset: 3px;
+}
+
+.bp-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.625rem 1rem;
+  border: var(--bp-stroke) solid var(--bp-line-strong);
+  border-radius: var(--bp-radius);
+  font-family: var(--bp-font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  transition:
+    transform 0.15s var(--bp-ease),
+    box-shadow 0.15s var(--bp-ease),
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.bp-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--bp-shadow-hard);
+}
+
+.bp-button:active {
+  transform: translate(0, 0);
+  box-shadow: none;
+}
+
+.bp-button--ink {
+  background: var(--bp-surface-inverse);
+  color: var(--bp-text-inverse);
+}
+
+.bp-button--ink:hover {
+  box-shadow: 4px 4px 0 var(--bp-action);
+}
+
+.bp-button--outline {
+  background: var(--bp-surface);
+  color: var(--bp-text);
+}
+
+.bp-button--outline:hover {
+  background: var(--bp-surface-accent);
+}
+
+.bp-button[aria-disabled="true"] {
+  pointer-events: none;
+  border-color: var(--bp-disabled-bg);
+  background: var(--bp-disabled-bg);
+  color: var(--bp-disabled-text);
+}
+
+/* ------------------------------------------------------------------ */
+/* Header                                                              */
+/* ------------------------------------------------------------------ */
+
+.atlas-marketing__header {
+  border-bottom: var(--bp-stroke-fine) solid var(--bp-line);
+  background: rgb(247 248 250 / 92%);
+}
+
+.atlas-marketing__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--bp-font-mono);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--bp-text);
+}
+
+.atlas-marketing__logo:focus-visible {
+  outline: 2px solid var(--bp-focus);
+  outline-offset: 4px;
+}
+
+.atlas-marketing__logo-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: var(--bp-stroke) solid var(--bp-line-strong);
+  background: var(--bp-action);
+  color: var(--bp-white);
+}
+
+.atlas-marketing__logo-mark svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.atlas-marketing__logo-mark rect {
+  fill: var(--bp-action);
+}
+
+.atlas-marketing__nav-link {
+  position: relative;
+  font-family: var(--bp-font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--bp-text-muted);
+}
+
+.atlas-marketing__nav-link::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0.75rem;
+  bottom: 0.25rem;
+  height: 2px;
+  background: var(--bp-action);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s var(--bp-ease);
+}
+
+.atlas-marketing__nav-link:hover {
+  color: var(--bp-text);
+}
+
+.atlas-marketing__nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+.atlas-marketing__nav-link:focus-visible {
+  outline: 2px solid var(--bp-focus);
+  outline-offset: 0;
+}
+
+.atlas-header-btn {
+  height: 2.25rem !important;
+  border-radius: var(--bp-radius) !important;
+  border: var(--bp-stroke) solid var(--bp-line-strong) !important;
+  font-family: var(--bp-font-mono);
+  padding-inline: 0.875rem !important;
+  font-size: 0.8125rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em;
+  box-shadow: none !important;
+  transition:
+    transform 0.15s var(--bp-ease),
+    box-shadow 0.15s var(--bp-ease),
+    background-color 0.15s ease !important;
+}
+
+.atlas-header-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--bp-shadow-hard) !important;
+}
+
+.atlas-header-btn:active {
+  transform: none;
+  box-shadow: none !important;
+}
+
+.atlas-header-btn:focus-visible {
+  outline: 2px solid var(--bp-focus) !important;
+  outline-offset: 3px;
+}
+
+.atlas-header-btn--outline {
+  background: var(--bp-surface) !important;
+  color: var(--bp-text) !important;
+}
+
+.atlas-header-btn--primary {
+  background: var(--bp-action) !important;
+  color: var(--bp-action-text) !important;
+}
+
+.atlas-header-btn--primary:hover {
+  background: var(--bp-action-hover) !important;
+}
+
+.atlas-header-menu {
+  border-radius: var(--bp-radius) !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero                                                                */
+/* ------------------------------------------------------------------ */
+
+.bp-hero {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(3rem, 6vw, 5rem) 0;
+  background-color: var(--bp-bg);
+  /* Blueprint paper: minor 24px grid with major lines every 120px */
+  background-image:
+    linear-gradient(var(--bp-grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bp-grid-major) 1px, transparent 1px),
+    linear-gradient(var(--bp-grid-minor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bp-grid-minor) 1px, transparent 1px);
+  background-size:
+    120px 120px,
+    120px 120px,
+    24px 24px,
+    24px 24px;
+  background-position: center top;
+}
+
+/* Paper clears behind the centered copy so the grid recedes from the type */
+.bp-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse 60% 42% at 50% 22%, var(--bp-bg) 45%, transparent 85%);
+}
+
+.bp-hero__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 54rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+/*
+ * Vertical rhythm, top to bottom: eyebrow, headline, lead, command, links,
+ * preview. Tight inside the copy block so it reads as one statement, one
+ * larger step before the command, and a measured gap before the preview so
+ * it belongs to the hero instead of floating below it.
+ */
+.bp-hero__title {
+  margin-top: clamp(1.5rem, 2.5vw, 2rem);
+  max-width: 15ch;
+  font-family: var(--bp-font-mono);
+  font-size: clamp(2.125rem, 0.9rem + 5.6vw, 5rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.05em;
+  color: var(--bp-text);
+  text-wrap: balance;
+}
+
+@media (max-width: 639px) {
+  .bp-hero__title {
+    line-height: 1.1;
+    letter-spacing: -0.045em;
+  }
+}
+
+.bp-hero__title .bp-highlight {
+  white-space: nowrap;
+}
+
+.bp-hero__lead {
+  margin-top: clamp(1.25rem, 2.4vw, 2rem);
+  max-width: 42rem;
+  font-family: var(--bp-font-sans);
+  font-size: clamp(1.0625rem, 0.97rem + 0.45vw, 1.375rem);
+  line-height: 1.55;
+  color: var(--bp-ink-700);
+  text-wrap: balance;
+}
+
+@media (max-width: 479px) {
+  /* Too many lines for balance here; pretty still avoids a lone last word */
+  .bp-hero__lead {
+    text-wrap: pretty;
+  }
+}
+
+@media (max-width: 359px) {
+  /* Keep the eyebrow on one line at the smallest widths */
+  .bp-hero .bp-tag {
+    padding-inline: 0.5rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* Links stay on one row */
+  .bp-hero .bp-hero__links ul {
+    gap: 0.25rem 0.375rem;
+  }
+
+  .bp-hero .bp-hero__links li + li::before {
+    margin-right: 0.375rem;
+  }
+
+  .bp-hero__links .bp-hero__link {
+    padding-inline: 0.125rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Secondary links: one quiet mono row, read after the command */
+.bp-hero__links {
+  margin-top: 1.25rem;
+}
+
+.bp-hero__links ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 0.5rem;
+}
+
+.bp-hero__links li {
+  display: flex;
+  align-items: center;
+}
+
+.bp-hero__links li + li::before {
+  content: "/";
+  margin-right: 0.5rem;
+  color: var(--bp-blue-300);
+  font-family: var(--bp-font-mono);
+  font-size: 0.8125rem;
+}
+
+.bp-hero__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 2.75rem;
+  padding-inline: 0.375rem;
+  color: var(--bp-text);
+  font-family: var(--bp-font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--bp-line);
+  text-underline-offset: 5px;
+  transition:
+    color 0.15s ease,
+    text-decoration-color 0.15s ease;
+}
+
+.bp-hero__link svg {
+  color: var(--bp-text-subtle);
+}
+
+.bp-hero__link:hover {
+  color: var(--bp-text-accent);
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 2px;
+}
+
+.bp-hero__link:hover svg {
+  color: currentColor;
+}
+
+.bp-hero__link:focus-visible {
+  outline: 2px solid var(--bp-focus);
+  outline-offset: 2px;
+}
+
+/* Sheet edge: the hero closes like a drawing sheet. A 2px ink rule with a
+   measured tick scale aligned to the 24px grid, and a section index that
+   leads into the next section, so the page continues instead of breaking. */
+.bp-hero__edge {
+  position: relative;
+  margin-top: clamp(3.5rem, 7vw, 5.5rem);
+  height: 3.5rem;
+  border-top: var(--bp-stroke) solid var(--bp-line-strong);
+  background-color: var(--bp-bg);
+  background-image:
+    linear-gradient(90deg, var(--bp-line-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bp-text-subtle) 1px, transparent 1px);
+  background-size:
+    120px 14px,
+    24px 7px;
+  background-position: center top;
+  background-repeat: repeat-x;
+}
+
+.bp-hero__edge > .atlas-marketing__gutter {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  padding-bottom: 0.625rem;
+}
+
+.bp-hero__edge-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625em;
+  padding: 0.25rem 0.625rem;
+  border: var(--bp-stroke) solid var(--bp-line-strong);
+  background: var(--bp-surface);
+  color: var(--bp-text);
+  font-family: var(--bp-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.bp-hero__edge-label::before {
+  content: "//";
+  color: var(--bp-text-accent);
+}
+
+/* The first legacy section sits on the same paper so the handoff reads as
+   one continuous sheet. Only its top edge changes; its content is untouched. */
+.bp-hero + .atlas-section--surface {
+  border-top: var(--bp-stroke-fine) solid var(--bp-line);
+  background: var(--bp-bg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Install command                                                     */
+/* ------------------------------------------------------------------ */
+
+.bp-install {
+  margin-top: clamp(2rem, 3.5vw, 2.5rem);
+  width: 100%;
+  /* Leave room for the hard shadow so it never meets the gutter */
+  max-width: calc(100% - 6px);
+}
+
+@media (min-width: 640px) {
+  /* Same measure as the lead, so the copy and command share one column */
+  .bp-install {
+    max-width: 42rem;
+  }
+}
+
+.bp-install .bp-install__strip {
+  margin-top: 0;
+  text-align: left;
+  gap: 0.875rem;
+  min-height: 4.25rem;
+  padding: 0.6875rem 0.6875rem 0.6875rem 1.375rem;
+  border: var(--bp-stroke) solid var(--bp-line-strong);
+  border-radius: var(--bp-radius);
+  background: var(--bp-terminal-bg);
+  box-shadow: 6px 6px 0 var(--bp-action);
+}
+
+.bp-install__strip .atlas-command-strip__prompt {
+  align-self: center;
+  font-family: var(--bp-font-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--bp-terminal-accent);
+}
+
+.bp-install__strip .atlas-command-strip__code {
+  overflow-x: visible;
+  white-space: normal;
+  font-family: var(--bp-font-mono);
+  font-size: clamp(0.875rem, 0.8rem + 0.35vw, 1.0625rem);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--bp-terminal-text);
+}
+
+/* Tokens wrap as whole words so a narrow screen breaks between them */
+.bp-install__strip .atlas-command-strip__token {
+  white-space: nowrap;
+}
+
+.bp-install__strip .atlas-command-strip__token:nth-child(-n + 2) {
+  color: var(--bp-terminal-muted);
+}
+
+.bp-install__strip .atlas-command-strip__token:nth-child(3) {
+  color: var(--bp-terminal-accent);
+}
+
+.bp-install__strip .atlas-command-strip__copy {
+  gap: 0.5rem;
+  width: auto;
+  min-width: 2.75rem;
+  height: 2.75rem;
+  padding-inline: 0.875rem;
+  border: var(--bp-stroke) solid var(--bp-action);
+  border-radius: var(--bp-radius);
+  background: var(--bp-action);
+  color: var(--bp-action-text);
+  font-family: var(--bp-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.bp-install__strip .atlas-command-strip__copy svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.bp-install__strip .atlas-command-strip__copy-text {
+  min-width: 3.25rem;
+  text-align: left;
+}
+
+.bp-install__strip .atlas-command-strip__copy:hover,
+.bp-install__strip .atlas-command-strip__copy[data-popup-open],
+.bp-install__strip .atlas-command-strip__copy[aria-expanded="true"] {
+  border-color: var(--bp-blue-300);
+  background: var(--bp-action-hover);
+  color: var(--bp-action-text);
+}
+
+.bp-install__strip .atlas-command-strip__copy:active {
+  border-color: var(--bp-action-active);
+  background: var(--bp-action-active);
+  color: var(--bp-action-text);
+}
+
+.bp-install__strip .atlas-command-strip__copy:disabled {
+  border-color: var(--bp-ink-600);
+  background: transparent;
+  color: var(--bp-terminal-muted);
+  cursor: not-allowed;
+}
+
+.bp-install__strip .atlas-command-strip__copy[data-copy-status="copied"] {
+  border-color: var(--bp-white);
+  background: var(--bp-white);
+  color: var(--bp-blue-700);
+}
+
+.bp-install__strip .atlas-command-strip__copy[data-copy-status="error"] {
+  border-color: #fca5a5;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.bp-install__strip .atlas-command-strip__copy:focus-visible {
+  outline: 2px solid var(--bp-white);
+  outline-offset: 2px;
+}
+
+@media (max-width: 479px) {
+  /* Narrow screens: the command gets the full line, the copy action becomes
+     a full-width bar beneath it so it stays a large, obvious touch target */
+  .bp-install .bp-install__strip {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 0.875rem 0.625rem;
+    padding: 0.875rem 0.875rem 0.875rem 1rem;
+  }
+
+  .bp-install__strip .atlas-command-strip__prompt {
+    align-self: start;
+  }
+
+  .bp-install__strip .atlas-command-strip__copy {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .bp-install__strip .atlas-command-strip__copy-text {
+    min-width: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Workspace preview                                                   */
+/* ------------------------------------------------------------------ */
+
+/*
+ * One editor window: the generated tree on the left, AGENTS.md open on the
+ * right. White surface, 2px ink frame, blue sheet shadow. Hierarchy runs
+ * tree (paper, quiet) -> active file (the only blue fill) -> tab (blue rule)
+ * -> open file (white, largest type), so the eye lands on the conventions.
+ */
+
+.bp-demo {
+  max-width: 76rem;
+  margin: clamp(2.75rem, 5vw, 4rem) auto 0;
+  /* Room for the sheet shadow inside the gutter */
+  padding-right: 12px;
+}
+
+.bp-demo__window {
+  border: var(--bp-stroke) solid var(--bp-line-strong);
+  background: var(--bp-surface);
+  box-shadow: 12px 12px 0 var(--bp-blue-200);
+  font-family: var(--bp-font-mono);
+  color: var(--bp-text);
+  text-align: left;
+}
+
+.bp-demo__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1.5rem;
+  border-bottom: var(--bp-stroke) solid var(--bp-line-strong);
+  font-size: 0.8125rem;
+}
+
+.bp-demo__project {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-weight: 700;
+}
+
+.bp-demo__project::before {
+  content: "";
+  width: 0.5625rem;
+  height: 0.5625rem;
+  background: var(--bp-action);
+}
+
+.bp-demo__origin {
+  color: var(--bp-text-subtle);
+}
+
+.bp-demo__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+  .bp-demo__body {
+    grid-template-columns: minmax(0, 23rem) minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .bp-demo__body {
+    grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
+  }
+}
+
+.bp-demo__pane-label {
+  margin-bottom: 0.875rem;
+  color: var(--bp-text-subtle);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Tree */
+.bp-demo__tree {
+  padding: 1.5rem 1rem 1.75rem;
+  background: var(--bp-bg);
+}
+
+.bp-demo__tree .bp-demo__pane-label {
+  padding-inline: 0.625rem;
+}
+
+@media (min-width: 900px) {
+  .bp-demo__tree {
+    border-right: var(--bp-stroke-fine) solid var(--bp-line);
+  }
+}
+
+.bp-demo__tree-row {
+  display: flex;
+  align-items: baseline;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+
+.bp-demo__tree-prefix {
+  white-space: pre;
+  color: var(--bp-blue-300);
+}
+
+.bp-demo__tree-name {
+  font-weight: 500;
+}
+
+.bp-demo__tree-row--root .bp-demo__tree-name {
+  font-weight: 700;
+}
+
+.bp-demo__tree-note {
+  margin-left: auto;
+  padding-left: 1rem;
+  color: var(--bp-text-subtle);
+  font-family: var(--bp-font-sans);
+  font-size: 0.8125rem;
+}
+
+.bp-demo__tree-row--active {
+  background: var(--bp-action);
+  color: var(--bp-text-on-accent);
+}
+
+.bp-demo__tree-row--active .bp-demo__tree-prefix,
+.bp-demo__tree-row--active .bp-demo__tree-note {
+  color: var(--bp-blue-100);
+}
+
+.bp-demo__tree-row--active .bp-demo__tree-name {
+  font-weight: 700;
+}
+
+/* Open file */
+.bp-demo__file {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-top: var(--bp-stroke-fine) solid var(--bp-line);
+}
+
+@media (min-width: 900px) {
+  .bp-demo__file {
+    border-top: 0;
+  }
+}
+
+.bp-demo__tab {
+  align-self: flex-start;
+  padding: 0.75rem 1.5rem;
+  border-right: var(--bp-stroke-fine) solid var(--bp-line);
+  border-bottom: 3px solid var(--bp-action);
+  margin-bottom: -1px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.bp-demo__code {
+  flex: 1;
+  padding: 1.75rem 2rem 2rem 0;
+  border-top: var(--bp-stroke-fine) solid var(--bp-line);
+  font-size: 1rem;
+  line-height: 2.125;
+}
+
+.bp-demo__line {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+}
+
+.bp-demo__ln {
+  padding-right: 1.5rem;
+  color: var(--bp-text-subtle);
+  opacity: 0.55;
+  text-align: right;
+  user-select: none;
+}
+
+.bp-demo__text {
+  padding-left: 1.25ch;
+  text-indent: -1.25ch;
+  color: var(--bp-ink-700);
+}
+
+.bp-demo__line--heading .bp-demo__text {
+  padding-left: 0;
+  text-indent: 0;
+  color: var(--bp-text);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.bp-demo__line--blank .bp-demo__text::after {
+  content: "\00a0";
+}
+
+.bp-demo__bullet {
+  color: var(--bp-text-accent);
+  font-weight: 700;
+}
+
+.bp-demo__md-code {
+  color: var(--bp-text-accent);
+  font-weight: 600;
+}
+
+/* Status bar: the CI the workspace ships with */
+.bp-demo__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  padding: 0.75rem 1.5rem;
+  border-top: var(--bp-stroke) solid var(--bp-line-strong);
+  background: var(--bp-surface-sunken);
+  font-size: 0.8125rem;
+}
+
+.bp-demo__status-key {
+  font-weight: 700;
+}
+
+.bp-demo__checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.125rem;
+  color: var(--bp-ink-700);
+}
+
+.bp-demo__check::before {
+  content: "✓ ";
+  color: var(--bp-text-accent);
+  font-weight: 700;
+}
+
+@media (max-width: 899px) {
+  .bp-demo__code {
+    padding-block: 1.25rem 1.5rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .bp-demo {
+    padding-right: 6px;
+  }
+
+  .bp-demo__window {
+    box-shadow: 6px 6px 0 var(--bp-blue-200);
+  }
+
+  .bp-demo__bar,
+  .bp-demo__status {
+    padding-inline: 1rem;
+  }
+
+  .bp-demo__tree {
+    padding-inline: 0.5rem;
+  }
+
+  .bp-demo__tab {
+    padding-inline: 1rem;
+  }
+
+  .bp-demo__code {
+    padding-right: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.8;
+  }
+
+  .bp-demo__line--heading .bp-demo__text {
+    font-size: 0.9375rem;
+  }
+
+  .bp-demo__line {
+    grid-template-columns: 3rem minmax(0, 1fr);
+  }
+
+  .bp-demo__ln {
+    padding-right: 0.75rem;
+  }
+}
+
+@media (max-width: 479px) {
+  /* Notes give way so every path stays whole on one line */
+  .bp-demo__tree-note,
+  .bp-demo__origin {
+    display: none;
+  }
+
+  .bp-demo__code {
+    font-size: 0.8125rem;
+  }
+
+  .bp-demo__line {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+  }
+
+  .bp-demo__ln {
+    padding-right: 0.625rem;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion                                                      */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .bp-button,
+  .atlas-header-btn,
+  .atlas-marketing__nav-link::after,
+  .bp-hero__link,
+  .bp-install__strip .atlas-command-strip__copy {
+    transition: none !important;
+  }
+
+  .bp-button:hover,
+  .atlas-header-btn:hover {
+    transform: none;
+  }
+}

@@ -4,7 +4,6 @@ import type { ComponentType, ReactNode } from "react"
 
 export type InspectIllustrationId =
   | "repository"
-  | "reference-app"
   | "architecture-docs"
   | "ci-workflows"
 
@@ -66,43 +65,6 @@ function RepositoryIllustration({ className }: { className?: string }) {
         height="5"
         rx="1.25"
         className="atlas-inspect-illustration__layer"
-      />
-    </IllustrationShell>
-  )
-}
-
-function ReferenceAppIllustration({ className }: { className?: string }) {
-  return (
-    <IllustrationShell title="Reference application" className={className}>
-      <rect
-        x="5"
-        y="7"
-        width="30"
-        height="26"
-        rx="2.5"
-        className="atlas-inspect-illustration__layer"
-      />
-      <rect
-        x="5"
-        y="7"
-        width="30"
-        height="6"
-        rx="2.5"
-        className="atlas-inspect-illustration__chrome"
-      />
-      <circle cx="9" cy="10" r="1" className="atlas-inspect-illustration__dot" />
-      <circle cx="13" cy="10" r="1" className="atlas-inspect-illustration__dot" />
-      <rect
-        x="9"
-        y="16"
-        width="22"
-        height="13"
-        rx="1.5"
-        className="atlas-inspect-illustration__layer atlas-inspect-illustration__layer--accent-strong"
-      />
-      <path
-        d="M12 20h16M12 24h11"
-        className="atlas-inspect-illustration__rule"
       />
     </IllustrationShell>
   )
@@ -187,7 +149,6 @@ const ILLUSTRATIONS: Record<
   ComponentType<{ className?: string }>
 > = {
   repository: RepositoryIllustration,
-  "reference-app": ReferenceAppIllustration,
   "architecture-docs": ArchitectureDocsIllustration,
   "ci-workflows": CiWorkflowsIllustration,
 }
@@ -210,7 +171,6 @@ export function InspectDestinationIllustration({
 
 export const INSPECT_ILLUSTRATION_IDS: InspectIllustrationId[] = [
   "repository",
-  "reference-app",
   "architecture-docs",
   "ci-workflows",
 ]

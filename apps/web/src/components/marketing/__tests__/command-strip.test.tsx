@@ -59,4 +59,22 @@ describe("CommandStrip", () => {
 
     expect(screen.getByRole("status")).toHaveTextContent(/Copy failed/);
   });
+
+  it("shows a visible status word when showLabel is set", async () => {
+    const writeText = jest.fn().mockResolvedValue(undefined);
+    mockClipboard(writeText);
+
+    render(
+      <CommandStrip command={INSTALL_COMMAND} copyLabel="Copy install command" showLabel />
+    );
+
+    const button = screen.getByRole("button", { name: "Copy install command" });
+    expect(button).toHaveTextContent("Copy");
+
+    await act(async () => {
+      fireEvent.click(button);
+    });
+
+    expect(button).toHaveTextContent("Copied");
+  });
 });
