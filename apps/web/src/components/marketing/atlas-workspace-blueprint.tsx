@@ -1,21 +1,16 @@
 import { cn } from "@atlas/ui"
 
 const FEATURES = [
-  { path: "billing", note: "--query" },
-  { path: "projects", note: "--form" },
-  { path: "<next>", note: "generate", generated: true },
+  { path: "billing" },
+  { path: "projects" },
+  { path: "+ next", generated: true },
 ] as const
 
-const LIB_MODULES = [
-  { path: "@/lib/api", note: "typed client" },
-  { path: "@/lib/auth", note: "SSR sessions" },
-  { path: "@/config", note: "validated env" },
-  { path: "@/lib/telemetry", note: "errors · vitals" },
-] as const
+const SHARED_MODULES = ["@/lib/api", "@/lib/auth", "@/config", "@/lib/telemetry"] as const
 
 const PACKAGES = [
-  { name: "packages/ui", note: "tokens · primitives" },
-  { name: "packages/config", note: "lint · ts · jest" },
+  { name: "ui", note: "tokens · primitives" },
+  { name: "config", note: "lint · ts · jest" },
 ] as const
 
 const GATES = ["doctor", "lint", "typecheck", "test", "build"] as const
@@ -32,21 +27,22 @@ interface AtlasWorkspaceBlueprintProps {
 }
 
 /**
- * Engineering-drawing view of the workspace `atlas init` generates: route
- * layer, isolated feature modules, shared lib infrastructure, packages, the
- * AGENTS.md contract, and the verification gates. Pure HTML/CSS so labels stay
- * crisp and the layout reflows on small screens.
+ * Engineering-drawing view of the workspace `atlas init` generates. The
+ * drawing follows drafting line weights: the application is the heavy object
+ * line and focal point, supporting parts use fine lines, and annotations sit
+ * in blue so the eye reads the structure before the labels. Pure HTML/CSS so
+ * labels stay crisp and the layout reflows on small screens.
  */
 export function AtlasWorkspaceBlueprint({ className }: AtlasWorkspaceBlueprintProps) {
   return (
     <figure className={cn("bp-sheet", className)}>
       <figcaption className="sr-only">
-        Diagram of the workspace Atlas generates: a my-app repository with an
-        apps/web application split into thin routes, isolated feature modules,
-        and shared lib modules for the API client, auth, config, and
-        observability. Shared UI and config packages sit beside it, AGENTS.md
-        gives developers and coding agents the same conventions, and every
-        change passes doctor, lint, typecheck, test, and build.
+        Diagram of the workspace Atlas generates: a source-owned my-app
+        repository whose apps/web application is split into thin routes,
+        isolated feature modules, and shared modules for the API client, auth,
+        config, and telemetry. Shared ui and config packages sit beside it,
+        AGENTS.md gives developers and coding agents the same conventions, and
+        every change passes doctor, lint, typecheck, test, and build.
       </figcaption>
 
       <div className="bp-sheet__frame" aria-hidden="true">
@@ -66,7 +62,7 @@ export function AtlasWorkspaceBlueprint({ className }: AtlasWorkspaceBlueprintPr
             <span>atlas init my-app</span>
           </div>
 
-          <div className="bp-wire bp-wire--generate">
+          <div className="bp-wire">
             <span className="bp-wire__label">generates</span>
           </div>
 
@@ -74,78 +70,79 @@ export function AtlasWorkspaceBlueprint({ className }: AtlasWorkspaceBlueprintPr
             <span className="bp-zone__tab">my-app/ · source-owned</span>
 
             <div className="bp-zone__layout">
-              <div className="bp-block bp-block--app">
-                <span className="bp-block__tab">apps/web</span>
-
-                <div className="bp-layer bp-layer--routes">
-                  <code>app/</code>
-                  <span>routes stay thin</span>
+              <div className="bp-app">
+                <div className="bp-app__head">
+                  <code>apps/web</code>
+                  <span>application</span>
                 </div>
 
-                <div className="bp-layer bp-layer--features">
-                  <span className="bp-layer__label">features/</span>
-                  <ul className="bp-features">
-                    {FEATURES.map((feature) => (
-                      <li
-                        key={feature.path}
-                        className={cn(
-                          "bp-feature",
-                          "generated" in feature && "bp-feature--generated"
-                        )}
-                      >
-                        <code>{feature.path}</code>
-                        <span>{feature.note}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <span className="bp-callout bp-callout--walls">
-                    no cross-feature imports
-                  </span>
+                <div className="bp-app__row bp-app__row--routes">
+                  <span className="bp-app__key">app/</span>
+                  <div className="bp-app__val">
+                    <span className="bp-routes">thin route files</span>
+                  </div>
                 </div>
 
-                <div className="bp-layer bp-layer--lib">
-                  <span className="bp-layer__label">shared infrastructure</span>
-                  <ul className="bp-modules">
-                    {LIB_MODULES.map((module) => (
-                      <li key={module.path} className="bp-module">
-                        <code>{module.path}</code>
-                        <span>{module.note}</span>
-                      </li>
-                    ))}
-                  </ul>
+                <div className="bp-app__row bp-app__row--features">
+                  <span className="bp-app__key">features/</span>
+                  <div className="bp-app__val">
+                    <ul className="bp-features">
+                      {FEATURES.map((feature) => (
+                        <li
+                          key={feature.path}
+                          className={cn(
+                            "bp-feature",
+                            "generated" in feature && "bp-feature--generated"
+                          )}
+                        >
+                          {feature.path}
+                        </li>
+                      ))}
+                    </ul>
+                    <span className="bp-note">isolated · no cross-feature imports</span>
+                  </div>
+                </div>
+
+                <div className="bp-app__row bp-app__row--shared">
+                  <span className="bp-app__key">shared</span>
+                  <div className="bp-app__val">
+                    <ul className="bp-modules">
+                      {SHARED_MODULES.map((module) => (
+                        <li key={module} className="bp-module">
+                          {module}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
 
               <div className="bp-zone__side">
-                {PACKAGES.map((pkg) => (
-                  <div key={pkg.name} className="bp-block bp-block--pkg">
-                    <code>{pkg.name}</code>
-                    <span>{pkg.note}</span>
-                  </div>
-                ))}
+                <div className="bp-part">
+                  <code className="bp-part__title">packages/</code>
+                  <ul className="bp-part__list">
+                    {PACKAGES.map((pkg) => (
+                      <li key={pkg.name}>
+                        <code>{pkg.name}</code>
+                        <span>{pkg.note}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                <div className="bp-block bp-block--agents">
-                  <code className="bp-agents__file">AGENTS.md</code>
-                  <span className="bp-agents__note">one set of conventions</span>
-                  <span className="bp-agents__note bp-agents__note--path">
-                    + docs/how-we-build/
-                  </span>
-                  <ul className="bp-agents__readers">
-                    <li>
-                      <span className="bp-agents__dot" />
-                      developers
-                    </li>
-                    <li>
-                      <span className="bp-agents__dot bp-agents__dot--agent" />
-                      coding agents
-                    </li>
+                <div className="bp-part bp-part--agents">
+                  <code className="bp-part__title">AGENTS.md</code>
+                  <span className="bp-part__sub">shared conventions</span>
+                  <ul className="bp-readers">
+                    <li>developers</li>
+                    <li>coding agents</li>
                   </ul>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bp-wire bp-wire--verify">
+          <div className="bp-wire">
             <span className="bp-wire__label">every change</span>
           </div>
 
