@@ -29,13 +29,13 @@ export const BUILT_WITH_PRODUCTS = [
     href: "https://aviatopia.com/",
   },
   {
-    name: "Ax402",
+    name: "Launa",
     status: "built-from-atlas",
     statusLabel: "Built from Atlas",
-    logoSrc: `${BUILT_WITH_PRODUCT_LOGO_DIR}/ax402.svg`,
-    logoAlt: "Ax402",
+    logoSrc: `${BUILT_WITH_PRODUCT_LOGO_DIR}/launa.png`,
+    logoAlt: "Launa",
     logoVariant: "wordmark",
-    href: "https://ax402.io/",
+    href: "https://launa.io/",
   },
   {
     name: "xGas Station",
