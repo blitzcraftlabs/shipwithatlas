@@ -53,7 +53,7 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
   )
 
   return (
-    <div ref={listRef} className="atlas-faq__list">
+    <div ref={listRef} className="bp-faq__list">
       {items.map((item, index) => {
         const isOpen = openId === item.id
         const panelId = `faq-panel-${item.id}`
@@ -62,23 +62,24 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
         return (
           <div
             key={item.id}
-            className={cn("atlas-faq__item", isOpen && "atlas-faq__item--open")}
+            className={cn("bp-faq__item", isOpen && "bp-faq__item--open")}
           >
-            <h3 className="atlas-faq__heading">
+            <h3 className="bp-faq__heading">
               <button
                 type="button"
                 id={triggerId}
                 data-faq-trigger
-                className="atlas-faq__trigger"
+                className="bp-faq__trigger"
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => toggleItem(item.id)}
                 onKeyDown={(event) => handleKeyDown(event, index)}
               >
-                <span className="atlas-faq__question">{item.question}</span>
-                <span className="atlas-faq__icon" aria-hidden="true">
-                  {isOpen ? "−" : "+"}
+                <span className="bp-faq__index" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
                 </span>
+                <span className="bp-faq__question">{item.question}</span>
+                <span className="bp-faq__icon" aria-hidden="true" />
               </button>
             </h3>
             <div
@@ -87,10 +88,10 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
               aria-labelledby={triggerId}
               aria-hidden={!isOpen}
               inert={!isOpen ? true : undefined}
-              className="atlas-faq__panel"
+              className="bp-faq__panel"
             >
-              <div className="atlas-faq__panel-inner">
-                <div className="atlas-faq__answer">{item.answer}</div>
+              <div className="bp-faq__panel-inner">
+                <div className="bp-faq__answer">{item.answer}</div>
               </div>
             </div>
           </div>

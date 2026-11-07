@@ -30,11 +30,17 @@ const STEPS = [
 
 const VERIFY_GATES = ["Typecheck", "Tests", "Production build"]
 
+/**
+ * The essential relationship first: four typed stages in one line, the
+ * product UI as the only filled node. Verification spans the whole path
+ * above it, and the Atlas foundation carries it below.
+ */
 export function ContractPathDiagram() {
   return (
     <figure
-      className="atlas-contract-path"
-      aria-labelledby="contract-diagram-title contract-diagram-desc"
+      className="bp-contract"
+      aria-labelledby="contract-diagram-title"
+      aria-describedby="contract-diagram-desc"
     >
       <figcaption className="sr-only">
         <span id="contract-diagram-title">
@@ -47,54 +53,48 @@ export function ContractPathDiagram() {
         </span>
       </figcaption>
 
-      <div className="atlas-contract-path__rail atlas-contract-path__rail--verify">
-        <ul className="atlas-contract-path__gates">
+      <div className="bp-contract__verify">
+        <span className="bp-contract__rail-label">Verified by</span>
+        <ul className="bp-contract__gates">
           {VERIFY_GATES.map((gate) => (
             <li key={gate}>{gate}</li>
           ))}
         </ul>
       </div>
 
-      <div className="atlas-contract-path__track">
-        <ol className="atlas-contract-path__steps">
-          {STEPS.map((step, index) => (
-            <li
-              key={step.id}
-              className="atlas-contract-path__step"
-              data-active={step.active || undefined}
-            >
-              <div className="atlas-contract-path__step-copy">
-                <div className="atlas-contract-path__step-heading">
-                  <ContractStepIcon id={step.id} />
-                  <p className="atlas-contract-path__step-label">{step.label}</p>
-                </div>
-                <p className="atlas-contract-path__step-sublabel">
-                  {step.sublabel}
-                </p>
-                <p className="atlas-contract-path__step-metadata">
-                  {step.metadata}
-                </p>
-              </div>
-              {index < STEPS.length - 1 ? (
-                <span
-                  className="atlas-contract-path__connector"
-                  aria-hidden="true"
-                >
-                  <svg
-                    viewBox="0 0 24 12"
-                    className="atlas-contract-path__arrow"
-                  >
-                    <path d="M0 6h18M14 2l6 4-6 4" />
-                  </svg>
+      <ol className="bp-contract__steps">
+        {STEPS.map((step, index) => (
+          <li
+            key={step.id}
+            className="bp-contract__step"
+            data-active={step.active || undefined}
+          >
+            <div className="bp-contract__node">
+              <div className="bp-contract__node-head">
+                <span className="bp-contract__node-index" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
                 </span>
-              ) : null}
-            </li>
-          ))}
-        </ol>
-      </div>
+                <span className="bp-contract__node-icon" aria-hidden="true">
+                  <ContractStepIcon id={step.id} />
+                </span>
+              </div>
+              <p className="bp-contract__node-label">{step.label}</p>
+              <p className="bp-contract__node-sublabel">{step.sublabel}</p>
+              <code className="bp-contract__node-path">{step.metadata}</code>
+            </div>
+            {index < STEPS.length - 1 ? (
+              <span className="bp-contract__connector" aria-hidden="true">
+                <svg viewBox="0 0 32 16" className="bp-contract__arrow">
+                  <path d="M0 8h28M22 2l7 6-7 6" />
+                </svg>
+              </span>
+            ) : null}
+          </li>
+        ))}
+      </ol>
 
-      <div className="atlas-contract-path__rail atlas-contract-path__rail--foundation">
-        <span>Atlas foundation</span>
+      <div className="bp-contract__foundation">
+        <span className="bp-contract__rail-label">Atlas foundation</span>
       </div>
     </figure>
   )

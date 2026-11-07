@@ -27,13 +27,13 @@ export interface HighlightOptions {
 /** Wrap trailing `# comment` segments in markdown directory trees. */
 function annotateMarkdownTreeComments(html: string): string {
   return html.replace(
-    /<span class="line">(<span style="[^"]*">)([\s\S]*?)(<\/span>)<\/span>/g,
-    (full, openTag, lineText, closeTag) => {
+    /<span class="(line[^"]*)">(<span style="[^"]*">)([\s\S]*?)(<\/span>)<\/span>/g,
+    (full, lineClassName, openTag, lineText, closeTag) => {
       const commentMatch = lineText.match(/^([\s\S]*?)(\s{2,}#\s[\s\S]*)$/)
       if (!commentMatch) return full
 
       const [, pathPart, commentPart] = commentMatch
-      return `<span class="line">${openTag}${pathPart}<span class="atlas-code-tree__comment">${commentPart}</span>${closeTag}</span>`
+      return `<span class="${lineClassName}">${openTag}${pathPart}<span class="atlas-code-tree__comment">${commentPart}</span>${closeTag}</span>`
     }
   )
 }
@@ -80,7 +80,8 @@ export async function highlightCode(
         line(node, lineNumber) {
           const cls = lineClass(lineNumber, highlightedLines, focusedLines)
           if (cls) {
-            node.properties.class = cls
+            // Keep shiki's own `line` class so every row shares one layout
+            node.properties.class = `line ${cls}`
           }
         },
         pre(node) {

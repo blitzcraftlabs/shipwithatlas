@@ -1,33 +1,29 @@
 import { AgentContextTranscript } from "@/components/marketing/agent-context-transcript"
-import { SectionEyebrow } from "@/components/marketing/section-eyebrow"
+import { SectionLabel } from "@/components/marketing/section-label"
 
 export function AgentsSection() {
   return (
     <section
       id="agents"
-      className="atlas-section atlas-section--raised"
+      className="bp-section bp-section--white bp-agents"
       aria-labelledby="agents-heading"
     >
-      <div className="atlas-marketing__gutter atlas-agents">
-        <div className="atlas-agents__intro">
-          <div className="atlas-agents__intro-primary">
-            <SectionEyebrow>Agent context</SectionEyebrow>
-            <h2 id="agents-heading" className="atlas-section__title">
-              Any agent.
-              <br />
-              Same architecture.
-            </h2>
-          </div>
-          <div className="atlas-agents__intro-copy">
-            <p className="atlas-agents__lead">
-              Change your agent, not your engineering standards.
-            </p>
-            <p className="atlas-section__body atlas-agents__support">
-              Architecture rules, feature boundaries, reference implementations,
-              and verification live in the repository—so every coding agent works
-              from the same context.
-            </p>
-          </div>
+      <div className="atlas-marketing__gutter bp-agents__layout">
+        <div className="bp-agents__intro">
+          <SectionLabel index="06">Agent context</SectionLabel>
+          <h2 id="agents-heading" className="bp-h2">
+            Any agent.
+            {" "}<br />
+            Same architecture.
+          </h2>
+          <p className="bp-agents__lead">
+            Change your agent, not your engineering standards.
+          </p>
+          <p className="bp-body">
+            Architecture rules, feature boundaries, reference implementations,
+            and verification live in the repository, so every coding agent works
+            from the same context.
+          </p>
         </div>
 
         <AgentContextTranscript />

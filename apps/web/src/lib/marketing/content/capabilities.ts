@@ -55,7 +55,7 @@ export const ATLAS_CAPABILITIES: Capability[] = [
     source: "packages/ui/src/",
     sourceHref: `${REPO}/tree/main/packages/ui`,
     explanation:
-      "A shared @atlas/ui package ships accessible primitives, form components, and theme utilities—composed by product code, not rebuilt per feature.",
+      "A shared @atlas/ui package ships accessible primitives, form components, and theme utilities, composed by product code, not rebuilt per feature.",
     included: [
       "Shared @atlas/ui package with accessible primitives",
       "Theme boot script and dark-mode support",
@@ -180,7 +180,7 @@ export type ExampleItemsListResponse =
     source: "apps/web/src/lib/api/errors",
     sourceHref: `${REPO}/tree/main/apps/web/src/lib/api/errors`,
     explanation:
-      "ApiError normalizes failures into user-safe messages with correlation IDs and server field errors—wired to notifications without leaking internals.",
+      "ApiError normalizes failures into user-safe messages with correlation IDs and server field errors, wired to notifications without leaking internals.",
     included: [
       "Structured ApiError type",
       "Correlation ID propagation",
@@ -208,7 +208,7 @@ export type ExampleItemsListResponse =
     source: "apps/web/src/lib/auth/",
     sourceHref: `${REPO}/tree/main/apps/web/src/lib/auth`,
     explanation:
-      "OAuth 2.0 with PKCE exchanges tokens server-side. Sessions persist in httpOnly cookies with server and client session APIs—Google provider included as reference.",
+      "OAuth 2.0 with PKCE exchanges tokens server-side. Sessions persist in httpOnly cookies with server and client session APIs. A Google provider is included as a reference.",
     included: [
       "Server-side token exchange",
       "httpOnly session cookies",
@@ -234,7 +234,7 @@ setSessionCookie(response, session)`,
     source: "apps/web/src/lib/security/",
     sourceHref: `${REPO}/tree/main/apps/web/src/lib/security`,
     explanation:
-      "Per-request CSP nonces, baseline security headers, and sensitive-data redaction are part of the application infrastructure—not optional add-ons.",
+      "Per-request CSP nonces, baseline security headers, and sensitive-data redaction are part of the application infrastructure, not optional add-ons.",
     included: [
       "CSP generation with nonces",
       "HSTS production option",
@@ -347,7 +347,7 @@ export type FeatureFlagKey =
     source: "packages/consent/",
     sourceHref: `${REPO}/tree/main/packages/consent`,
     explanation:
-      "The optional @atlas/consent package provides cookie consent UI and analytics integration—disabled unless explicitly enabled. Not a certified CMP.",
+      "The optional @atlas/consent package provides cookie consent UI and analytics integration, disabled unless explicitly enabled. Not a certified CMP.",
     included: [
       "Cookie consent banner",
       "Analytics consent gating",
@@ -373,7 +373,7 @@ export type FeatureFlagKey =
     source: "apps/web/src/env/",
     sourceHref: `${REPO}/tree/main/apps/web/src/env`,
     explanation:
-      "Schema-driven environment configuration separates public and server values. pnpm validate:env catches misconfiguration at build time—not in production.",
+      "Schema-driven environment configuration separates public and server values. pnpm validate:env catches misconfiguration at build time, not in production.",
     included: [
       "Zod-validated env schemas",
       "Public/server separation",
@@ -426,7 +426,7 @@ export type FeatureFlagKey =
     source: "packages/ui/src/components/",
     sourceHref: `${REPO}/tree/main/packages/ui`,
     explanation:
-      "Components orient toward accessible primitives with keyboard and focus conventions. jsx-a11y ESLint rules and Storybook a11y review tooling provide a baseline—not WCAG certification.",
+      "Components orient toward accessible primitives with keyboard and focus conventions. jsx-a11y ESLint rules and Storybook a11y review tooling provide a baseline, not WCAG certification.",
     included: [
       "Semantic Radix primitives",
       "Focus-visible conventions",
@@ -484,7 +484,7 @@ export type FeatureFlagKey =
     source: "tools/perf/",
     sourceHref: `${REPO}/tree/main/tools/perf`,
     explanation:
-      "Opt-in Lighthouse CI workflows and bundle analysis via perf:enable and the Next.js bundle analyzer—available when teams want performance budgets, not forced by default.",
+      "Opt-in Lighthouse CI workflows and bundle analysis via perf:enable and the Next.js bundle analyzer, available when teams want performance budgets, not forced by default.",
     included: [
       "lighthouserc.json budgets",
       "Bundle analyzer command",

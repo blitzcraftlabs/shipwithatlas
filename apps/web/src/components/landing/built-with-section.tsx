@@ -2,101 +2,108 @@ import { ArrowUpRight } from "lucide-react"
 
 import { cn } from "@atlas/ui"
 
-import { SectionEyebrow } from "@/components/marketing/section-eyebrow"
+import { SectionLabel } from "@/components/marketing/section-label"
 import {
   BUILT_WITH_PRODUCTS,
   type BuiltWithProduct,
 } from "@/lib/marketing/content/products"
 
-function BuiltWithLogoCell({ product }: { product: BuiltWithProduct }) {
-  const cellClassName = cn(
-    "atlas-built-with__cell",
-    product.logoVariant &&
-      `atlas-built-with__cell--${product.logoVariant}`,
-    product.href && "atlas-built-with__cell--link"
-  )
+function hostname(href: string) {
+  return new URL(href).hostname.replace(/^www\./, "")
+}
 
-  const statusClassName = cn(
-    "atlas-built-with__status",
-    product.status === "built-from-atlas"
-      ? "atlas-built-with__status--built"
-      : "atlas-built-with__status--migrated"
+function ProductCell({ product }: { product: BuiltWithProduct }) {
+  const isBuilt = product.status === "built-from-atlas"
+  const cellClassName = cn(
+    "bp-products__cell",
+    product.logoVariant && `bp-products__cell--${product.logoVariant}`,
+    product.href && "bp-products__cell--link"
   )
 
   const content = (
     <>
-      <div className="atlas-built-with__logo-stage">
-        <div className="atlas-built-with__logo-wrap">
-          <img
-            className="atlas-built-with__logo"
-            src={product.logoSrc}
-            alt={product.logoAlt}
-            loading="lazy"
-            decoding="async"
-          />
-          {product.showName ? (
-            <span className="atlas-built-with__logo-name">{product.name}</span>
-          ) : null}
-        </div>
-      </div>
-      <p className={statusClassName}>
-        <span>{product.statusLabel}</span>
-        {product.href ? (
-          <ArrowUpRight
-            className="atlas-built-with__status-arrow"
-            strokeWidth={1.75}
-            aria-hidden="true"
-          />
+      <span className="bp-products__stage">
+        <img
+          className="bp-products__logo"
+          src={product.logoSrc}
+          alt={product.logoAlt}
+          loading="lazy"
+          decoding="async"
+        />
+        {product.showName ? (
+          <span className="bp-products__name">{product.name}</span>
         ) : null}
-      </p>
+      </span>
+      <span className="bp-products__meta">
+        <span
+          className={cn(
+            "bp-products__status",
+            isBuilt ? "bp-products__status--built" : "bp-products__status--migrated"
+          )}
+        >
+          {product.statusLabel}
+        </span>
+        {product.href ? (
+          <span className="bp-products__host">
+            {hostname(product.href)}
+            <ArrowUpRight
+              className="bp-products__arrow"
+              strokeWidth={2}
+              aria-hidden="true"
+            />
+          </span>
+        ) : null}
+      </span>
     </>
   )
 
   if (product.href) {
     return (
-      <a
-        href={product.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={cellClassName}
-        aria-label={`${product.name} — ${product.statusLabel}`}
-      >
-        {content}
-      </a>
+      <li>
+        <a
+          href={product.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cellClassName}
+          aria-label={`${product.name}, ${product.statusLabel} (opens in a new tab)`}
+        >
+          {content}
+        </a>
+      </li>
     )
   }
 
-  return <article className={cellClassName}>{content}</article>
+  return <li className={cellClassName}>{content}</li>
 }
 
 export function BuiltWithSection() {
   return (
     <section
-      className="atlas-section atlas-section--surface"
+      className="bp-section bp-section--accent bp-products"
       aria-labelledby="built-with-heading"
     >
-      <div className="atlas-marketing__gutter atlas-built-with">
-        <div className="atlas-built-with__intro">
-          <SectionEyebrow>Built with Atlas</SectionEyebrow>
-          <h2 id="built-with-heading" className="atlas-section__title">
-            One foundation.
-            <br />
-            Different products.
-          </h2>
-          <p className="atlas-section__body">
+      <div className="atlas-marketing__gutter">
+        <header className="bp-section-head bp-products__head">
+          <div className="bp-products__title">
+            <SectionLabel index="04">Built with Atlas</SectionLabel>
+            <h2 id="built-with-heading" className="bp-h2">
+              One foundation.
+              {" "}<br />
+              Different products.
+            </h2>
+          </div>
+          <p className="bp-lead bp-products__lead">
             Atlas has been used across knowledge products, developer
-            infrastructure, and production applications—without forcing them
+            infrastructure, and production applications without forcing them
             into the same product shape.
           </p>
-        </div>
+        </header>
 
-        <div className="atlas-built-with__showcase">
-          <div className="atlas-built-with__grid">
-            {BUILT_WITH_PRODUCTS.map((product) => (
-              <BuiltWithLogoCell key={product.name} product={product} />
-            ))}
-          </div>
-        </div>
+        <ul className="bp-products__grid">
+          {BUILT_WITH_PRODUCTS.map((product) => (
+            <ProductCell key={product.name} product={product} />
+          ))}
+        </ul>
       </div>
     </section>
   )

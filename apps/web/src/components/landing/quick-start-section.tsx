@@ -1,10 +1,8 @@
-import { ArrowUpRight } from "lucide-react";
-
-import { Button } from "@atlas/ui";
+import { ArrowUpRight, ChevronRight } from "lucide-react";
 
 import { CodeCopyButton } from "@/components/marketing/code-copy-button";
 import { CommandStrip } from "@/components/marketing/command-strip";
-import { SectionEyebrow } from "@/components/marketing/section-eyebrow";
+import { SectionLabel } from "@/components/marketing/section-label";
 import {
   NPM_PACKAGE_NAME,
   NPM_PACKAGE_URL,
@@ -17,107 +15,119 @@ import {
 
 export function QuickStartSection() {
   return (
-    <section id="get-started" className="atlas-section" aria-labelledby="get-started-heading">
-      <div className="atlas-marketing__gutter atlas-quick-start">
-        <div className="atlas-quick-start__intro">
-          <SectionEyebrow>Quick start</SectionEyebrow>
-          <h2 id="get-started-heading" className="atlas-section__title">
+    <section
+      id="get-started"
+      className="bp-section bp-section--white bp-start"
+      aria-labelledby="get-started-heading"
+    >
+      <div className="atlas-marketing__gutter bp-start__layout">
+        <div className="bp-start__intro">
+          <SectionLabel index="02">Quick start</SectionLabel>
+          <h2 id="get-started-heading" className="bp-h2">
             Install Atlas.
-            <br />
+            {" "}<br />
             Start with the product.
           </h2>
-          <p className="atlas-section__body">
+          <p className="bp-lead">
             The Atlas CLI creates a complete Next.js workspace in a directory you own. Three steps
             from an empty folder to a running app.
           </p>
 
-          <div className="atlas-quick-start__prereqs">
-            <h3 className="atlas-quick-start__prereqs-title">Prerequisites</h3>
-            <ul className="atlas-quick-start__prereqs-list">
+          <div className="bp-start__prereqs">
+            <h3 className="bp-start__prereqs-title">Prerequisites</h3>
+            <ul className="bp-start__prereqs-list">
               {PREREQUISITES.map((item) => (
                 <li key={item.name}>
-                  {item.name} <code>{item.version}</code>
+                  <span>{item.name}</span>
+                  <code>{item.version}</code>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="atlas-quick-start__actions">
-            <Button
-              nativeButton={false}
-              render={
-                <a href={NPM_PACKAGE_URL} target="_blank" rel="noopener noreferrer">
-                  View {NPM_PACKAGE_NAME} on npm
-                  <ArrowUpRight className="size-4" aria-hidden="true" />
-                  <span className="sr-only"> (opens in a new tab)</span>
-                </a>
-              }
-              size="lg"
-              className="atlas-btn-primary"
-            />
-            <Button
-              nativeButton={false}
-              render={
-                <a href={QUICKSTART_DOCS_URL} target="_blank" rel="noopener noreferrer">
-                  Read the quickstart docs
-                  <span className="sr-only"> (opens in a new tab)</span>
-                </a>
-              }
-              variant="outline"
-              size="lg"
-              className="atlas-btn-secondary"
-            />
+          <div className="bp-actions">
+            <a
+              href={NPM_PACKAGE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bp-button bp-button--primary"
+            >
+              View {NPM_PACKAGE_NAME} on npm
+              <ArrowUpRight className="size-4" aria-hidden="true" />
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+            <a
+              href={QUICKSTART_DOCS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bp-arrow-link"
+            >
+              Read the quickstart docs
+              <ArrowUpRight className="size-4" aria-hidden="true" />
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
           </div>
         </div>
 
-        <div className="atlas-quick-start__panel">
-          <div className="atlas-quick-start__panel-head">
-            <span className="atlas-quick-start__panel-title">New Atlas project</span>
-            <CodeCopyButton
-              code={QUICK_START_SCRIPT}
-              label="Copy all quick start commands"
-              className="atlas-quick-start__copy-all"
-            />
+        <div className="bp-start__sheet">
+          <div className="bp-start__sheet-head">
+            <span className="bp-start__sheet-title">New Atlas project</span>
+            <span className="bp-start__copy-all">
+              <span className="bp-start__copy-all-label" aria-hidden="true">
+                Copy all
+              </span>
+              <CodeCopyButton
+                code={QUICK_START_SCRIPT}
+                label="Copy all quick start commands"
+                className="bp-copy"
+              />
+            </span>
           </div>
-          <ol className="atlas-quick-start__steps">
+
+          <ol className="bp-start__steps">
             {QUICK_START_STEPS.map((step) => (
-              <li key={step.index} className="atlas-quick-start__step">
-                <div className="atlas-quick-start__step-head">
-                  <span className="atlas-quick-start__step-index" aria-hidden="true">
-                    {step.index}
-                  </span>
-                  <h3 className="atlas-quick-start__step-title">{step.title}</h3>
+              <li key={step.index} className="bp-start__step">
+                <span className="bp-start__step-index" aria-hidden="true">
+                  {step.index}
+                </span>
+                <div className="bp-start__step-main">
+                  <h3 className="bp-start__step-title">{step.title}</h3>
+                  <p className="bp-start__step-body">{step.description}</p>
+                  <div className="bp-start__commands">
+                    {step.commands.map((command) => (
+                      <CommandStrip
+                        key={command}
+                        command={command}
+                        copyLabel={`Copy command: ${command}`}
+                        className="bp-cmd"
+                      />
+                    ))}
+                  </div>
                 </div>
-                <p className="atlas-quick-start__step-body">{step.description}</p>
-                {step.commands.map((command) => (
-                  <CommandStrip
-                    key={command}
-                    command={command}
-                    copyLabel={`Copy command: ${command}`}
-                    className="atlas-quick-start__command"
-                  />
-                ))}
               </li>
             ))}
           </ol>
 
-          <details className="atlas-quick-start__contrib">
-            <summary className="atlas-quick-start__contrib-summary">
+          <details className="bp-start__contrib">
+            <summary className="bp-start__contrib-summary">
+              <ChevronRight className="bp-start__contrib-chevron" aria-hidden="true" />
               Contributing to Atlas itself? Clone the repository instead.
             </summary>
-            <p className="atlas-quick-start__contrib-body">
-              These commands set up the Atlas source repository for platform development. You
-              don&apos;t need them to build an app with Atlas.
-            </p>
-            <div className="atlas-quick-start__contrib-code">
-              <pre>
-                <code>{REPOSITORY_DEV_SCRIPT}</code>
-              </pre>
-              <CodeCopyButton
-                code={REPOSITORY_DEV_SCRIPT}
-                label="Copy repository development commands"
-                className="atlas-quick-start__contrib-copy"
-              />
+            <div className="bp-start__contrib-body">
+              <p>
+                These commands set up the Atlas source repository for platform development. You
+                don&apos;t need them to build an app with Atlas.
+              </p>
+              <div className="bp-start__contrib-code">
+                <pre>
+                  <code>{REPOSITORY_DEV_SCRIPT}</code>
+                </pre>
+                <CodeCopyButton
+                  code={REPOSITORY_DEV_SCRIPT}
+                  label="Copy repository development commands"
+                  className="bp-copy bp-copy--inverse"
+                />
+              </div>
             </div>
           </details>
         </div>
