@@ -8,7 +8,7 @@
  * Scope: tokens live on `.atlas-marketing` with a `--bp-` prefix so legacy
  * sections keep their existing `--atlas-*` tokens until they migrate.
  * Components in this file: header, hero, install command, buttons, and the
- * workspace schematic illustration.
+ * workspace preview.
  */
 
 .atlas-marketing {
@@ -333,7 +333,7 @@
 .bp-hero {
   position: relative;
   isolation: isolate;
-  padding-block: clamp(2.75rem, 4.5vw, 4rem) 0;
+  padding-block: clamp(3.5rem, 7vw, 6rem) 0;
   background-color: var(--bp-bg);
   /* Blueprint paper: minor 24px grid with major lines every 120px */
   background-image:
@@ -349,126 +349,135 @@
   background-position: center top;
 }
 
-/* Soft paper fade so the grid recedes behind the copy column */
+/* Paper clears behind the centered copy so the grid recedes from the type */
 .bp-hero::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(ellipse 55% 75% at 20% 45%, var(--bp-bg) 35%, transparent 78%);
-}
-
-.bp-hero__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(3rem, 7vw, 4.5rem);
-  align-items: center;
-}
-
-@media (min-width: 1100px) {
-  .bp-hero__grid {
-    /* Copy column sized to the headline measure; the drawing takes the rest */
-    grid-template-columns: minmax(0, 37rem) minmax(0, 1fr);
-    gap: clamp(3.5rem, 6vw, 6rem);
-  }
-}
-
-@media (min-width: 1440px) {
-  .bp-hero__grid {
-    grid-template-columns: minmax(0, 39rem) minmax(0, 1fr);
-  }
+  background: radial-gradient(ellipse 60% 42% at 50% 22%, var(--bp-bg) 45%, transparent 85%);
 }
 
 .bp-hero__copy {
-  max-width: 39rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 54rem;
+  margin-inline: auto;
+  text-align: center;
 }
 
 .bp-hero__title {
-  margin-top: clamp(1.5rem, 2.5vw, 2rem);
+  margin-top: clamp(1.75rem, 3vw, 2.25rem);
+  max-width: 15ch;
   font-family: var(--bp-font-mono);
-  font-size: var(--bp-display);
+  font-size: clamp(2.125rem, 1rem + 4.4vw, 4.25rem);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.08;
   letter-spacing: -0.045em;
   color: var(--bp-text);
+  text-wrap: balance;
 }
 
-.bp-hero__title-line {
-  display: block;
-}
-
-.bp-hero__title-line + .bp-hero__title-line {
-  margin-top: 0.06em;
+.bp-hero__title .bp-highlight {
+  white-space: nowrap;
 }
 
 .bp-hero__lead {
   margin-top: clamp(1.5rem, 2.5vw, 2rem);
-  max-width: 33rem;
+  max-width: 40rem;
   font-family: var(--bp-font-sans);
-  font-size: clamp(1.0625rem, 0.95rem + 0.35vw, 1.1875rem);
-  line-height: 1.65;
+  font-size: clamp(1.0625rem, 0.95rem + 0.4vw, 1.25rem);
+  line-height: 1.6;
   color: var(--bp-text-muted);
   text-wrap: pretty;
 }
 
-.bp-hero__actions {
-  margin-top: 2rem;
+@media (max-width: 359px) {
+  /* Keep the eyebrow on one line at the smallest widths */
+  .bp-hero .bp-tag {
+    padding-inline: 0.5rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* Links stay on one row */
+  .bp-hero .bp-hero__links ul {
+    gap: 0.25rem 0.375rem;
+  }
+
+  .bp-hero .bp-hero__links li + li::before {
+    margin-right: 0.375rem;
+  }
+
+  .bp-hero__links .bp-hero__link {
+    padding-inline: 0.125rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Secondary links: one quiet mono row, read after the command */
+.bp-hero__links {
+  margin-top: 1.5rem;
+}
+
+.bp-hero__links ul {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 0.5rem;
+}
+
+.bp-hero__links li {
+  display: flex;
   align-items: center;
-  gap: 0.75rem 1.25rem;
 }
 
-/* Stack line: a quiet spec note, read last */
-.bp-hero__stack {
-  margin-top: clamp(2rem, 4vw, 2.75rem);
-  padding-top: 1rem;
-  max-width: 33rem;
-  border-top: var(--bp-stroke-fine) solid var(--bp-line);
-  font-family: var(--bp-font-mono);
-  font-size: 0.75rem;
-  line-height: 1.8;
-  color: var(--bp-text-subtle);
-}
-
-.bp-hero__stack-key {
+.bp-hero__links li + li::before {
+  content: "/";
   margin-right: 0.5rem;
-  color: var(--bp-text-subtle);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.6875rem;
-}
-
-.bp-hero__stack-item {
-  white-space: nowrap;
-}
-
-.bp-hero__stack-sep {
-  white-space: pre;
   color: var(--bp-blue-300);
+  font-family: var(--bp-font-mono);
+  font-size: 0.8125rem;
 }
 
-/* Quiet secondary button: text with an underline that firms up on hover */
-.bp-button--quiet {
+.bp-hero__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   min-height: 2.75rem;
-  padding-inline: 0.25rem;
-  border-color: transparent;
-  background: transparent;
+  padding-inline: 0.375rem;
   color: var(--bp-text);
+  font-family: var(--bp-font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-decoration-color: var(--bp-line);
   text-underline-offset: 5px;
+  transition:
+    color 0.15s ease,
+    text-decoration-color 0.15s ease;
 }
 
-.bp-button--quiet:hover {
-  transform: none;
-  box-shadow: none;
+.bp-hero__link svg {
+  color: var(--bp-text-subtle);
+}
+
+.bp-hero__link:hover {
   color: var(--bp-text-accent);
   text-decoration-color: currentColor;
   text-decoration-thickness: 2px;
+}
+
+.bp-hero__link:hover svg {
+  color: currentColor;
+}
+
+.bp-hero__link:focus-visible {
+  outline: 2px solid var(--bp-focus);
+  outline-offset: 2px;
 }
 
 /* Sheet edge: the hero closes like a drawing sheet. A 2px ink rule with a
@@ -529,43 +538,21 @@
 /* ------------------------------------------------------------------ */
 
 .bp-install {
-  margin-top: clamp(2.25rem, 3.5vw, 2.75rem);
+  margin-top: clamp(2.25rem, 4vw, 3rem);
+  width: 100%;
   /* Leave room for the hard shadow so it never meets the gutter */
   max-width: calc(100% - 6px);
 }
 
 @media (min-width: 640px) {
   .bp-install {
-    max-width: 37.5rem;
+    max-width: 40rem;
   }
-}
-
-.bp-install__label {
-  display: inline-block;
-  padding: 0.375rem 0.75rem;
-  border: var(--bp-stroke) solid var(--bp-line-strong);
-  border-bottom: 0;
-  background: var(--bp-surface);
-  color: var(--bp-text);
-  font-family: var(--bp-font-mono);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.bp-install__label::before {
-  content: "";
-  display: inline-block;
-  width: 0.4375rem;
-  height: 0.4375rem;
-  margin-right: 0.5rem;
-  background: var(--bp-action);
-  vertical-align: 0.08em;
 }
 
 .bp-install .bp-install__strip {
   margin-top: 0;
+  text-align: left;
   gap: 0.875rem;
   min-height: 4rem;
   padding: 0.625rem 0.625rem 0.625rem 1.25rem;
@@ -588,7 +575,7 @@
   overflow-x: visible;
   white-space: normal;
   font-family: var(--bp-font-mono);
-  font-size: clamp(0.875rem, 0.82rem + 0.2vw, 0.9375rem);
+  font-size: clamp(0.875rem, 0.8rem + 0.3vw, 1rem);
   font-weight: 500;
   line-height: 1.5;
   color: var(--bp-terminal-text);
@@ -676,49 +663,6 @@
   outline-offset: 2px;
 }
 
-/* Spec line under the strip: requirements left, references right */
-.bp-install__meta {
-  margin-top: 1.125rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.625rem 1.5rem;
-  font-family: var(--bp-font-mono);
-  font-size: 0.75rem;
-}
-
-.bp-install__requires {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem 0.875rem;
-  color: var(--bp-text-muted);
-}
-
-.bp-install__requires-key {
-  color: var(--bp-text-subtle);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.bp-install__requires-item {
-  white-space: nowrap;
-}
-
-.bp-install__requires code {
-  color: var(--bp-text);
-  font-weight: 700;
-}
-
-.bp-install__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
-}
-
 @media (max-width: 479px) {
   /* Narrow screens: the command gets the full line, the copy action becomes
      a full-width bar beneath it so it stays a large, obvious touch target */
@@ -746,566 +690,273 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Workspace schematic                                                 */
+/* Workspace preview                                                   */
 /* ------------------------------------------------------------------ */
 
 /*
- * Drafting line weights carry the hierarchy:
- *   heavy ink + blue hard shadow  -> apps/web, the focal object
- *   2px ink                       -> parts of the workspace
- *   1px fine ink                  -> sub-parts
- *   blue text, no boxes           -> annotations
+ * One editor window: the generated tree on the left, AGENTS.md open on the
+ * right. White surface, 2px ink frame, blue sheet shadow. The only blue fill
+ * is the active file, so the eye lands on the conventions first.
  */
 
-.bp-sheet {
-  position: relative;
-  min-width: 0;
+.bp-demo {
+  max-width: 68rem;
+  margin: clamp(4.5rem, 9vw, 7rem) auto 0;
+  /* Room for the sheet shadow inside the gutter */
+  padding-right: 10px;
+}
+
+.bp-demo__window {
+  border: var(--bp-stroke) solid var(--bp-line-strong);
+  background: var(--bp-surface);
+  box-shadow: var(--bp-shadow-sheet);
   font-family: var(--bp-font-mono);
   color: var(--bp-text);
+  text-align: left;
 }
 
-.bp-sheet__frame {
-  position: relative;
-  border: var(--bp-stroke) solid var(--bp-art-stroke);
-  background: var(--bp-art-fill);
-  box-shadow: var(--bp-shadow-sheet);
-}
-
-/* Registration crosshairs at the sheet corners */
-.bp-sheet__reg {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  pointer-events: none;
-}
-
-.bp-sheet__reg::before,
-.bp-sheet__reg::after {
-  content: "";
-  position: absolute;
-  background: var(--bp-art-accent);
-}
-
-.bp-sheet__reg::before {
-  left: 50%;
-  top: 0;
-  width: 1px;
-  height: 100%;
-}
-
-.bp-sheet__reg::after {
-  top: 50%;
-  left: 0;
-  height: 1px;
-  width: 100%;
-}
-
-.bp-sheet__reg--tl { top: -10px; left: -10px; }
-.bp-sheet__reg--tr { top: -10px; right: -10px; }
-.bp-sheet__reg--bl { bottom: -10px; left: -10px; }
-.bp-sheet__reg--br { bottom: -10px; right: -10px; }
-
-.bp-sheet__head {
+.bp-demo__bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.5rem 1rem;
-  border-bottom: var(--bp-stroke) solid var(--bp-art-stroke);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  padding: 0.75rem 1.25rem;
+  border-bottom: var(--bp-stroke) solid var(--bp-line-strong);
+  font-size: 0.75rem;
 }
 
-.bp-sheet__head-title::before {
+.bp-demo__project {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-weight: 700;
+}
+
+.bp-demo__project::before {
   content: "";
-  display: inline-block;
   width: 0.5rem;
   height: 0.5rem;
-  margin-right: 0.5rem;
-  background: var(--bp-art-accent);
-  vertical-align: 0.05em;
+  background: var(--bp-action);
 }
 
-.bp-sheet__head-meta {
+.bp-demo__origin {
   color: var(--bp-text-subtle);
 }
 
-.bp-sheet__body {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: clamp(1.25rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem);
-  background-color: var(--bp-art-fill);
-  background-image:
-    linear-gradient(var(--bp-grid-minor) 1px, transparent 1px),
-    linear-gradient(90deg, var(--bp-grid-minor) 1px, transparent 1px);
-  background-size: 16px 16px;
+.bp-demo__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
 }
 
-/* Input: the command that produces the drawing */
-.bp-cmd {
-  align-self: center;
-  display: inline-flex;
-  gap: 0.5rem;
-  padding: 0.4375rem 0.875rem;
-  border: var(--bp-stroke) solid var(--bp-art-stroke);
-  background: var(--bp-surface-inverse);
-  color: var(--bp-text-inverse);
-  font-size: 0.8125rem;
-  font-weight: 700;
+@media (min-width: 900px) {
+  .bp-demo__body {
+    grid-template-columns: minmax(0, 27rem) minmax(0, 1fr);
+  }
 }
 
-.bp-cmd__prompt {
-  color: var(--bp-terminal-accent);
-}
-
-/* Connector: a dashed lead with an arrowhead and a plain blue annotation */
-.bp-wire {
-  position: relative;
-  align-self: center;
-  width: 2px;
-  height: 2.25rem;
-  background: linear-gradient(var(--bp-art-accent) 50%, transparent 50%) 0 0 / 2px 6px repeat-y;
-}
-
-.bp-wire::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -1px;
-  transform: translateX(-50%);
-  border: 4px solid transparent;
-  border-top: 6px solid var(--bp-art-accent);
-  border-bottom: 0;
-}
-
-.bp-wire__label {
-  position: absolute;
-  top: 50%;
-  left: 0.75rem;
-  transform: translateY(-50%);
-  color: var(--bp-text-accent);
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-/* Workspace boundary: dashed and lightly hatched */
-.bp-zone {
-  position: relative;
-  margin-top: 0.75rem;
-  padding: 2rem clamp(0.875rem, 2.5vw, 1.5rem) clamp(1rem, 2.5vw, 1.5rem);
-  border: var(--bp-stroke) dashed var(--bp-art-stroke);
-  background-image: repeating-linear-gradient(
-    135deg,
-    var(--bp-hatch) 0 1px,
-    transparent 1px 9px
-  );
-}
-
-.bp-zone__tab {
-  position: absolute;
-  top: -2px;
-  left: 0.875rem;
-  transform: translateY(-50%);
-  padding: 0.25rem 0.5rem;
-  border: var(--bp-stroke) solid var(--bp-art-stroke);
-  background: var(--bp-art-accent);
-  color: var(--bp-text-on-accent);
+.bp-demo__pane-label {
+  margin-bottom: 0.75rem;
+  color: var(--bp-text-subtle);
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  white-space: nowrap;
 }
 
-.bp-zone__layout {
-  display: grid;
-  gap: 1.75rem;
+/* Tree */
+.bp-demo__tree {
+  padding: 1.25rem 0.75rem 1.5rem;
+  background: var(--bp-bg);
 }
 
-/* Focal object: the application */
-.bp-app {
-  position: relative;
-  border: var(--bp-stroke) solid var(--bp-art-stroke);
-  background: var(--bp-art-fill);
-  box-shadow: 6px 6px 0 var(--bp-art-accent);
+.bp-demo__tree .bp-demo__pane-label {
+  padding-inline: 0.5rem;
 }
 
-.bp-app__head {
+@media (min-width: 900px) {
+  .bp-demo__tree {
+    border-right: var(--bp-stroke-fine) solid var(--bp-line);
+  }
+}
+
+.bp-demo__tree-row {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.5rem 0.875rem;
-  background: var(--bp-art-stroke);
-  color: var(--bp-text-inverse);
-}
-
-.bp-app__head code {
-  font-family: inherit;
-  font-size: 0.9375rem;
-  font-weight: 800;
-}
-
-.bp-app__head span {
-  color: var(--bp-blue-300);
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.bp-app__row {
-  display: grid;
-  grid-template-columns: 5.25rem minmax(0, 1fr);
-  align-items: start;
-  gap: 0.75rem;
-  padding: 0.875rem;
-}
-
-.bp-app__row + .bp-app__row {
-  border-top: var(--bp-stroke-fine) solid var(--bp-art-stroke-fine);
-}
-
-.bp-app__key {
-  padding-top: 0.3125rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--bp-text);
-}
-
-.bp-app__val {
-  min-width: 0;
-}
-
-.bp-routes {
-  display: block;
-  padding: 0.3125rem 0.625rem;
-  border: var(--bp-stroke-fine) solid var(--bp-art-stroke-fine);
-  background: var(--bp-surface-sunken);
-  color: var(--bp-text-muted);
-  font-size: 0.6875rem;
-}
-
-.bp-features {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 0.75rem;
-}
-
-.bp-feature {
-  position: relative;
-  padding: 0.3125rem 0.625rem;
-  border: var(--bp-stroke) solid var(--bp-art-stroke);
-  background: var(--bp-art-fill);
-  font-size: 0.75rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-/* Boundary wall between features: a short barred gap */
-.bp-feature + .bp-feature::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: calc(-0.375rem - 2px);
-  width: 2px;
-  height: 80%;
-  transform: translate(-50%, -50%);
-  background: repeating-linear-gradient(var(--bp-art-accent) 0 3px, transparent 3px 5px);
-}
-
-.bp-feature--generated {
-  border-style: dashed;
-  border-color: var(--bp-art-accent);
-  background: var(--bp-art-fill-accent);
-  color: var(--bp-text-accent);
-}
-
-.bp-note {
-  display: block;
-  margin-top: 0.5rem;
-  color: var(--bp-text-accent);
-  font-size: 0.625rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-}
-
-.bp-modules {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.375rem;
-}
-
-.bp-module {
-  padding: 0.25rem 0.5rem;
-  border: var(--bp-stroke-fine) solid rgb(37 99 235 / 45%);
-  background: var(--bp-art-fill-accent);
-  color: var(--bp-text);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-/* Supporting parts: a row beneath the application */
-.bp-zone__side {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: 1rem 1.25rem;
-  align-items: stretch;
-}
-
-.bp-part {
-  position: relative;
-  display: grid;
-  gap: 0.5rem;
-  padding: 0.75rem 0.875rem;
-  border: var(--bp-stroke) solid var(--bp-art-stroke);
-  background: var(--bp-art-fill);
-  font-size: 0.75rem;
-}
-
-.bp-part__title {
-  font-family: inherit;
+  padding: 0.1875rem 0.5rem;
   font-size: 0.8125rem;
-  font-weight: 800;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
-.bp-part__list {
-  display: grid;
-  gap: 0.25rem;
+.bp-demo__tree-prefix {
+  white-space: pre;
+  color: var(--bp-blue-300);
 }
 
-.bp-part__list li {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0 0.75rem;
-  padding-top: 0.25rem;
-  border-top: var(--bp-stroke-fine) dashed var(--bp-art-stroke-fine);
-}
-
-.bp-part__list code {
-  font-family: inherit;
-  font-weight: 700;
-}
-
-.bp-part__list span,
-.bp-part__sub {
-  color: var(--bp-text-subtle);
-  font-size: 0.6875rem;
-}
-
-.bp-part--agents {
-  border-color: var(--bp-art-accent);
-  background: var(--bp-art-fill-accent);
-}
-
-.bp-part--agents .bp-part__title {
-  color: var(--bp-text-accent);
-}
-
-.bp-part--agents .bp-part__sub {
-  margin-top: -0.25rem;
-}
-
-.bp-readers {
-  display: grid;
-  gap: 0.25rem;
-  padding-top: 0.375rem;
-  border-top: var(--bp-stroke-fine) dashed rgb(37 99 235 / 45%);
-}
-
-.bp-readers li {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.bp-demo__tree-name {
   font-weight: 500;
 }
 
-.bp-readers li::before {
-  content: "";
-  width: 0.875rem;
-  height: 2px;
-  background: var(--bp-art-accent);
-}
-
-/* AGENTS.md feeds the application: a dashed leader rising into it */
-.bp-part--agents::before {
-  content: "";
-  position: absolute;
-  bottom: 100%;
-  left: 1.5rem;
-  height: calc(1.75rem - 4px);
-  border-left: 2px dashed var(--bp-art-accent);
-}
-
-.bp-part--agents::after {
-  content: "";
-  position: absolute;
-  bottom: calc(100% + 1.75rem - 10px);
-  left: calc(1.5rem - 3px);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--bp-art-accent);
-}
-
-/* Verification gates: one pipeline, ship in blue */
-.bp-gates {
-  margin-top: 0.75rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.bp-gate {
-  position: relative;
-  padding: 0.25rem 0.5rem;
-  border: var(--bp-stroke-fine) solid var(--bp-art-stroke);
-  background: var(--bp-art-fill);
-  font-size: 0.6875rem;
+.bp-demo__tree-row--root .bp-demo__tree-name {
   font-weight: 700;
-  text-align: center;
 }
 
-.bp-gate + .bp-gate {
-  margin-left: 0.875rem;
+.bp-demo__tree-note {
+  margin-left: auto;
+  padding-left: 1rem;
+  color: var(--bp-text-subtle);
+  font-family: var(--bp-font-sans);
+  font-size: 0.8125rem;
 }
 
-.bp-gate + .bp-gate::before {
-  content: "";
-  position: absolute;
-  right: 100%;
-  top: 50%;
-  width: calc(0.875rem + 1px);
-  height: 1px;
-  background: var(--bp-art-stroke);
-}
-
-.bp-gate--ship {
-  border: var(--bp-stroke) solid var(--bp-art-stroke);
-  background: var(--bp-art-accent);
+.bp-demo__tree-row--active {
+  background: var(--bp-action);
   color: var(--bp-text-on-accent);
 }
 
-/* Title block */
-.bp-sheet__titleblock {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-top: var(--bp-stroke) solid var(--bp-art-stroke);
+.bp-demo__tree-row--active .bp-demo__tree-prefix,
+.bp-demo__tree-row--active .bp-demo__tree-note {
+  color: var(--bp-blue-100);
 }
 
-@media (min-width: 640px) {
-  .bp-sheet__titleblock {
-    grid-template-columns: 0.8fr 1.6fr 1fr 0.7fr;
+.bp-demo__tree-row--active .bp-demo__tree-name {
+  font-weight: 700;
+}
+
+/* Open file */
+.bp-demo__file {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-top: var(--bp-stroke-fine) solid var(--bp-line);
+}
+
+@media (min-width: 900px) {
+  .bp-demo__file {
+    border-top: 0;
   }
 }
 
-.bp-sheet__cell {
-  min-width: 0;
-  padding: 0.4375rem 0.875rem;
-  border-right: var(--bp-stroke-fine) solid var(--bp-art-stroke);
-  border-bottom: var(--bp-stroke-fine) solid var(--bp-art-stroke);
-  margin-bottom: -1px;
-}
-
-.bp-sheet__cell:last-child {
-  border-right: 0;
-}
-
-.bp-sheet__cell dt {
-  color: var(--bp-text-subtle);
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.bp-sheet__cell dd {
+.bp-demo__tab {
+  align-self: flex-start;
+  padding: 0.625rem 1.25rem;
+  border-right: var(--bp-stroke-fine) solid var(--bp-line);
+  border-bottom: var(--bp-stroke) solid var(--bp-action);
   font-size: 0.75rem;
   font-weight: 700;
-  white-space: nowrap;
 }
 
-/* ------------------------------------------------------------------ */
-/* Small screens                                                       */
-/* ------------------------------------------------------------------ */
+.bp-demo__code {
+  flex: 1;
+  padding: 1.5rem 1.5rem 1.75rem 0;
+  border-top: var(--bp-stroke-fine) solid var(--bp-line);
+  font-size: 0.9375rem;
+  line-height: 2;
+}
+
+.bp-demo__line {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+}
+
+.bp-demo__ln {
+  padding-right: 1.25rem;
+  color: var(--bp-text-subtle);
+  opacity: 0.6;
+  text-align: right;
+  user-select: none;
+}
+
+.bp-demo__text {
+  padding-left: 1.25ch;
+  text-indent: -1.25ch;
+  color: var(--bp-text-muted);
+}
+
+.bp-demo__line--heading .bp-demo__text {
+  padding-left: 0;
+  text-indent: 0;
+  color: var(--bp-text);
+  font-weight: 800;
+}
+
+.bp-demo__line--blank .bp-demo__text::after {
+  content: "\00a0";
+}
+
+.bp-demo__bullet {
+  color: var(--bp-text-accent);
+  font-weight: 700;
+}
+
+.bp-demo__md-code {
+  color: var(--bp-text-accent);
+  font-weight: 600;
+}
+
+/* Status bar: the CI the workspace ships with */
+.bp-demo__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  padding: 0.625rem 1.25rem;
+  border-top: var(--bp-stroke) solid var(--bp-line-strong);
+  background: var(--bp-surface-sunken);
+  font-size: 0.75rem;
+}
+
+.bp-demo__status-key {
+  font-weight: 700;
+}
+
+.bp-demo__checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  color: var(--bp-text-muted);
+}
+
+.bp-demo__check::before {
+  content: "✓ ";
+  color: var(--bp-text-accent);
+  font-weight: 700;
+}
 
 @media (max-width: 639px) {
-  .bp-sheet__reg {
-    display: none;
+  .bp-demo {
+    padding-right: 6px;
   }
 
-  .bp-sheet__frame {
+  .bp-demo__window {
     box-shadow: 6px 6px 0 var(--bp-blue-200);
   }
 
-  /* Gates fold into a 3 x 2 grid; columns size to their longest word so
-     every label stays whole and no connector dangles at a row start */
-  .bp-gates {
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    justify-content: center;
-    gap: 0.625rem 0.875rem;
+  .bp-demo__bar,
+  .bp-demo__status {
+    padding-inline: 1rem;
   }
 
-  .bp-gate + .bp-gate {
-    margin-left: 0;
+  .bp-demo__code {
+    padding-right: 1rem;
+    font-size: 0.8125rem;
+    line-height: 1.75;
   }
 
-  .bp-gate:nth-child(3n + 1)::before {
-    display: none;
+  .bp-demo__line {
+    grid-template-columns: 3rem minmax(0, 1fr);
   }
 
-  /* Title block: the generator gets its own full-width row so the package
-     name is never clipped; the short values share the row above it */
-  .bp-sheet__titleblock {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .bp-sheet__cell--wide {
-    order: 1;
-    grid-column: 1 / -1;
-    border-right: 0;
-  }
-
-  .bp-sheet__cell:nth-child(4) {
-    border-right: 0;
+  .bp-demo__ln {
+    padding-right: 0.75rem;
   }
 }
 
-@media (max-width: 374px) {
-  /* The generated slot wraps to its own line; drop the wall that would
-     otherwise hang off its left edge */
-  .bp-feature--generated::before {
+@media (max-width: 479px) {
+  /* Notes give way so every path stays whole on one line */
+  .bp-demo__tree-note,
+  .bp-demo__origin {
     display: none;
-  }
-}
-
-@media (max-width: 419px) {
-  /* Row keys move above their content so chips get the full width */
-  .bp-app__row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.5rem;
-    padding: 0.75rem;
-  }
-
-  .bp-app__key {
-    padding-top: 0;
-    color: var(--bp-text-accent);
-    font-size: 0.6875rem;
-    letter-spacing: 0.06em;
-  }
-
-  .bp-sheet__cell {
-    padding-inline: 0.625rem;
   }
 }
 
@@ -1317,6 +968,7 @@
   .bp-button,
   .atlas-header-btn,
   .atlas-marketing__nav-link::after,
+  .bp-hero__link,
   .bp-install__strip .atlas-command-strip__copy {
     transition: none !important;
   }

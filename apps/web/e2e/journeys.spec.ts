@@ -23,8 +23,8 @@ test.describe("Critical web journeys", () => {
     await page.goto("/");
     await expect(
       page
-        .getByRole("group", { name: "More ways to explore Atlas" })
-        .getByRole("link", { name: /View the repository/ })
+        .getByRole("navigation", { name: "More ways to explore Atlas" })
+        .getByRole("link", { name: /Atlas on GitHub/ })
     ).toBeVisible();
   });
 });

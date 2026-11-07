@@ -222,13 +222,5 @@ export const AGENT_BENEFITS = [
 
 /** Hero copy for the blueprint design direction. No em dashes in marketing copy. */
 export const HERO_LEAD =
-  "Atlas generates a Next.js workspace you own outright. Architecture, data access, auth, testing, and CI are already wired together and documented, so your team starts on the product instead of the setup."
-
-export const HERO_STACK_NOTE = [
-  "Next.js",
-  "TypeScript",
-  "React Query",
-  "OpenAPI",
-  "Playwright",
-] as const
+  "Atlas generates a production-ready Next.js workspace with architecture, authentication, API integration, configuration, testing, and CI already in place. Every file is source in your repository, yours to read, change, and ship."
 
