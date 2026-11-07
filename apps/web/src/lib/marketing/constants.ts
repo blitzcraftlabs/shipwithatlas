@@ -10,7 +10,29 @@ export const CONTACT_EMAIL = "hello@thedanielmark.com"
 
 export const CONTACT_MAILTO_URL = `mailto:${CONTACT_EMAIL}`
 
+export const HOME_PATH = "/"
+
 export const CONSULTING_PATH = "/consulting"
+
+/**
+ * Homepage section anchors. Section components render these ids, and every
+ * link to them goes through `homeSectionHref` so the target is route-aware:
+ * `/#agents` reaches the homepage section from any page, while a bare
+ * `#agents` would resolve against whichever page is currently open.
+ */
+export const HOME_SECTION_IDS = {
+  product: "product",
+  getStarted: "get-started",
+  capabilities: "capabilities",
+  agents: "agents",
+  proof: "proof",
+} as const
+
+export type HomeSectionId = (typeof HOME_SECTION_IDS)[keyof typeof HOME_SECTION_IDS]
+
+export function homeSectionHref(id: HomeSectionId) {
+  return `${HOME_PATH}#${id}`
+}
 
 export const AUTHOR_AVATAR_URL =
   "https://media.thedanielmark.com/authors/daniel-mark/avatar-83547525.jpg"
@@ -58,7 +80,7 @@ export const SEE_HOW_I_WORK_LABEL = "See how I work"
 
 export const SEE_ATLAS_LABEL = "See Atlas"
 
-export const ATLAS_OVERVIEW_HASH = "#capabilities"
+export const ATLAS_OVERVIEW_HASH = homeSectionHref(HOME_SECTION_IDS.capabilities)
 
 /** Public CLI package — source of truth: the Atlas repository README "Quick start". */
 export const NPM_PACKAGE_NAME = "@blitzcraftlabs/atlas"
@@ -67,7 +89,7 @@ export const NPM_PACKAGE_URL = `https://www.npmjs.com/package/${NPM_PACKAGE_NAME
 
 export const QUICKSTART_DOCS_URL = `${PLATFORM_REPO_URL}/blob/main/docs/public/quickstart.md`
 
-export const GET_STARTED_HASH = "#get-started"
+export const GET_STARTED_HASH = homeSectionHref(HOME_SECTION_IDS.getStarted)
 
 export const INSTALL_COMMAND = `pnpm dlx ${NPM_PACKAGE_NAME} init my-app`
 
@@ -123,15 +145,43 @@ export interface NavLink {
   label: string
   external?: boolean
   internal?: boolean
+  /** Homepage section this link targets, when it is an in-page anchor. */
+  sectionId?: HomeSectionId
 }
 
+/**
+ * Single source for the desktop header and the mobile menu. Internal entries
+ * are route-aware (`/#section`) so they work from every marketing page.
+ */
 export const NAV_LINKS: NavLink[] = [
-  { href: "#product", label: "Overview" },
-  { href: "#get-started", label: "Get started" },
-  { href: "#capabilities", label: "Architecture" },
-  { href: "#agents", label: "Agents" },
+  {
+    href: homeSectionHref(HOME_SECTION_IDS.product),
+    label: "Overview",
+    sectionId: HOME_SECTION_IDS.product,
+  },
+  {
+    href: homeSectionHref(HOME_SECTION_IDS.getStarted),
+    label: "Get started",
+    sectionId: HOME_SECTION_IDS.getStarted,
+  },
+  {
+    href: homeSectionHref(HOME_SECTION_IDS.capabilities),
+    label: "Architecture",
+    sectionId: HOME_SECTION_IDS.capabilities,
+  },
+  {
+    href: homeSectionHref(HOME_SECTION_IDS.agents),
+    label: "Agents",
+    sectionId: HOME_SECTION_IDS.agents,
+  },
   { href: PLATFORM_DOCS_URL, label: "Docs", external: true },
 ]
+
+/** Header actions, shared by the desktop header and the mobile menu. */
+export const HEADER_ACTIONS = {
+  repository: { href: PLATFORM_REPO_URL, label: "View repository", external: true },
+  consulting: { href: CONSULTING_PATH, label: HEADER_PRIMARY_CTA_LABEL, internal: true },
+} as const satisfies Record<string, NavLink>
 
 export const FOOTER_TAGLINE =
   "An open-source frontend foundation for teams that want the recurring decisions already made."

@@ -1,5 +1,6 @@
 import "../atlas-marketing.css";
 import "../atlas-blueprint.css";
+import "../atlas-blueprint-consulting.css";
 
 import { cn } from "@atlas/ui";
 

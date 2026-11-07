@@ -1,6 +1,6 @@
 import { GitFork, Layers, ShieldCheck } from "lucide-react"
 
-import { PRODUCT_PROPERTIES } from "@/lib/marketing/constants"
+import { HOME_SECTION_IDS, PRODUCT_PROPERTIES } from "@/lib/marketing/constants"
 
 const PROPERTY_ICONS = {
   layers: Layers,
@@ -15,7 +15,7 @@ const PROPERTY_ICONS = {
 export function PropertiesSection() {
   return (
     <section
-      id="product"
+      id={HOME_SECTION_IDS.product}
       className="bp-section bp-section--paper bp-spec"
       aria-labelledby="product-heading"
     >

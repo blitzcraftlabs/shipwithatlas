@@ -1,10 +1,11 @@
 import { AgentContextTranscript } from "@/components/marketing/agent-context-transcript"
 import { SectionLabel } from "@/components/marketing/section-label"
+import { HOME_SECTION_IDS } from "@/lib/marketing/constants"
 
 export function AgentsSection() {
   return (
     <section
-      id="agents"
+      id={HOME_SECTION_IDS.agents}
       className="bp-section bp-section--white bp-agents"
       aria-labelledby="agents-heading"
     >

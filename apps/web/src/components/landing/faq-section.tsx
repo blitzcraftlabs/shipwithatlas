@@ -3,6 +3,7 @@ import {
   type FaqAccordionItem,
 } from "@/components/marketing/faq-accordion"
 import { SectionLabel } from "@/components/marketing/section-label"
+import { HOME_SECTION_IDS, homeSectionHref } from "@/lib/marketing/constants"
 import { FAQ_ITEMS } from "@/lib/marketing/content/faq"
 
 function FaqAnswer({ itemId, paragraphs }: { itemId: string; paragraphs: readonly string[] }) {
@@ -12,7 +13,7 @@ function FaqAnswer({ itemId, paragraphs }: { itemId: string; paragraphs: readonl
         <p>{paragraphs[0]}</p>
         <p>
           The{" "}
-          <a href="#capabilities" className="bp-link">
+          <a href={homeSectionHref(HOME_SECTION_IDS.capabilities)} className="bp-link">
             Capabilities Explorer
           </a>{" "}
           above shows the current implementation in more detail.

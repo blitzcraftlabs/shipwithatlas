@@ -1,5 +1,6 @@
 import { CapabilitiesExplorer } from "@/components/marketing/capabilities-explorer"
 import { SectionLabel } from "@/components/marketing/section-label"
+import { HOME_SECTION_IDS } from "@/lib/marketing/constants"
 import { ATLAS_CAPABILITIES } from "@/lib/marketing/content/capabilities"
 import { highlightSnippet } from "@/lib/marketing/shiki/highlight"
 
@@ -21,7 +22,7 @@ export async function CapabilitiesSection() {
 
   return (
     <section
-      id="capabilities"
+      id={HOME_SECTION_IDS.capabilities}
       className="bp-section bp-section--paper bp-capabilities"
       aria-labelledby="capabilities-heading"
     >

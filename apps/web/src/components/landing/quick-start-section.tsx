@@ -4,6 +4,7 @@ import { CodeCopyButton } from "@/components/marketing/code-copy-button";
 import { CommandStrip } from "@/components/marketing/command-strip";
 import { SectionLabel } from "@/components/marketing/section-label";
 import {
+  HOME_SECTION_IDS,
   NPM_PACKAGE_NAME,
   NPM_PACKAGE_URL,
   PREREQUISITES,
@@ -16,7 +17,7 @@ import {
 export function QuickStartSection() {
   return (
     <section
-      id="get-started"
+      id={HOME_SECTION_IDS.getStarted}
       className="bp-section bp-section--white bp-start"
       aria-labelledby="get-started-heading"
     >
