@@ -273,29 +273,11 @@ export function ConsultingContactSection() {
 
           <div className="bp-cx-contact__body">
             <p className="bp-body">
-              Email{" "}
-              <a href={CONTACT_MAILTO_URL} className="bp-link">
-                {CONTACT_EMAIL}
-              </a>{" "}
-              to discuss your frontend, codebase constraints, and what you need
-              from the architecture.
+              Get in touch to discuss your frontend, codebase constraints, and
+              what you need from the architecture.
             </p>
 
-            <div className="bp-cx-contact__address">
-              <span className="bp-cx-contact__prompt" aria-hidden="true">
-                to:
-              </span>
-              <span className="bp-cx-contact__value">
-                {emailLocal}
-                <wbr />@{emailDomain}
-              </span>
-              <CodeCopyButton
-                code={CONTACT_EMAIL}
-                label="Copy email address"
-                className="bp-copy"
-              />
-            </div>
-
+            {/* Primary action first; the raw address follows as the fallback */}
             <a
               href={CONTACT_MAILTO_URL}
               className="bp-button bp-button--primary bp-cx-contact__cta"
@@ -303,6 +285,30 @@ export function ConsultingContactSection() {
               <Mail className="size-4" aria-hidden="true" />
               {CONSULTING_CTA_LABEL}
             </a>
+
+            <div className="bp-cx-contact__direct">
+              <p className="bp-cx-contact__caption" id="consulting-contact-direct">
+                Or email directly
+              </p>
+              <div
+                className="bp-cx-contact__address"
+                role="group"
+                aria-labelledby="consulting-contact-direct"
+              >
+                <span className="bp-cx-contact__prompt" aria-hidden="true">
+                  to:
+                </span>
+                <a href={CONTACT_MAILTO_URL} className="bp-cx-contact__value">
+                  {emailLocal}
+                  <wbr />@{emailDomain}
+                </a>
+                <CodeCopyButton
+                  code={CONTACT_EMAIL}
+                  label="Copy email address"
+                  className="bp-copy"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
