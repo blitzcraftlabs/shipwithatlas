@@ -5,7 +5,7 @@ import {
   InspectDestinationIllustration,
 } from "@/components/marketing/inspect-illustrations"
 import { SectionLabel } from "@/components/marketing/section-label"
-import { PLATFORM_REPO_URL, PROOF_LINKS } from "@/lib/marketing/constants"
+import { HOME_SECTION_IDS, PLATFORM_REPO_URL, PROOF_LINKS } from "@/lib/marketing/constants"
 import {
   OWNERSHIP_ACTION_ROWS,
   OWNERSHIP_METADATA_ITEMS,
@@ -24,7 +24,7 @@ function displayPath(href: string) {
 export function InspectOwnershipSection() {
   return (
     <section
-      id="proof"
+      id={HOME_SECTION_IDS.proof}
       className="bp-section bp-section--paper bp-inspect"
       aria-labelledby="inspect-ownership-heading"
     >

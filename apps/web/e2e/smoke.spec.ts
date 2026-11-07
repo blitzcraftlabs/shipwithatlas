@@ -84,7 +84,11 @@ test.describe("Smoke Tests", () => {
 
   test("consulting page includes contact section", async ({ page }) => {
     await page.goto("/consulting");
-    await expect(page.getByRole("link", { name: CONTACT_EMAIL })).toBeVisible();
+    const contact = page.getByRole("region", { name: "Talk about your frontend" });
+    await expect(contact.getByRole("link", { name: CONTACT_EMAIL })).toBeVisible();
+    await expect(
+      contact.getByRole("link", { name: "Talk about your frontend" })
+    ).toHaveAttribute("href", `mailto:${CONTACT_EMAIL}`);
   });
 
   test("examples route is not shipped", async ({ page }) => {
