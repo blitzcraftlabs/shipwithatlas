@@ -4,6 +4,7 @@ import Link from "next/link"
 import {
   FOOTER_NAV_GROUPS,
   FOOTER_TAGLINE,
+  LICENSE_URL,
   type NavLink,
   PLATFORM_REPO_URL,
   SITE_NAME,
@@ -25,7 +26,7 @@ function GitHubIcon({ className }: { className?: string }) {
 function FooterNavLink({ link }: { link: NavLink }) {
   if (link.internal) {
     return (
-      <Link href={link.href} className="atlas-footer__link">
+      <Link href={link.href} className="bp-footer__link">
         {link.label}
       </Link>
     )
@@ -36,10 +37,11 @@ function FooterNavLink({ link }: { link: NavLink }) {
       href={link.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="atlas-footer__link"
+      className="bp-footer__link"
     >
       {link.label}
-      <ArrowUpRight className="atlas-footer__link-arrow" aria-hidden="true" />
+      <ArrowUpRight className="bp-footer__link-arrow" aria-hidden="true" />
+      <span className="sr-only"> (opens in a new tab)</span>
     </a>
   )
 }
@@ -48,52 +50,73 @@ export function MarketingFooter() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="atlas-footer">
+    <footer className="bp-footer">
+      <div className="bp-footer__scale" aria-hidden="true" />
       <div className="atlas-marketing__gutter">
-        <div className="atlas-footer__main">
-          <div className="atlas-footer__brand">
-            <Link href="/" className="atlas-footer__logo">
+        <div className="bp-footer__main">
+          <div className="bp-footer__brand">
+            <Link href="/" className="bp-footer__logo">
+              <span
+                className="atlas-marketing__logo-mark bp-footer__logo-mark"
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path d="M10 3v14M3 10h14" />
+                  <rect x="7" y="7" width="6" height="6" />
+                </svg>
+              </span>
               {SITE_NAME}
             </Link>
-            <p className="atlas-footer__tagline">{FOOTER_TAGLINE}</p>
+            <p className="bp-footer__tagline">{FOOTER_TAGLINE}</p>
             <a
               href={PLATFORM_REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="atlas-footer__repo-link"
+              className="bp-footer__repo"
             >
-              <GitHubIcon className="atlas-footer__repo-icon" />
+              <GitHubIcon className="bp-footer__repo-icon" />
               View repository
-              <ArrowUpRight
-                className="atlas-footer__repo-arrow"
-                aria-hidden="true"
-              />
+              <ArrowUpRight className="bp-footer__link-arrow" aria-hidden="true" />
+              <span className="sr-only"> (opens in a new tab)</span>
             </a>
           </div>
 
-          {FOOTER_NAV_GROUPS.map((group) => (
-            <nav
-              key={group.title}
-              className="atlas-footer__group"
-              aria-label={group.title}
-            >
-              <h3 className="atlas-footer__group-heading">{group.title}</h3>
-              <ul className="atlas-footer__group-links">
-                {group.links.map((link) => (
-                  <li key={link.href}>
-                    <FooterNavLink link={link} />
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
+          <div className="bp-footer__groups">
+            {FOOTER_NAV_GROUPS.map((group) => (
+              <nav
+                key={group.title}
+                className="bp-footer__group"
+                aria-label={group.title}
+              >
+                <h3 className="bp-footer__group-heading">{group.title}</h3>
+                <ul className="bp-footer__group-links">
+                  {group.links.map((link) => (
+                    <li key={link.href}>
+                      <FooterNavLink link={link} />
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
         </div>
 
-        <div className="atlas-footer__legal">
-          <p className="atlas-footer__legal-copy">
+        <div className="bp-footer__legal">
+          <p>
             &copy; {currentYear} {SITE_NAME}
           </p>
-          <p className="atlas-footer__legal-meta">Open source · MIT licensed</p>
+          <p>
+            Open source ·{" "}
+            <a
+              href={LICENSE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bp-footer__legal-link"
+            >
+              Apache License 2.0
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </p>
         </div>
       </div>
     </footer>

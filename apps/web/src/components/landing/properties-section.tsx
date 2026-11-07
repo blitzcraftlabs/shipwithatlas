@@ -1,6 +1,5 @@
 import { GitFork, Layers, ShieldCheck } from "lucide-react"
 
-import { AtlasRouteMark } from "@/components/marketing/atlas-route-mark"
 import { PRODUCT_PROPERTIES } from "@/lib/marketing/constants"
 
 const PROPERTY_ICONS = {
@@ -9,47 +8,49 @@ const PROPERTY_ICONS = {
   "git-fork": GitFork,
 } as const
 
+/**
+ * Sheet 01, continued from the hero edge: the three foundation properties
+ * as one specification table rather than a row of feature cards.
+ */
 export function PropertiesSection() {
   return (
     <section
       id="product"
-      className="atlas-section atlas-section--surface"
+      className="bp-section bp-section--paper bp-spec"
       aria-labelledby="product-heading"
     >
       <div className="atlas-marketing__gutter">
-        <h2 id="product-heading" className="sr-only">
-          Atlas product properties
-        </h2>
-        <div className="atlas-properties">
-          {PRODUCT_PROPERTIES.map((property) => {
-            const Icon = PROPERTY_ICONS[property.icon]
+        <div className="bp-spec__frame">
+          <div className="bp-spec__head">
+            <h2 id="product-heading" className="bp-spec__title">
+              Atlas product properties
+            </h2>
+            <span className="bp-spec__count" aria-hidden="true">
+              {String(PRODUCT_PROPERTIES.length).padStart(2, "0")} properties
+            </span>
+          </div>
 
-            return (
-              <article key={property.index} className="atlas-properties__item">
-                <div className="atlas-properties__mark">
-                  <div className="atlas-properties__route" aria-hidden="true">
-                    <AtlasRouteMark size="md" />
-                    <span className="atlas-properties__route-line" />
-                    <span className="atlas-properties__route-node" />
+          <div className="bp-spec__grid">
+            {PRODUCT_PROPERTIES.map((property) => {
+              const Icon = PROPERTY_ICONS[property.icon]
+
+              return (
+                <article key={property.index} className="bp-spec__cell">
+                  <div className="bp-spec__cell-head">
+                    <span className="bp-spec__index" aria-hidden="true">
+                      {property.index}
+                    </span>
+                    <span className="bp-spec__icon" aria-hidden="true">
+                      <Icon strokeWidth={1.75} />
+                    </span>
                   </div>
-                  <Icon
-                    className="atlas-properties__icon"
-                    strokeWidth={1.65}
-                    aria-hidden="true"
-                  />
-                  <span className="atlas-properties__index">
-                    {property.index}
-                  </span>
-                </div>
-                <div className="atlas-properties__content">
-                  <h3 className="atlas-properties__title">{property.title}</h3>
-                  <p className="atlas-properties__body">
-                    {property.description}
-                  </p>
-                </div>
-              </article>
-            )
-          })}
+                  <h3 className="bp-spec__name">{property.title}</h3>
+                  <p className="bp-spec__body">{property.description}</p>
+                  <span className="bp-spec__ticks" aria-hidden="true" />
+                </article>
+              )
+            })}
+          </div>
         </div>
       </div>
     </section>

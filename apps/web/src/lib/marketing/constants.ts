@@ -26,7 +26,7 @@ export const SITE_TAGLINE = "The frontend decisions are already made."
 export const SITE_EYEBROW = "Open-source frontend foundation"
 
 export const SITE_SUPPORTING =
-  "Atlas is a forkable Next.js foundation where architecture, application infrastructure, testing, and delivery already work as one system—so your team can start with the product, not the setup."
+  "Atlas is a forkable Next.js foundation where architecture, application infrastructure, testing, and delivery already work as one system, so your team can start with the product, not the setup."
 
 export const PLATFORM_REPO_URL = "https://github.com/blitzcraftlabs/atlas"
 
@@ -138,7 +138,7 @@ export const FOOTER_TAGLINE =
 
 export const UI_PACKAGE_URL = `${PLATFORM_REPO_URL}/tree/main/packages/ui`
 
-export const MIT_LICENSE_URL = `${PLATFORM_REPO_URL}/blob/main/LICENSE`
+export const LICENSE_URL = `${PLATFORM_REPO_URL}/blob/main/LICENSE`
 
 export interface FooterNavGroup {
   title: string
@@ -166,7 +166,7 @@ export const FOOTER_NAV_GROUPS: FooterNavGroup[] = [
     title: "Project",
     links: [
       { href: CONSULTING_PATH, label: "Consulting", internal: true },
-      { href: MIT_LICENSE_URL, label: "MIT License", external: true },
+      { href: LICENSE_URL, label: "Apache 2.0 License", external: true },
     ],
   },
 ]
@@ -202,7 +202,7 @@ export const PRODUCT_PROPERTIES = [
     title: "Production included",
     icon: "shield-check" as const,
     description:
-      "Accessibility, logging, analytics, testing, and CI are part of the foundation from day one—not work deferred until launch.",
+      "Accessibility, logging, analytics, testing, and CI are part of the foundation from day one, not work deferred until launch.",
   },
   {
     index: "03",

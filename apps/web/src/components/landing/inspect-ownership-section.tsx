@@ -4,8 +4,8 @@ import {
   INSPECT_ILLUSTRATION_IDS,
   InspectDestinationIllustration,
 } from "@/components/marketing/inspect-illustrations"
-import { SectionEyebrow } from "@/components/marketing/section-eyebrow"
-import { PROOF_LINKS } from "@/lib/marketing/constants"
+import { SectionLabel } from "@/components/marketing/section-label"
+import { PLATFORM_REPO_URL, PROOF_LINKS } from "@/lib/marketing/constants"
 import {
   OWNERSHIP_ACTION_ROWS,
   OWNERSHIP_METADATA_ITEMS,
@@ -13,101 +13,108 @@ import {
 
 const METADATA_ICONS = [GitFork, Unplug, Blocks] as const
 
+/** Repository-relative path shown under each destination, e.g. `.github/workflows`. */
+function displayPath(href: string) {
+  const path = href
+    .replace(PLATFORM_REPO_URL, "")
+    .replace(/^\/(tree|blob)\/main\//, "")
+  return path === "" ? "blitzcraftlabs/atlas" : path
+}
+
 export function InspectOwnershipSection() {
   return (
     <section
       id="proof"
-      className="atlas-section"
+      className="bp-section bp-section--paper bp-inspect"
       aria-labelledby="inspect-ownership-heading"
     >
-      <div className="atlas-marketing__gutter atlas-inspect-ownership">
-        <div className="atlas-inspect-ownership__intro">
-          <SectionEyebrow>No black boxes</SectionEyebrow>
-          <h2 id="inspect-ownership-heading" className="atlas-section__title">
-            Inspect the decisions,
-            <br />
-            then make them yours.
-          </h2>
-          <p className="atlas-section__body">
+      <div className="atlas-marketing__gutter">
+        <header className="bp-section-head bp-section-head--split">
+          <div>
+            <SectionLabel index="07">No black boxes</SectionLabel>
+            <h2 id="inspect-ownership-heading" className="bp-h2">
+              Inspect the decisions,
+              {" "}<br />
+              then make them yours.
+            </h2>
+          </div>
+          <p className="bp-lead">
             Atlas is source code, documented decisions, and explicit
-            conventions—not a runtime you rent. Inspect how it works, keep what
+            conventions, not a runtime you rent. Inspect how it works, keep what
             earns its place, and change what doesn&apos;t.
           </p>
-        </div>
+        </header>
 
-        <div className="atlas-inspect-ownership__columns">
-          <div className="atlas-inspect-ownership__column">
-            <p className="atlas-inspect-ownership__column-label">Inspect</p>
-            <nav
-              className="atlas-inspect-ownership__inspect-list"
-              aria-label="Inspect Atlas"
-            >
+        <div className="bp-inspect__group">
+          <h3 className="bp-inspect__group-label">Inspect</h3>
+          <nav aria-label="Inspect Atlas">
+            <ul className="bp-inspect__links">
               {PROOF_LINKS.map((link, index) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="atlas-inspect-ownership__inspect-row"
-                >
-                  <InspectDestinationIllustration
-                    id={INSPECT_ILLUSTRATION_IDS[index] ?? "repository"}
-                  />
-                  <span className="atlas-inspect-ownership__inspect-copy">
-                    <span className="atlas-inspect-ownership__inspect-heading">
-                      <span className="atlas-inspect-ownership__inspect-label">
-                        {link.label}
-                      </span>
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bp-inspect__link"
+                  >
+                    <span className="bp-inspect__art">
+                      <InspectDestinationIllustration
+                        id={INSPECT_ILLUSTRATION_IDS[index] ?? "repository"}
+                      />
+                    </span>
+                    <span className="bp-inspect__link-label">
+                      {link.label}
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    </span>
+                    <span className="bp-inspect__link-desc">
+                      {link.description}
+                    </span>
+                    <span className="bp-inspect__link-path">
+                      <code>{displayPath(link.href)}</code>
                       <ArrowUpRight
-                        className="atlas-inspect-ownership__inspect-arrow"
-                        strokeWidth={1.75}
+                        className="bp-inspect__arrow"
+                        strokeWidth={2}
                         aria-hidden="true"
                       />
                     </span>
-                    <span className="atlas-inspect-ownership__inspect-desc">
-                      {link.description}
-                    </span>
-                  </span>
-                </a>
-              ))}
-            </nav>
-          </div>
-
-          <div className="atlas-inspect-ownership__column">
-            <p className="atlas-inspect-ownership__column-label">Change</p>
-            <ul className="atlas-inspect-ownership__change-list">
-              {OWNERSHIP_ACTION_ROWS.map((row) => (
-                <li
-                  key={`${row.action}-${row.target}`}
-                  className="atlas-inspect-ownership__change-row"
-                >
-                  <span className="atlas-inspect-ownership__action">
-                    {row.action}
-                  </span>
-                  <span className="atlas-inspect-ownership__change-target">
-                    {row.target}
-                  </span>
-                  <span className="atlas-inspect-ownership__change-detail">
-                    {row.detail}
-                  </span>
+                  </a>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
         </div>
 
-        <ul
-          className="atlas-inspect-ownership__metadata"
-          aria-label="Ownership metadata"
-        >
+        <div className="bp-inspect__group">
+          <h3 className="bp-inspect__group-label">Change</h3>
+          <ul className="bp-inspect__changes">
+            {OWNERSHIP_ACTION_ROWS.map((row) => (
+              <li
+                key={`${row.action}-${row.target}`}
+                className="bp-inspect__change"
+              >
+                <span className="bp-inspect__action">{row.action}</span>
+                {/[/.]/.test(row.target) ? (
+                  <code className="bp-inspect__target">{row.target}</code>
+                ) : (
+                  <span className="bp-inspect__target bp-inspect__target--text">
+                    {row.target}
+                  </span>
+                )}
+                <span className="bp-inspect__detail">{row.detail}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <ul className="bp-inspect__meta" aria-label="Ownership metadata">
           {OWNERSHIP_METADATA_ITEMS.map((item, index) => {
             const Icon = METADATA_ICONS[index] ?? GitFork
 
             return (
-              <li key={item.id} className="atlas-inspect-ownership__metadata-item">
+              <li key={item.id}>
                 <Icon
-                  className="atlas-inspect-ownership__metadata-icon"
-                  strokeWidth={1.65}
+                  className="bp-inspect__meta-icon"
+                  strokeWidth={1.75}
                   aria-hidden="true"
                 />
                 <span>{item.label}</span>

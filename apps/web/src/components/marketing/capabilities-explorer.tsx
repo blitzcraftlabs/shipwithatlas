@@ -6,10 +6,7 @@ import * as React from "react"
 import { cn } from "@atlas/ui"
 
 import { CodeCopyButton } from "@/components/marketing/code-copy-button"
-import { HighlightedCodeWindow } from "@/components/marketing/code-window"
 import { FileTypeIcon } from "@/components/marketing/file-type-icon"
-import { MockupChrome } from "@/components/marketing/mockup-chrome"
-import { MockupFrame } from "@/components/marketing/mockup-frame"
 
 import type { Capability } from "@/lib/marketing/content/types"
 
@@ -21,6 +18,19 @@ interface CapabilitiesExplorerProps {
   capabilities: HighlightedCapability[]
 }
 
+const NEXT_KEYS = new Set(["ArrowDown", "ArrowRight"])
+const PREVIOUS_KEYS = new Set(["ArrowUp", "ArrowLeft"])
+
+function formatIndex(index: number) {
+  return String(index + 1).padStart(2, "0")
+}
+
+/**
+ * One window: the capability index on the left (a vertical rail on wide
+ * screens, a scrollable strip on narrow ones) and the selected capability's
+ * explanation and source on the right. The active row is the only blue fill,
+ * matching the active file in the hero workspace preview.
+ */
 export function CapabilitiesExplorer({
   capabilities,
 }: CapabilitiesExplorerProps) {
@@ -28,262 +38,187 @@ export function CapabilitiesExplorer({
     capabilities[0]?.id ?? "application-architecture"
   )
   const railRef = React.useRef<HTMLDivElement>(null)
-  const activeIndex = capabilities.findIndex((c) => c.id === activeId)
-  const activeCapability =
-    capabilities.find((c) => c.id === activeId) ?? capabilities[0]
+  const activeIndex = Math.max(
+    0,
+    capabilities.findIndex((c) => c.id === activeId)
+  )
+  const activeCapability = capabilities[activeIndex]
 
-  const selectCapability = React.useCallback((id: string) => {
-    setActiveId(id)
+  const focusTab = React.useCallback((id: string) => {
+    const button = railRef.current?.querySelector<HTMLButtonElement>(
+      `[data-capability-id="${id}"]`
+    )
+    button?.focus()
+    button?.scrollIntoView({ block: "nearest", inline: "nearest" })
   }, [])
 
   const handleRailKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
       let nextIndex: number | null = null
 
-      if (event.key === "ArrowDown") {
-        event.preventDefault()
+      if (NEXT_KEYS.has(event.key)) {
         nextIndex = (index + 1) % capabilities.length
-      } else if (event.key === "ArrowUp") {
-        event.preventDefault()
+      } else if (PREVIOUS_KEYS.has(event.key)) {
         nextIndex = (index - 1 + capabilities.length) % capabilities.length
       } else if (event.key === "Home") {
-        event.preventDefault()
         nextIndex = 0
       } else if (event.key === "End") {
-        event.preventDefault()
         nextIndex = capabilities.length - 1
       }
 
       if (nextIndex === null) return
+      event.preventDefault()
 
       const next = capabilities[nextIndex]
       if (!next) return
 
-      selectCapability(next.id)
-      const rail = railRef.current
-      const button = rail?.querySelector<HTMLButtonElement>(
-        `[data-capability-id="${next.id}"]`
-      )
-      button?.focus()
+      setActiveId(next.id)
+      focusTab(next.id)
     },
-    [capabilities, selectCapability]
+    [capabilities, focusTab]
   )
 
   if (!activeCapability) return null
 
+  const panelId = `capability-panel-${activeCapability.id}`
+
   return (
-    <div className="atlas-capabilities-explorer">
-      {/* Desktop */}
-      <MockupFrame
-        variant="document"
-        inset={false}
-        className="atlas-capabilities-explorer__shell hidden md:flex md:flex-col"
-        aria-label="Atlas capabilities explorer"
-      >
-        <MockupChrome className="atlas-capabilities-explorer__header">
-          <div className="atlas-capabilities-explorer__header-start">
-            <span className="atlas-capabilities-explorer__brand">Atlas</span>
-            <span className="atlas-capabilities-explorer__slash">/</span>
-            <span className="atlas-capabilities-explorer__section">
-              Capabilities
-            </span>
-          </div>
-          <span
-            className="atlas-capabilities-explorer__counter"
-            aria-live="polite"
-            aria-atomic="true"
-          >
-            {String((activeIndex >= 0 ? activeIndex : 0) + 1).padStart(2, "0")}{" "}
-            / {String(capabilities.length).padStart(2, "0")}
+    <div className="bp-explorer" aria-label="Atlas capabilities explorer" role="group">
+      <div className="bp-explorer__bar">
+        <span className="bp-explorer__crumb">
+          <span className="bp-explorer__crumb-root">atlas</span>
+          <span className="bp-explorer__crumb-sep" aria-hidden="true">
+            /
           </span>
-        </MockupChrome>
+          capabilities
+        </span>
+        <span
+          className="bp-explorer__counter"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          <span className="sr-only">Capability </span>
+          {formatIndex(activeIndex)}
+          <span aria-hidden="true"> / </span>
+          <span className="sr-only"> of </span>
+          {String(capabilities.length).padStart(2, "0")}
+        </span>
+      </div>
 
-        <div className="atlas-capabilities-explorer__body">
-          <div
-            ref={railRef}
-            className="atlas-capabilities-explorer__rail"
-            role="tablist"
-            aria-label="Atlas capabilities"
-            aria-orientation="vertical"
-          >
-            {capabilities.map((capability, index) => {
-              const isActive = capability.id === activeId
-
-              return (
-                <button
-                  key={capability.id}
-                  type="button"
-                  role="tab"
-                  data-capability-id={capability.id}
-                  id={`capability-tab-${capability.id}`}
-                  aria-selected={isActive}
-                  aria-controls={`capability-panel-${capability.id}`}
-                  tabIndex={isActive ? 0 : -1}
-                  className={cn(
-                    "atlas-capabilities-explorer__rail-item",
-                    isActive && "atlas-capabilities-explorer__rail-item--active"
-                  )}
-                  onClick={() => selectCapability(capability.id)}
-                  onKeyDown={(event) => handleRailKeyDown(event, index)}
-                >
-                  <span
-                    className="atlas-capabilities-explorer__rail-indicator"
-                    aria-hidden="true"
-                  />
-                  <span className="atlas-capabilities-explorer__rail-text">
-                    <span className="atlas-capabilities-explorer__rail-title">
-                      {capability.title}
-                    </span>
-                    <span className="atlas-capabilities-explorer__rail-desc">
-                      {capability.descriptor}
-                    </span>
-                  </span>
-                </button>
-              )
-            })}
-          </div>
-
-          <CapabilityEvidencePanel
-            capability={activeCapability}
-            panelId={`capability-panel-${activeCapability.id}`}
-            labelledBy={`capability-tab-${activeCapability.id}`}
-          />
-        </div>
-      </MockupFrame>
-
-      {/* Mobile */}
-      <MockupFrame
-        variant="document"
-        inset={false}
-        className="atlas-capabilities-explorer__mobile md:hidden"
-      >
-        <MockupChrome className="atlas-capabilities-explorer__mobile-chrome">
-          <div className="atlas-capabilities-explorer__header-start">
-            <span className="atlas-capabilities-explorer__brand">Atlas</span>
-            <span className="atlas-capabilities-explorer__slash">/</span>
-            <span className="atlas-capabilities-explorer__section">
-              Capabilities
-            </span>
-          </div>
-        </MockupChrome>
-
+      <div className="bp-explorer__body">
         <div
-          className="atlas-capabilities-explorer__mobile-rail"
+          ref={railRef}
+          className="bp-explorer__rail"
           role="tablist"
           aria-label="Atlas capabilities"
         >
           {capabilities.map((capability, index) => {
-            const isActive = capability.id === activeId
+            const isActive = capability.id === activeCapability.id
 
             return (
               <button
                 key={capability.id}
                 type="button"
                 role="tab"
-                id={`capability-tab-mobile-${capability.id}`}
+                data-capability-id={capability.id}
+                id={`capability-tab-${capability.id}`}
                 aria-selected={isActive}
-                aria-controls={`capability-panel-mobile-${capability.id}`}
+                aria-controls={isActive ? panelId : undefined}
                 tabIndex={isActive ? 0 : -1}
                 className={cn(
-                  "atlas-capabilities-explorer__mobile-item",
-                  isActive &&
-                    "atlas-capabilities-explorer__mobile-item--active"
+                  "bp-explorer__tab",
+                  isActive && "bp-explorer__tab--active"
                 )}
-                onClick={() => selectCapability(capability.id)}
+                onClick={() => setActiveId(capability.id)}
                 onKeyDown={(event) => handleRailKeyDown(event, index)}
               >
-                <span className="atlas-capabilities-explorer__mobile-title">
-                  {capability.title}
+                <span className="bp-explorer__tab-index" aria-hidden="true">
+                  {formatIndex(index)}
                 </span>
-                <span className="atlas-capabilities-explorer__mobile-desc">
-                  {capability.descriptor}
+                <span className="bp-explorer__tab-title">
+                  {capability.title}
                 </span>
               </button>
             )
           })}
         </div>
 
-        <CapabilityEvidencePanel
-          capability={activeCapability}
-          panelId={`capability-panel-mobile-${activeCapability.id}`}
-          labelledBy={`capability-tab-mobile-${activeCapability.id}`}
-          mobile
-        />
-      </MockupFrame>
-    </div>
-  )
-}
-
-function CapabilityEvidencePanel({
-  capability,
-  panelId,
-  labelledBy,
-  mobile = false,
-}: {
-  capability: HighlightedCapability
-  panelId: string
-  labelledBy: string
-  mobile?: boolean
-}) {
-  return (
-    <div
-      id={panelId}
-      role="tabpanel"
-      aria-labelledby={labelledBy}
-      className={cn(
-        "atlas-capabilities-explorer__evidence",
-        mobile && "atlas-capabilities-explorer__evidence--mobile"
-      )}
-    >
-      <div className="atlas-capabilities-explorer__evidence-meta">
-        <p className="atlas-capabilities-explorer__explanation">
-          {capability.explanation}
-        </p>
-        {capability.included && capability.included.length > 0 ? (
-          <ul className="atlas-capabilities-explorer__included">
-            {capability.included.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        ) : null}
-      </div>
-
-      <div className="atlas-capabilities-explorer__code-surface">
-        <div className="atlas-capabilities-explorer__code-chrome">
-          <div className="atlas-capabilities-explorer__code-chrome-start">
-            <FileTypeIcon language={capability.snippet.language} />
-            {capability.sourceHref ? (
-              <a
-                href={capability.sourceHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="atlas-capabilities-explorer__source"
-                title={capability.source}
-              >
-                <span>{capability.source}</span>
-                <ArrowUpRight className="size-3" aria-hidden="true" />
-              </a>
-            ) : (
-              <span className="atlas-capabilities-explorer__source-static">
-                {capability.source}
-              </span>
-            )}
+        <div
+          id={panelId}
+          role="tabpanel"
+          aria-labelledby={`capability-tab-${activeCapability.id}`}
+          className="bp-explorer__panel"
+        >
+          <div className="bp-explorer__summary">
+            <h3 className="bp-explorer__title">{activeCapability.title}</h3>
+            <p className="bp-explorer__descriptor">
+              {activeCapability.descriptor}
+            </p>
+            <p className="bp-explorer__explanation">
+              {activeCapability.explanation}
+            </p>
+            {activeCapability.included && activeCapability.included.length > 0 ? (
+              <ul className="bp-explorer__included" aria-label="Included">
+                {activeCapability.included.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : null}
           </div>
-          {capability.snippet.copyable !== false ? (
-            <CodeCopyButton code={capability.snippet.code} />
-          ) : null}
-        </div>
-        <div className="atlas-capabilities-explorer__code-body">
-          <HighlightedCodeWindow
-            snippet={capability.snippet}
-            html={capability.html}
-            showFilename={false}
-            embedded
-            variant={
-              capability.snippet.language === "markdown" ? "tree" : "editor"
-            }
-            className="atlas-capabilities-explorer__code-window"
-          />
+
+          <div className="bp-code">
+            <div className="bp-code__chrome">
+              <span className="bp-code__file">
+                <FileTypeIcon
+                  language={activeCapability.snippet.language}
+                  className="bp-code__file-icon"
+                />
+                {activeCapability.sourceHref ? (
+                  <a
+                    href={activeCapability.sourceHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bp-code__source"
+                    title={activeCapability.source}
+                  >
+                    <span className="bp-code__source-text">
+                      {activeCapability.source}
+                    </span>
+                    <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                ) : (
+                  <span className="bp-code__source-text">
+                    {activeCapability.source}
+                  </span>
+                )}
+              </span>
+              {activeCapability.snippet.copyable !== false ? (
+                <CodeCopyButton
+                  code={activeCapability.snippet.code}
+                  label={`Copy ${activeCapability.snippet.label}`}
+                  className="bp-copy bp-copy--inverse"
+                />
+              ) : null}
+            </div>
+            { }
+            <div
+              className={cn(
+                "bp-code__body",
+                activeCapability.snippet.language === "markdown" &&
+                  "bp-code__body--tree"
+              )}
+              // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- keyboard scroll for code blocks
+              tabIndex={0}
+              role="region"
+              aria-label={`${activeCapability.snippet.label} source`}
+            >
+              <div
+                className="bp-code__code"
+                dangerouslySetInnerHTML={{ __html: activeCapability.html }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

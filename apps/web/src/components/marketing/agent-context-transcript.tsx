@@ -14,6 +14,28 @@ import {
 const TRANSCRIPT_DESCRIPTION =
   "Interactive transcript showing that any coding agent loads the same Atlas repository context. Only the agent flag in the command changes."
 
+/** Lets long paths wrap after a slash rather than mid-segment on phones. */
+function breakAtSlashes(path: string) {
+  return path.split("/").map((segment, index, segments) => (
+    <React.Fragment key={`${segment}-${index}`}>
+      {segment}
+      {index < segments.length - 1 ? (
+        <>
+          /<wbr />
+        </>
+      ) : null}
+    </React.Fragment>
+  ))
+}
+
+const NEXT_KEYS = new Set(["ArrowRight", "ArrowDown"])
+const PREVIOUS_KEYS = new Set(["ArrowLeft", "ArrowUp"])
+
+/**
+ * Agent selector over one transcript. Only the `--agent` flag changes when a
+ * different agent is picked; the stages below stay the same, which is the
+ * point the section makes.
+ */
 export function AgentContextTranscript() {
   const [selectedAgentId, setSelectedAgentId] = React.useState("cursor")
   const [revealKey, setRevealKey] = React.useState(0)
@@ -24,7 +46,7 @@ export function AgentContextTranscript() {
     setRevealKey((current) => current + 1)
   }
 
-  const handleSelectorKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleSelectorKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     const currentIndex = CODING_AGENTS.findIndex(
       (agent) => agent.id === selectedAgentId
     )
@@ -32,9 +54,9 @@ export function AgentContextTranscript() {
 
     let nextIndex: number | null = null
 
-    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+    if (NEXT_KEYS.has(event.key)) {
       nextIndex = (currentIndex + 1) % CODING_AGENTS.length
-    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+    } else if (PREVIOUS_KEYS.has(event.key)) {
       nextIndex =
         (currentIndex - 1 + CODING_AGENTS.length) % CODING_AGENTS.length
     } else if (event.key === "Home") {
@@ -54,7 +76,8 @@ export function AgentContextTranscript() {
 
   return (
     <div
-      className="atlas-agent-context"
+      className="bp-agent"
+      role="group"
       aria-labelledby="agent-context-title"
       aria-describedby="agent-context-desc"
     >
@@ -66,11 +89,9 @@ export function AgentContextTranscript() {
       </p>
 
       <div
-        className="atlas-agent-context__selector"
+        className="bp-agent__tabs"
         role="tablist"
         aria-label="Coding agents"
-        tabIndex={0}
-        onKeyDown={handleSelectorKeyDown}
       >
         {CODING_AGENTS.map((agent) => {
           const isSelected = agent.id === selectedAgentId
@@ -85,20 +106,18 @@ export function AgentContextTranscript() {
               aria-controls="agent-context-panel"
               tabIndex={isSelected ? 0 : -1}
               className={cn(
-                "atlas-agent-context__selector-item",
-                isSelected && "atlas-agent-context__selector-item--active"
+                "bp-agent__tab",
+                isSelected && "bp-agent__tab--active"
               )}
               onClick={() => handleAgentSelect(agent.id)}
+              onKeyDown={handleSelectorKeyDown}
             >
               <CodingAgentMark
                 mark={agent.mark}
                 variant="plain"
-                className={cn(
-                  "atlas-agent-context__selector-mark",
-                  !isSelected && "atlas-agent-context__selector-mark--muted"
-                )}
+                className="bp-agent__mark"
               />
-              <span>{agent.shortName}</span>
+              <span className="bp-agent__tab-name">{agent.shortName}</span>
             </button>
           )
         })}
@@ -108,85 +127,64 @@ export function AgentContextTranscript() {
         id="agent-context-panel"
         role="tabpanel"
         aria-labelledby={`agent-tab-${selectedAgentId}`}
-        className="atlas-agent-context__panel"
+        className="bp-agent__panel"
       >
-        <div className="atlas-agent-context__composition">
-          <p className="atlas-agent-context__command" aria-live="polite">
-            <span className="atlas-agent-context__command-line">
-              <span className="atlas-agent-context__command-prompt">$</span>{" "}
-              context{" "}
-              <span className="atlas-agent-context__command-flag">
-                --agent{" "}
-                <span
-                  key={selectedAgentId}
-                  className="atlas-agent-context__command-slug"
-                >
-                  {selectedAgentId}
-                </span>
-              </span>
+        <p className="bp-agent__command" aria-live="polite">
+          <span className="bp-agent__prompt" aria-hidden="true">
+            $
+          </span>
+          <code>
+            context <span className="bp-agent__flag">--agent</span>{" "}
+            <span key={selectedAgentId} className="bp-agent__slug">
+              {selectedAgentId}
             </span>
-          </p>
+          </code>
+        </p>
 
-          <div className="atlas-agent-context__execution">
-            <ol
-              className={cn(
-                "atlas-agent-context__transcript",
-                revealKey > 0 && "atlas-agent-context__transcript--reveal"
-              )}
-              key={revealKey}
+        <ol
+          className={cn(
+            "bp-agent__stages",
+            revealKey > 0 && "bp-agent__stages--reveal"
+          )}
+          key={revealKey}
+        >
+          {AGENT_CONTEXT_TRANSCRIPT_STAGES.map((stage, index) => (
+            <li
+              key={stage.id}
+              className="bp-agent__stage"
+              style={
+                revealKey > 0
+                  ? ({
+                      "--bp-stage-delay": `${index * 0.06}s`,
+                    } as React.CSSProperties)
+                  : undefined
+              }
             >
-              {AGENT_CONTEXT_TRANSCRIPT_STAGES.map((stage, index) => (
-                <li
-                  key={stage.id}
-                  className="atlas-agent-context__stage"
-                  style={
-                    revealKey > 0
-                      ? ({
-                          "--atlas-agent-stage-delay": `${index * 0.055}s`,
-                        } as React.CSSProperties)
-                      : undefined
-                  }
+              <span className="bp-agent__node" aria-hidden="true" />
+              <div className="bp-agent__stage-body">
+                <p className="bp-agent__stage-title">
+                  {stage.title}
+                  {stage.titleMono ? <code>{stage.titleMono}</code> : null}
+                </p>
+                <p
+                  className={cn(
+                    "bp-agent__stage-detail",
+                    stage.detailMono && "bp-agent__stage-detail--mono"
+                  )}
                 >
-                  <span
-                    className="atlas-agent-context__stage-marker"
-                    aria-hidden="true"
-                  >
-                    ›
-                  </span>
-                  <div className="atlas-agent-context__stage-body">
-                    <p className="atlas-agent-context__stage-title">
-                      {stage.title}
-                      {stage.titleMono ? (
-                        <span className="atlas-agent-context__stage-title-mono">
-                          {stage.titleMono}
-                        </span>
-                      ) : null}
-                    </p>
-                    <p
-                      className={cn(
-                        "atlas-agent-context__stage-detail",
-                        stage.detailMono &&
-                          "atlas-agent-context__stage-detail--mono"
-                      )}
-                    >
-                      {stage.detail}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ol>
+                  {stage.detailMono ? breakAtSlashes(stage.detail) : stage.detail}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
 
-            <p className="atlas-agent-context__result">
-              <span
-                className="atlas-agent-context__result-mark"
-                aria-hidden="true"
-              >
-                ✓
-              </span>
-              {AGENT_CONTEXT_RESULT}
-            </p>
-          </div>
-        </div>
+        <p className="bp-agent__result">
+          <span className="bp-agent__result-mark" aria-hidden="true">
+            ✓
+          </span>
+          {AGENT_CONTEXT_RESULT}
+        </p>
       </div>
     </div>
   )

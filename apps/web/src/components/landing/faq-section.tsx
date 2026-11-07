@@ -2,7 +2,7 @@ import {
   FaqAccordion,
   type FaqAccordionItem,
 } from "@/components/marketing/faq-accordion"
-import { SectionEyebrow } from "@/components/marketing/section-eyebrow"
+import { SectionLabel } from "@/components/marketing/section-label"
 import { FAQ_ITEMS } from "@/lib/marketing/content/faq"
 
 function FaqAnswer({ itemId, paragraphs }: { itemId: string; paragraphs: readonly string[] }) {
@@ -12,7 +12,7 @@ function FaqAnswer({ itemId, paragraphs }: { itemId: string; paragraphs: readonl
         <p>{paragraphs[0]}</p>
         <p>
           The{" "}
-          <a href="#capabilities" className="atlas-faq__link">
+          <a href="#capabilities" className="bp-link">
             Capabilities Explorer
           </a>{" "}
           above shows the current implementation in more detail.
@@ -38,17 +38,20 @@ const FAQ_ACCORDION_ITEMS: FaqAccordionItem[] = FAQ_ITEMS.map((item) => ({
 
 export function FaqSection() {
   return (
-    <section className="atlas-section" aria-labelledby="faq-heading">
-      <div className="atlas-marketing__gutter atlas-faq">
-        <div className="atlas-faq__layout">
-          <div className="atlas-faq__intro">
-            <SectionEyebrow>FAQ</SectionEyebrow>
-            <h2 id="faq-heading" className="atlas-section__title">
+    <section
+      className="bp-section bp-section--paper bp-faq"
+      aria-labelledby="faq-heading"
+    >
+      <div className="atlas-marketing__gutter">
+        <div className="bp-faq__layout">
+          <div className="bp-faq__intro">
+            <SectionLabel index="09">FAQ</SectionLabel>
+            <h2 id="faq-heading" className="bp-h2">
               Questions teams ask
-              <br />
+              {" "}<br />
               before they adopt Atlas.
             </h2>
-            <p className="atlas-section__body">
+            <p className="bp-lead">
               Atlas is opinionated by design. These are the questions that usually
               matter before making it part of a codebase.
             </p>

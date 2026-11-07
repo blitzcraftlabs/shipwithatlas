@@ -1,5 +1,5 @@
 import { CapabilitiesExplorer } from "@/components/marketing/capabilities-explorer"
-import { SectionEyebrow } from "@/components/marketing/section-eyebrow"
+import { SectionLabel } from "@/components/marketing/section-label"
 import { ATLAS_CAPABILITIES } from "@/lib/marketing/content/capabilities"
 import { highlightSnippet } from "@/lib/marketing/shiki/highlight"
 
@@ -22,27 +22,27 @@ export async function CapabilitiesSection() {
   return (
     <section
       id="capabilities"
-      className="atlas-section atlas-section--raised"
+      className="bp-section bp-section--paper bp-capabilities"
       aria-labelledby="capabilities-heading"
     >
-      <div className="atlas-marketing__gutter atlas-capabilities">
-        <div className="atlas-capabilities__intro">
-          <SectionEyebrow>Everything included</SectionEyebrow>
-          <h2 id="capabilities-heading" className="atlas-section__title">
-            Make the recurring
-            <br />
-            decisions once.
-          </h2>
-          <p className="atlas-section__body">
+      <div className="atlas-marketing__gutter">
+        <header className="bp-section-head bp-section-head--split">
+          <div>
+            <SectionLabel index="03">Everything included</SectionLabel>
+            <h2 id="capabilities-heading" className="bp-h2">
+              Make the recurring
+              {" "}<br />
+              decisions once.
+            </h2>
+          </div>
+          <p className="bp-lead">
             Atlas brings the architecture, infrastructure, tooling, and
-            production conventions together as one foundation—so teams don&apos;t
-            have to assemble them again for every product.
+            production conventions together as one foundation, so teams
+            don&apos;t have to assemble them again for every product.
           </p>
-        </div>
+        </header>
 
-        <div className="atlas-capabilities__showcase">
-          <CapabilitiesExplorer capabilities={capabilities} />
-        </div>
+        <CapabilitiesExplorer capabilities={capabilities} />
       </div>
     </section>
   )
