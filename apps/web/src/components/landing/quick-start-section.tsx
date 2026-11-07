@@ -60,9 +60,10 @@ export function QuickStartSection() {
               href={QUICKSTART_DOCS_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="bp-button bp-button--outline"
+              className="bp-arrow-link"
             >
               Read the quickstart docs
+              <ArrowUpRight className="size-4" aria-hidden="true" />
               <span className="sr-only"> (opens in a new tab)</span>
             </a>
           </div>

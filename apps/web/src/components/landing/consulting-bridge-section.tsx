@@ -28,18 +28,19 @@ export function ConsultingBridgeSection() {
             <h2 id="consulting-bridge-heading" className="bp-h2">
               I built Atlas from the frontend problems I kept solving.
             </h2>
-            <div className="bp-founder__author">
-              <Image
-                src={AUTHOR_AVATAR_URL}
-                alt=""
-                width={56}
-                height={56}
-                className="bp-founder__avatar"
-              />
-              <div>
-                <p className="bp-founder__name">{AUTHOR_NAME}</p>
-                <p className="bp-founder__role">{AUTHOR_ROLE}</p>
-              </div>
+          </div>
+
+          <div className="bp-founder__author">
+            <Image
+              src={AUTHOR_AVATAR_URL}
+              alt=""
+              width={56}
+              height={56}
+              className="bp-founder__avatar"
+            />
+            <div>
+              <p className="bp-founder__name">{AUTHOR_NAME}</p>
+              <p className="bp-founder__role">{AUTHOR_ROLE}</p>
             </div>
           </div>
 

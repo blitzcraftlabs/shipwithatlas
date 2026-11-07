@@ -243,19 +243,64 @@
   background: var(--bp-action);
 }
 
+/* Copy all: label and icon read as one bordered control, and the whole
+   control is the button's hit target (its ::after covers the label) */
 .bp-start__copy-all {
+  position: relative;
   display: inline-flex;
-  align-items: center;
-  gap: 0.625rem;
+  align-items: stretch;
+  border: var(--bp-stroke-fine) solid var(--bp-line-strong);
+  background: var(--bp-surface);
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .bp-start__copy-all-label {
-  color: var(--bp-text-subtle);
+  display: inline-flex;
+  align-items: center;
+  padding-inline: 0.875rem 0.75rem;
+  color: var(--bp-text);
   font-family: var(--bp-font-mono);
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  transition: color 0.15s ease;
+}
+
+.bp-start__copy-all .bp-copy {
+  height: 2.375rem;
+  border: 0;
+  border-left: var(--bp-stroke-fine) solid var(--bp-line-solid);
+  background: transparent;
+  color: var(--bp-text);
+}
+
+.bp-start__copy-all .bp-copy::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.bp-start__copy-all:hover {
+  border-color: var(--bp-line-accent);
+  background: var(--bp-surface-accent);
+}
+
+.bp-start__copy-all:hover .bp-start__copy-all-label,
+.bp-start__copy-all:hover .bp-copy,
+.bp-start__copy-all .bp-copy[data-copy-status="copied"] {
+  color: var(--bp-text-accent);
+}
+
+.bp-start__copy-all .bp-copy:focus-visible {
+  outline: none;
+}
+
+.bp-start__copy-all:has(.bp-copy:focus-visible) {
+  outline: 2px solid var(--bp-focus);
+  outline-offset: 2px;
 }
 
 .bp-start__step {
@@ -315,19 +360,30 @@
 .bp-start__commands {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: 0.625rem;
+  margin-top: 1.125rem;
+  /* Room for the rows' hard shadow */
+  margin-right: 3px;
 }
 
-/* Light command rows: they expand on the hero command without competing */
+/* Light command rows: the hero's command in a quieter key. Ink outline,
+   small blue hard shadow, and a copy cap divided off at the right edge */
 .atlas-command-strip.bp-cmd {
+  align-items: stretch;
   gap: 0.75rem;
   min-height: 3rem;
   margin-top: 0;
-  padding: 0.25rem 0.25rem 0.25rem 1rem;
+  padding: 0 0 0 1rem;
   border: var(--bp-stroke-fine) solid var(--bp-line-strong);
   border-radius: var(--bp-radius);
-  background: var(--bp-surface-sunken);
+  background: var(--bp-surface);
+  box-shadow: 3px 3px 0 var(--bp-blue-200);
+}
+
+.bp-cmd .atlas-command-strip__prompt,
+.bp-cmd .atlas-command-strip__code {
+  align-self: center;
+  padding-block: 0.625rem;
 }
 
 .bp-cmd .atlas-command-strip__prompt {
@@ -353,25 +409,27 @@
 }
 
 .bp-cmd .atlas-command-strip__copy {
-  width: 2.5rem;
-  height: 2.5rem;
-  border: var(--bp-stroke-fine) solid transparent;
+  align-self: stretch;
+  width: 3rem;
+  height: auto;
+  min-height: 2.875rem;
+  border: 0;
+  border-left: var(--bp-stroke-fine) solid var(--bp-line-solid);
   border-radius: var(--bp-radius);
-  background: transparent;
-  color: var(--bp-text-muted);
+  background: var(--bp-bg);
+  color: var(--bp-ink-700);
 }
 
 .bp-cmd .atlas-command-strip__copy:hover,
 .bp-cmd .atlas-command-strip__copy[data-popup-open],
 .bp-cmd .atlas-command-strip__copy[aria-expanded="true"] {
-  border-color: var(--bp-line-accent);
-  background: var(--bp-surface);
+  border-left-color: var(--bp-line-accent);
+  background: var(--bp-surface-accent);
   color: var(--bp-text-accent);
 }
 
 .bp-cmd .atlas-command-strip__copy:active {
-  border-color: var(--bp-line-accent);
-  background: var(--bp-surface-accent);
+  background: var(--bp-blue-200);
   color: var(--bp-text-accent);
 }
 
@@ -381,7 +439,7 @@
 
 .bp-cmd .atlas-command-strip__copy:focus-visible {
   outline: 2px solid var(--bp-focus);
-  outline-offset: 1px;
+  outline-offset: -2px;
 }
 
 .bp-start__contrib {
@@ -498,6 +556,7 @@
   }
 
   .atlas-command-strip.bp-cmd {
+    gap: 0.5rem;
     padding-left: 0.75rem;
   }
 
@@ -515,6 +574,11 @@
 /* ------------------------------------------------------------------ */
 /* 03 Capabilities: explorer window                                    */
 /* ------------------------------------------------------------------ */
+
+/* The window sits close under its heading, so the two read as one unit */
+.bp-capabilities .bp-section-head {
+  margin-bottom: clamp(2rem, 1.5rem + 1.5vw, 3rem);
+}
 
 .bp-explorer {
   margin-right: 12px;
@@ -589,6 +653,11 @@
 @media (min-width: 960px) {
   .bp-explorer__rail {
     border-right: var(--bp-stroke-fine) solid var(--bp-line);
+  }
+
+  /* Denser rows: the full index fits beside the panel without a tail */
+  .bp-explorer__tab {
+    padding-block: 0.4375rem;
   }
 }
 
@@ -679,6 +748,13 @@
   padding: clamp(1.25rem, 1rem + 1.5vw, 2.25rem);
 }
 
+/* The source follows the summary closely: it is the same capability */
+@media (min-width: 960px) {
+  .bp-explorer__summary {
+    padding-bottom: 1.5rem;
+  }
+}
+
 .bp-explorer__title {
   font-size: clamp(1.375rem, 1.15rem + 0.8vw, 1.875rem);
   font-weight: 800;
@@ -714,6 +790,48 @@
 @media (min-width: 640px) {
   .bp-explorer__included {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Wide panels: the explanation and its inventory sit side by side, so the
+   source arrives sooner and the panel reads as a spec, not an article */
+@media (min-width: 1200px) {
+  .bp-explorer__summary:has(.bp-explorer__included) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 23rem);
+    grid-template-rows: auto auto 1fr;
+    column-gap: 2.5rem;
+  }
+
+  .bp-explorer__summary:has(.bp-explorer__included) > :not(.bp-explorer__included) {
+    grid-column: 1;
+  }
+
+  .bp-explorer__summary .bp-explorer__included {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    align-self: start;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+    margin-top: 0;
+    padding: 0 0 0 1.5rem;
+    border-top: 0;
+    border-left: var(--bp-stroke-fine) solid var(--bp-line-solid);
+  }
+
+  .bp-explorer__summary .bp-explorer__included li {
+    font-size: 0.875rem;
+  }
+
+  .bp-explorer__summary .bp-explorer__included::before {
+    content: "Included" / "";
+    margin-bottom: 0.25rem;
+    color: var(--bp-text-subtle);
+    font-family: var(--bp-font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 }
 
@@ -801,7 +919,7 @@
 }
 
 .bp-code__body {
-  max-height: 23rem;
+  max-height: 20rem;
   overflow: auto;
   scrollbar-color: var(--bp-ink-600) transparent;
   scrollbar-width: thin;
@@ -854,6 +972,21 @@
   color: var(--bp-terminal-muted);
 }
 
+/* Wide windows: the source fills the panel down to the foot of the index,
+   so every capability opens at the same height and the window never
+   jumps between tabs */
+@media (min-width: 1200px) {
+  .bp-code {
+    flex: 1;
+  }
+
+  .bp-code__body {
+    flex: 1 1 0;
+    min-height: 12rem;
+    max-height: none;
+  }
+}
+
 @media (max-width: 639px) {
   .bp-explorer {
     margin-right: 6px;
@@ -885,6 +1018,43 @@
 /* ------------------------------------------------------------------ */
 /* 04 Built with Atlas: product table                                  */
 /* ------------------------------------------------------------------ */
+
+/* A compact sheet between two showcases: the heading runs the full width
+   on one line, and the lead hangs from the third product column so the
+   copy and the table share one set of verticals */
+.bp-products {
+  padding-block: clamp(3.5rem, 2.25rem + 3.75vw, 5.75rem);
+}
+
+.bp-products__head {
+  margin-bottom: clamp(2rem, 1.5rem + 1.5vw, 3rem);
+}
+
+@media (min-width: 1024px) {
+  .bp-products__head {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 1px;
+  }
+
+  .bp-products__title {
+    grid-column: 1 / -1;
+  }
+
+  .bp-products__title .bp-h2 {
+    max-width: none;
+  }
+
+  .bp-products__title .bp-h2 br {
+    display: none;
+  }
+
+  .bp-products__lead {
+    grid-column: 3 / -1;
+    margin-top: 1.5rem;
+    padding-left: 1.25rem;
+  }
+}
 
 .bp-products__grid {
   display: grid;
@@ -1627,6 +1797,10 @@
 /* 07 Inspect and change: resource index                               */
 /* ------------------------------------------------------------------ */
 
+.bp-inspect .bp-section-head {
+  margin-bottom: clamp(2rem, 1.5rem + 1.5vw, 3rem);
+}
+
 .bp-inspect__group + .bp-inspect__group {
   margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
 }
@@ -1654,6 +1828,7 @@
 .bp-inspect__links {
   display: grid;
   gap: 1.25rem;
+  counter-reset: inspect;
 }
 
 @media (min-width: 768px) {
@@ -1667,19 +1842,36 @@
   display: flex;
 }
 
+/* Resource cards: a plate, the destination, and a path bar along the foot
+   that reads like the file it opens */
 .bp-inspect__link {
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 0;
   border: var(--bp-stroke) solid var(--bp-line-strong);
   background: var(--bp-surface);
+  counter-increment: inspect;
   transition:
     transform 0.15s var(--bp-ease),
     box-shadow 0.15s var(--bp-ease);
 }
 
-.bp-inspect__link:hover {
+.bp-inspect__link::before {
+  content: counter(inspect, decimal-leading-zero) / "";
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  color: var(--bp-text-subtle);
+  font-family: var(--bp-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.bp-inspect__link:hover,
+.bp-inspect__link:focus-visible {
   transform: translate(-3px, -3px);
   box-shadow: 6px 6px 0 var(--bp-action);
 }
@@ -1697,21 +1889,21 @@
 .bp-inspect__art {
   display: grid;
   place-items: center;
-  width: 4rem;
-  height: 4rem;
-  border: var(--bp-stroke-fine) solid var(--bp-line-solid);
+  width: 3.5rem;
+  height: 3.5rem;
+  border: var(--bp-stroke-fine) solid var(--bp-blue-200);
   background: var(--bp-surface-accent);
 }
 
 .bp-inspect__art .atlas-inspect-illustration,
 .bp-inspect__art .atlas-inspect-illustration__svg {
   display: block;
-  width: 3rem;
-  height: 3rem;
+  width: 3.25rem;
+  height: 3.25rem;
 }
 
 .bp-inspect__link-label {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
   font-family: var(--bp-font-mono);
   font-size: 1.1875rem;
   font-weight: 800;
@@ -1734,9 +1926,17 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: var(--bp-stroke-fine) solid var(--bp-line-solid);
+  min-height: 3rem;
+  margin: 1.5rem -1.5rem 0;
+  padding: 0.75rem 1.5rem;
+  border-top: var(--bp-stroke-fine) solid var(--bp-line-strong);
+  background: var(--bp-bg);
+  transition: background-color 0.15s ease;
+}
+
+.bp-inspect__link:hover .bp-inspect__link-path,
+.bp-inspect__link:focus-visible .bp-inspect__link-path {
+  background: var(--bp-surface-accent);
 }
 
 .bp-inspect__link-path code {
@@ -1756,7 +1956,8 @@
   transition: transform 0.2s var(--bp-ease);
 }
 
-.bp-inspect__link:hover .bp-inspect__arrow {
+.bp-inspect__link:hover .bp-inspect__arrow,
+.bp-inspect__link:focus-visible .bp-inspect__arrow {
   color: var(--bp-text-accent);
   transform: translate(2px, -2px);
 }
@@ -1907,11 +2108,17 @@
   gap: 2rem;
 }
 
+/* Editorial spread: the heading runs across the sheet, then a byline
+   column and the copy sit under one rule, like a feature opening */
 @media (min-width: 1024px) {
   .bp-founder__layout {
-    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    grid-template-columns: minmax(14rem, 2fr) minmax(0, 10fr);
     align-items: start;
-    gap: 3rem 5rem;
+    gap: 2.75rem 3rem;
+  }
+
+  .bp-founder__intro {
+    grid-column: 1 / -1;
   }
 }
 
@@ -1919,11 +2126,16 @@
   max-width: 20ch;
 }
 
+@media (min-width: 1024px) {
+  .bp-founder__intro .bp-h2 {
+    max-width: 30ch;
+  }
+}
+
 .bp-founder__author {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-top: 2rem;
 }
 
 .bp-founder__avatar {
@@ -1953,11 +2165,47 @@
 }
 
 @media (min-width: 1024px) {
-  /* Starts level with the heading, set off by a blue rule like a margin note */
+  .bp-founder__author,
   .bp-founder__copy {
-    margin-top: 3.25rem;
-    padding-left: 2rem;
+    margin-top: 0;
+    padding-top: 1.75rem;
+    border-top: var(--bp-stroke-fine) solid var(--bp-line-solid);
+  }
+
+  .bp-founder__author {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .bp-founder__copy {
+    max-width: none;
+  }
+
+  /* The standfirst keeps its blue margin rule */
+  .bp-founder__standfirst {
+    padding-left: 1.5rem;
     border-left: 3px solid var(--bp-action);
+  }
+
+  .bp-founder__copy .bp-body {
+    max-width: 40rem;
+    padding-left: calc(1.5rem + 3px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .bp-founder__copy {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
+    gap: 2.5rem;
+  }
+
+  /* Scoped to the section so it outranks the base spacing declared below */
+  .bp-founder .bp-founder__copy .bp-body {
+    margin-top: 0;
+    padding-left: 0;
   }
 }
 
@@ -1975,7 +2223,7 @@
 
 .bp-founder__scenarios {
   display: grid;
-  margin-top: clamp(3rem, 2.5rem + 3vw, 5rem);
+  margin-top: clamp(3rem, 2.5rem + 2vw, 4rem);
   border-top: var(--bp-stroke) solid var(--bp-line-strong);
 }
 
@@ -2420,9 +2668,11 @@
   }
 
   .bp-inspect__link:hover,
+  .bp-inspect__link:focus-visible,
   .bp-products__cell--link:hover .bp-products__logo,
   .bp-products__cell--link:hover .bp-products__arrow,
-  .bp-inspect__link:hover .bp-inspect__arrow {
+  .bp-inspect__link:hover .bp-inspect__arrow,
+  .bp-inspect__link:focus-visible .bp-inspect__arrow {
     transform: none;
   }
 }
