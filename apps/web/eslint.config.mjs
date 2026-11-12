@@ -180,6 +180,28 @@ export default [
     rules: fetchSyntaxRules(),
   },
   {
+    // Build reliability: next/font/google downloads fonts from Google during `next build`,
+    // so a flaky or changed upstream response fails the production build (and CI).
+    // Fonts are self-hosted in src/fonts and loaded with next/font/local instead.
+    // Uses the typescript-eslint variant so it does not replace the core
+    // `no-restricted-imports` boundary policies configured above.
+    files: ["src/**/*.{ts,tsx}"],
+    rules: {
+      "@typescript-eslint/no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "next/font/google",
+              message:
+                "Self-host fonts in src/fonts and load them with next/font/local; next/font/google fetches from the network at build time.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     // Ban console.* usage - use structured logging instead
     rules: {
       "no-console": "error",

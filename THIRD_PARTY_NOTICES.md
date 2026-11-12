@@ -78,28 +78,30 @@ See [provenance.md](docs/how-we-build/provenance.md) for audit commands and clas
 
 ## Fonts
 
-Applications use **Inter** via `next/font/google` (`import { Inter } from "next/font/google"` in
-`apps/web` and `apps/reference`). Atlas does **not** commit Inter font binaries to Git. During the
-build, Next.js obtains the font and self-hosts the resulting font assets in the built application —
-there is no runtime download from Google Fonts in the current Next.js model.
+`apps/web` self-hosts its fonts. The font binaries are committed under `apps/web/src/fonts/` and
+loaded with `next/font/local`, so production builds never download fonts from Google Fonts (a
+network fetch at build time previously made CI fail intermittently). An ESLint rule in
+`apps/web/eslint.config.mjs` blocks `next/font/google` imports.
 
-| Field                   | Value                                                    |
-| ----------------------- | -------------------------------------------------------- |
-| Font                    | Inter                                                    |
-| License                 | [SIL Open Font License 1.1](https://scripts.sil.org/OFL) |
-| Source                  | `next/font/google`                                       |
-| Committed to repository | No                                                       |
-| Present in build output | Yes — self-hosted font files in deployed artifacts       |
+Each font is the latin-subset, variable-weight `.woff2` from the Fontsource `@fontsource-variable/*`
+5.3.0 package. Its SIL OFL-1.1 license and copyright notice sits beside it as `OFL.txt`.
 
-Built artifacts may contain redistributed Inter font software. SIL OFL-1.1 attribution/license
-preservation requirements should be respected in distributions containing those generated font
-assets. Whether additional OFL notice text is required for a specific deployment packaging model is
-a **legal-review item** (see [provenance.md](docs/how-we-build/provenance.md)).
+| Font           | License                                                  | Repository path                      | Upstream                                                              |
+| -------------- | -------------------------------------------------------- | ------------------------------------ | --------------------------------------------------------------------- |
+| Inter          | [SIL Open Font License 1.1](https://scripts.sil.org/OFL) | `apps/web/src/fonts/inter/`          | [rsms/inter](https://github.com/rsms/inter)                           |
+| Geist Mono     | [SIL Open Font License 1.1](https://scripts.sil.org/OFL) | `apps/web/src/fonts/geist-mono/`     | [vercel/geist-font](https://github.com/vercel/geist-font)             |
+| IBM Plex Sans  | [SIL Open Font License 1.1](https://scripts.sil.org/OFL) | `apps/web/src/fonts/ibm-plex-sans/`  | [IBM/plex](https://github.com/IBM/plex)                               |
+| JetBrains Mono | [SIL Open Font License 1.1](https://scripts.sil.org/OFL) | `apps/web/src/fonts/jetbrains-mono/` | [JetBrains/JetBrainsMono](https://github.com/JetBrains/JetBrainsMono) |
+
+Built artifacts redistribute these fonts. Keep each `OFL.txt` next to its font file. Whether a
+specific deployment packaging model needs additional OFL notice text is a **legal-review item** (see
+[provenance.md](docs/how-we-build/provenance.md)).
 
 ## Assets at HEAD
 
-No binary image, font, or icon files are tracked in Git at HEAD. Historical design-system PNG
-screenshots exist only in Git history (see provenance doc).
+No binary image or icon files from Atlas are tracked in Git at HEAD. Self-hosted font files are
+tracked under `apps/web/src/fonts/` (see [Fonts](#fonts)). Historical design-system PNG screenshots
+exist only in Git history (see provenance doc).
 
 ## Dependency license inventory
 
