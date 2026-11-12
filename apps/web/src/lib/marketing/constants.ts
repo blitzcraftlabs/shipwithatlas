@@ -52,8 +52,6 @@ export const SITE_SUPPORTING =
 
 export const PLATFORM_REPO_URL = "https://github.com/blitzcraftlabs/atlas"
 
-export const SHOWCASE_REPO_URL = "https://github.com/blitzcraftlabs/atlas-showcase"
-
 export const SHOWCASE_SITE_URL = "https://shipwithatlas.com"
 
 export const PLATFORM_DOCS_URL = `${PLATFORM_REPO_URL}/tree/main/docs/public`

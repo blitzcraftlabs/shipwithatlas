@@ -6,7 +6,8 @@ Public source for [shipwithatlas.com](https://shipwithatlas.com) — the marketi
 - **[blitzcraftlabs/atlas](https://github.com/blitzcraftlabs/atlas)** — the open-source frontend platform (CLI, contracts, generators, upgrades).
 - **blitzcraftlabs/shipwithatlas** (this repository) — the production website that dogfoods Atlas.
 
-Generated from Atlas **1.2.2** via the published npm CLI (`@blitzcraftlabs/atlas`). Your application
+Generated from Atlas **1.2.2** via the published npm CLI (`@blitzcraftlabs/atlas`) and upgraded to
+**1.3.3** with `atlas upgrade`. Your application
 code lives here; Atlas does not host this deployment.
 
 ## Requirements
@@ -52,11 +53,11 @@ pnpm build
 
 ## Atlas Doctor
 
-Pin the same Atlas version as `atlas.config.json`:
+The Atlas CLI is pinned in `package.json` to the version in `atlas.config.json`:
 
 ```bash
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 doctor
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 context --json
+pnpm atlas doctor
+pnpm atlas context --json
 ```
 
 Doctor validates architecture contracts, boundaries, and upgrade evidence for this consumer.
