@@ -1,6 +1,6 @@
 import "@atlas/ui/globals.css";
 
-import { Geist_Mono, Inter } from "next/font/google";
+import localFont from "next/font/local";
 
 import { getThemeBootScriptContent } from "@atlas/ui/theme-boot";
 
@@ -11,17 +11,25 @@ import { MainProvider } from "@/providers";
 
 import type { Metadata } from "next";
 
-const inter = Inter({
-  subsets: ["latin"],
+// Self-hosted (src/fonts) so builds never depend on fetching from Google Fonts.
+const inter = localFont({
+  src: "../fonts/inter/inter-latin-wght-normal.woff2",
+  weight: "100 900",
+  style: "normal",
   variable: "--font-sans",
   display: "swap",
   preload: true,
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "Helvetica", "Arial", "sans-serif"],
 });
 
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
+const fontMono = localFont({
+  src: "../fonts/geist-mono/geist-mono-latin-wght-normal.woff2",
+  weight: "100 900",
+  style: "normal",
   variable: "--font-mono",
   display: "swap",
+  fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
