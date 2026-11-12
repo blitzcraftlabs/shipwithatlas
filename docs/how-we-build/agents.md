@@ -34,7 +34,7 @@ If a Cursor rule contradicts Doctor or the resolved project contract, the Cursor
 Start from repository root **`AGENTS.md`**, then:
 
 ```bash
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 context --json
+pnpm atlas context --json
 ```
 
 Do **not** run `pnpm --filter @blitzcraftlabs/atlas build` or a workspace-linked `atlas` binary —
@@ -51,7 +51,7 @@ They do not replace the root workflow.
 ### Discover
 
 1. Read root `AGENTS.md` and this document.
-2. Run `pnpm dlx @blitzcraftlabs/atlas@1.2.2 context --json`.
+2. Run `pnpm atlas context --json`.
 3. Inspect relevant ADRs and `docs/how-we-build/` references returned by context.
 4. Inspect nearby examples under `apps/web/src/app/examples/` before inventing patterns.
 5. For settings, permission-aware CRUD, and diagnostics recipes, see [reference-patterns.md](reference-patterns.md).
@@ -62,20 +62,20 @@ They do not replace the root workflow.
 | ---------------------- | ----------------------------------------------------------- |
 | Structural scaffolding | Use `atlas generate` when a generator exists |
 | Product logic | Normal source editing in consumer-owned surfaces |
-| Optional quality tooling | `pnpm dlx @blitzcraftlabs/atlas@1.2.2 enable <capability>` — never a silent upgrade write |
+| Optional quality tooling | `pnpm atlas enable <capability>` — never a silent upgrade write |
 | Ownership boundaries | Contract + manifest + Doctor — not duplicated prose |
 | Validation | Doctor + lint + typecheck + tests (+ build/E2E when needed) |
 
 ```bash
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 generate list --json
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 enable list --json
+pnpm atlas generate list --json
+pnpm atlas enable list --json
 ```
 
 ### Implement
 
 ```bash
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 generate feature <name> [--query] [--mutation] [--form] [--tests]
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 generate page <route>
+pnpm atlas generate feature <name> [--query] [--mutation] [--form] [--tests]
+pnpm atlas generate page <route>
 ```
 
 Then implement product behavior in generated shells.
@@ -86,7 +86,7 @@ customized destinations and reports conflicts.
 ### Validate
 
 ```bash
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 doctor --json
+pnpm atlas doctor --json
 pnpm lint && pnpm typecheck && pnpm test
 ```
 
@@ -123,7 +123,7 @@ deterministic and inside authorized change scope.
 ## Upgrade and migration workflow
 
 ```bash
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 upgrade --to <version> --dry-run --json
+pnpm atlas upgrade --to <version> --dry-run --json
 ```
 
 Do not infer blocking from `category` alone. The upgrade command decides whether an upgrade is
@@ -132,7 +132,7 @@ unresolved migration or package work.
 
 Optional tooling (Storybook, visual tests, performance CI, security workflows, Dependabot, coverage
 floors, Git hooks, Cursor adapters, Docker) is **not** applied by `atlas upgrade`. Adopt those
-with `pnpm dlx @blitzcraftlabs/atlas@1.2.2 enable <capability>` after reviewing the dry-run.
+with `pnpm atlas enable <capability>` after reviewing the dry-run.
 
 See [upgrades.md](upgrades.md) and [consumer-tooling.md](consumer-tooling.md).
 
@@ -142,10 +142,10 @@ See [upgrades.md](upgrades.md) and [consumer-tooling.md](consumer-tooling.md).
 
 | Need | Command |
 | -------------------- | -------------------------------------------------------------- |
-| Resolved project state | `pnpm dlx @blitzcraftlabs/atlas@1.2.2 context --json` |
-| Generator inventory | `pnpm dlx @blitzcraftlabs/atlas@1.2.2 generate list --json` |
-| Architecture validation | `pnpm dlx @blitzcraftlabs/atlas@1.2.2 doctor --json` |
-| Upgrade planning | `pnpm dlx @blitzcraftlabs/atlas@1.2.2 upgrade --to <version> --dry-run --json` |
-| Optional tooling | `pnpm dlx @blitzcraftlabs/atlas@1.2.2 enable list --json` |
+| Resolved project state | `pnpm atlas context --json` |
+| Generator inventory | `pnpm atlas generate list --json` |
+| Architecture validation | `pnpm atlas doctor --json` |
+| Upgrade planning | `pnpm atlas upgrade --to <version> --dry-run --json` |
+| Optional tooling | `pnpm atlas enable list --json` |
 
 Do not scrape Markdown or CLI help prose for critical structural state when these commands exist.

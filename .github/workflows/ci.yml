@@ -37,7 +37,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Atlas Doctor
-        run: pnpm dlx @blitzcraftlabs/atlas@1.2.2 doctor
+        run: pnpm atlas doctor
 
       - name: Lint
         run: pnpm lint

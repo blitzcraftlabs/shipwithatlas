@@ -1,9 +1,10 @@
 # Atlas — Agent Guide
 
-This is **shipwithatlas**, an Atlas application generated from Atlas 1.2.2.
+This is **shipwithatlas**, an Atlas application generated from Atlas 1.2.2 and upgraded to 1.3.3.
+The Atlas CLI is pinned as a devDependency and invoked as `pnpm atlas`.
 
 Product code lives in this repository. Atlas does not host the application. Discover project state
-from the published CLI — do not assume Atlas monorepo workspaces such as the evaluation harness or
+from the pinned CLI — do not assume Atlas monorepo workspaces such as the evaluation harness or
 CLI source package exist here.
 
 Detailed workflow: [docs/how-we-build/agents.md](docs/how-we-build/agents.md)
@@ -13,8 +14,8 @@ Detailed workflow: [docs/how-we-build/agents.md](docs/how-we-build/agents.md)
 ## Discover the current project
 
 ```bash
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 context
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 context --json
+pnpm atlas context
+pnpm atlas context --json
 ```
 
 `atlas context` resolves the project contract, ownership manifest, generators, Doctor
@@ -25,9 +26,9 @@ capabilities, upgrade semantics, validation commands, and documentation referenc
 ## Structural scaffolding
 
 ```bash
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 generate list --json
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 generate feature <name> [--query] [--mutation] [--form] [--tests]
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 generate page <route>
+pnpm atlas generate list --json
+pnpm atlas generate feature <name> [--query] [--mutation] [--form] [--tests]
+pnpm atlas generate page <route>
 ```
 
 Product logic inside generated shells is normal source editing.
@@ -37,8 +38,8 @@ Product logic inside generated shells is normal source editing.
 ## Validate architecture
 
 ```bash
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 doctor
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 doctor --json
+pnpm atlas doctor
+pnpm atlas doctor --json
 ```
 
 Then run standard engineering validation:
@@ -51,7 +52,7 @@ pnpm lint && pnpm typecheck && pnpm test
 typecheck, tests, or build. See [doctor.md](docs/how-we-build/doctor.md).
 
 Additional checks when relevant: `pnpm build`, `pnpm validate:env`, Playwright E2E — see
-`validation.recommended` in `pnpm dlx @blitzcraftlabs/atlas@1.2.2 context --json`. Maintainer-only Atlas repo commands
+`validation.recommended` in `pnpm atlas context --json`. Maintainer-only Atlas repo commands
 (`pnpm template:check`, `pnpm governance:check`, `pnpm docs:check`) are not part of this
 workspace.
 
@@ -60,7 +61,7 @@ workspace.
 ## Upgrades and migrations
 
 ```bash
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 upgrade --to <version> --dry-run --json
+pnpm atlas upgrade --to <version> --dry-run --json
 ```
 
 Treat `merge-required`, `manual-review`, and `security-critical` conflicts as blocking for
@@ -75,14 +76,12 @@ The default generated baseline is Doctor, lint, typecheck, tests, and production
 Heavier quality tooling is opt-in and consumer-owned after enablement:
 
 ```bash
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 enable list --json
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 enable storybook --dry-run
-pnpm dlx @blitzcraftlabs/atlas@1.2.2 enable storybook
+pnpm atlas enable list --json
+pnpm atlas enable storybook --dry-run
+pnpm atlas enable storybook
 ```
 
-See [consumer tooling](docs/how-we-build/consumer-tooling.md). Published Atlas 1.1.0 does **not**
-include `atlas enable`. Invoke a CLI release that contains the command (`pnpm dlx @blitzcraftlabs/atlas@1.2.2`); that
-CLI version may differ from `platform.baseline.atlasVersion`. `atlas upgrade` does not install
+See [consumer tooling](docs/how-we-build/consumer-tooling.md). `atlas upgrade` does not install
 optional tooling. Enablement skips customized files instead of overwriting them.
 
 ---
@@ -136,7 +135,7 @@ Atlas reference harness are not part of this workspace.
 
 ## Vendor adapters
 
-Cursor rules/skills are optional conveniences (`pnpm dlx @blitzcraftlabs/atlas@1.2.2 enable cursor`). They must delegate to this
+Cursor rules/skills are optional conveniences (`pnpm atlas enable cursor`). They must delegate to this
 guide and the CLI. Generic `AGENTS.md`-compatible agents are the portable path.
 
 ---
